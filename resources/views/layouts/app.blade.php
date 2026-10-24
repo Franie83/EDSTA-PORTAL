@@ -50,22 +50,29 @@
     .search-form .form-control::placeholder { color: rgba(255,255,255,0.6); }
     .search-form .btn { border-radius: 0 20px 20px 0; }
     
-    .avatar-initials-sm { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem; background: var(--gold-500); color: #fff; }
+    .avatar-initials-sm { width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem; background: var(--gold-500); color: #fff; }
     .dropdown-menu .dropdown-item { transition: var(--transition); border-radius: 8px; padding: 0.5rem 1rem; }
     .dropdown-menu .dropdown-item:hover { background: rgba(201, 162, 39, 0.1); transform: translateX(4px); }
 
     /* ENHANCED LOGO STYLING */
-    .nav-logo-img, .nav-logo-right {
+    .nav-logo-img {
       height: 50px;
       width: 50px;
       object-fit: contain;
-      border-radius: 50%;
+      border-radius: 4px;
       background-color: #fff;
       padding: 3px;
       border: 2px solid var(--gold-500);
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       transition: all 0.3s ease;
       cursor: pointer; /* Force pointer cursor */
+    }
+
+    .nav-logo-right {
+      height: 50px !important;
+      width: auto !important;
+      max-width: 80px;
+      object-fit: contain;
     }
 
     .nav-logo-img:hover, .nav-logo-right:hover {
@@ -103,7 +110,7 @@
         background-repeat: no-repeat;
     }
     /* Semi-transparent overlay so content stays readable */
-    body::before {
+    body.has-hero::before {
         content: "";
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -119,9 +126,65 @@
     .admin-body {
         background-image: none !important;
     }
+    /* ---------- DARK MODE ---------- */
+    [data-theme="dark"] {
+      --bs-body-bg: #0f172a;
+      --bs-body-color: #cbd5e1;
+      --bs-card-bg: #1e293b;
+      --bs-border-color: #334155;
+    }
+    [data-theme="dark"] body {
+      background-color: #0f172a !important;
+      background-image: none !important; /* Remove the light background image */
+      color: #cbd5e1 !important;
+    }
+    [data-theme="dark"] body.has-hero::before {
+      display: none; /* Remove the white overlay */
+    }
+    [data-theme="dark"] .card, [data-theme="dark"] .mega-dropdown {
+      background-color: #1e293b !important;
+      color: #cbd5e1 !important;
+      border-color: #334155 !important;
+    }
+    [data-theme="dark"] .text-dark, [data-theme="dark"] .text-muted, [data-theme="dark"] .text-blue {
+      color: #94a3b8 !important;
+    }
+    [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6 {
+      color: #f8fafc !important;
+    }
+    [data-theme="dark"] .bg-white, [data-theme="dark"] .bg-light, [data-theme="dark"] .bg-gray-50, [data-theme="dark"] .bg-blue-100 {
+      background-color: #1e293b !important;
+      color: #cbd5e1 !important;
+    }
+    [data-theme="dark"] .form-control, [data-theme="dark"] .form-select {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+    [data-theme="dark"] .hero-overlay {
+      background: rgba(0, 0, 0, 0.7) !important;
+    }
+    /* Toggle Button Style */
+    .theme-toggle-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--gold-400);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .theme-toggle-btn:hover {
+      background: rgba(201, 162, 39, 0.2);
+      transform: scale(1.05);
+    }
   </style>
 </head>
-<body>
+<body class="@yield('body_class')">
 
 <!-- STICKY HEADER (Top Banner + Navbar) -->
 <div class="sticky-top">
@@ -195,6 +258,9 @@
 
         <!-- User Dropdown & Right Logo Container -->
         <div class="d-flex align-items-center gap-3">
+          <button class="theme-toggle-btn me-2" id="themeToggle" title="Toggle Dark Mode">
+            <i class="bi bi-moon-fill" id="themeIcon"></i>
+          </button>
             @auth
             <div class="dropdown">
               <button class="btn btn-outline-gold dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown" style="border-radius: 20px;">
@@ -221,7 +287,10 @@
               </ul>
             </div>
             @else
-            <div class="d-flex gap-2">
+            <div class="d-flex gap-2 align-items-center">
+              <button class="theme-toggle-btn me-2" id="themeToggle" title="Toggle Dark Mode">
+                <i class="bi bi-moon-fill" id="themeIcon"></i>
+              </button>
               <a href="{{ route('auth.login') }}" class="btn btn-outline-gold btn-sm px-3" style="border-radius: 20px;">Login</a>
               <a href="{{ route('auth.register') }}" class="btn btn-gold btn-sm px-3" style="border-radius: 20px;">Register</a>
             </div>
@@ -230,7 +299,7 @@
             <!-- Right Logo (Modal Trigger) -->
             @if(isset($settings['site_logo_right']) && $settings['site_logo_right'])
                 <div class="d-none d-lg-block">
-                    <img src="{{ asset('storage/' . $settings['site_logo_right']) }}" alt="Right Logo" class="nav-logo-right" data-bs-toggle="modal" data-bs-target="#rightLogoModal" title="View Coat of Arms">
+                    <img src="{{ asset('storage/' . $settings['site_logo_right']) }}" alt="Right Logo" class="nav-logo-right" style="border-radius: 4px !important; width: auto !important; height: 50px !important; object-fit: contain;" style="border-radius: 4px !important;" data-bs-toggle="modal" data-bs-target="#rightLogoModal" title="View Coat of Arms">
                 </div>
             @endif
         </div>
@@ -267,7 +336,7 @@
         <div class="col-lg-4">
           <div class="d-flex align-items-center gap-2 mb-3">
             @if(isset($settings['site_logo']) && $settings['site_logo'])
-              <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="nav-logo-img" data-bs-toggle="modal" data-bs-target="#leftLogoModal">
+              <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="nav-logo-img" style="border-radius: 4px !important;" data-bs-toggle="modal" data-bs-target="#leftLogoModal">
             @else
               <div class="brand-icon"><i class="bi bi-compass-fill"></i></div>
             @endif
@@ -394,5 +463,34 @@
 </script>
 
 @yield('scripts')
+<script>
+  // -- DARK MODE LOGIC --
+  document.addEventListener('DOMContentLoaded', function() {
+    const html = document.documentElement;
+    const toggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    // Check local storage or system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.setAttribute('data-theme', 'dark');
+      if (themeIcon) themeIcon.className = 'bi bi-sun-fill';
+    }
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function() {
+        if (html.getAttribute('data-theme') === 'dark') {
+          html.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          themeIcon.className = 'bi bi-moon-fill';
+        } else {
+          html.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          themeIcon.className = 'bi bi-sun-fill';
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>
