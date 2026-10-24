@@ -17,7 +17,7 @@
   <div class="admin-sidebar-header">
     <div class="d-flex align-items-center gap-2 mb-1">
       @if(!empty($settings['site_logo']))
-        <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" style="width:34px;height:34px;object-fit:contain;border-radius:8px;">
+        <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" style="width:34px;height:34px;object-fit:contain;filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));">
       @else
         <div class="brand-icon" style="width:34px;height:34px;font-size:1rem"><i class="bi bi-compass-fill"></i></div>
       @endif
