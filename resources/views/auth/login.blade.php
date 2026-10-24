@@ -34,13 +34,11 @@
                 </div>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-  <div class="form-check">
+                <div class="form-check">
                   <input class="form-check-input" type="checkbox" name="remember" id="remember">
                   <label class="form-check-label small" for="remember">Remember me</label>
                 </div>
-  <a href="{{ route('password.request') }}" class="small text-muted text-decoration-none">Forgot Password?</a>
-</div>
+                <a href="{{ route('password.request') }}" class="small text-muted text-decoration-none">Forgot Password?</a>
               </div>
               <button type="submit" class="btn btn-blue w-100 fw-semibold py-2">Sign In <i class="bi bi-arrow-right ms-1"></i></button>
             </form>
