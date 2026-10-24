@@ -83,7 +83,7 @@ class AttractionController extends Controller
 
     public function show(int $id)
     {
-        $attraction = Attraction::with('category', 'reviews.user')->findOrFail($id);
+        $attraction = Attraction::with('category', 'reviews.user', 'images')->findOrFail($id);
         $attraction->increment('views');
 
         $isFav = false;

@@ -16,9 +16,36 @@
 <div class="container py-4">
   <div class="row g-4">
     <div class="col-lg-8">
-      <div class="detail-image mb-4">
-        <img src="{{ \App\Helpers\Helpers::imageUrl($attraction->image_url) }}" alt="{{ $attraction->name }}">
-      </div>
+      {{-- Primary / carousel image --}}
+      @if($attraction->images && $attraction->images->count() > 0)
+        <div id="attractionGallery" class="carousel slide mb-4" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            @foreach($attraction->images as $i => $img)
+              <button type="button" data-bs-target="#attractionGallery" data-bs-slide-to="{{ $i }}"
+                      class="{{ $i === 0 ? 'active' : '' }}"></button>
+            @endforeach
+          </div>
+          <div class="carousel-inner rounded-3 shadow">
+            @foreach($attraction->images as $i => $img)
+              <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
+                <img src="{{ asset('storage/' . $img->image_path) }}"
+                     class="d-block w-100" alt="{{ $attraction->name }}"
+                     style="height:500px;object-fit:cover;">
+              </div>
+            @endforeach
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#attractionGallery" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#attractionGallery" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      @else
+        <div class="detail-image mb-4">
+          <img src="{{ \App\Helpers\Helpers::imageUrl($attraction->image_url) }}" alt="{{ $attraction->name }}">
+        </div>
+      @endif
 
       @if($attraction->gallery)
       <div class="row g-2 mb-4">

@@ -42,26 +42,52 @@
             <div class="col-md-3"><label class="form-label fw-semibold small">Latitude</label><input type="number" name="latitude" class="form-control" step="any" value="{{ old('latitude', $attraction->latitude) }}"></div>
             <div class="col-md-3"><label class="form-label fw-semibold small">Longitude</label><input type="number" name="longitude" class="form-control" step="any" value="{{ old('longitude', $attraction->longitude) }}"></div>
             
-            {{-- Image Upload Field --}}
-            <div class="col-md-6">
-              <label class="form-label fw-semibold small">Upload Image</label>
-              <input type="file" name="image" class="form-control" accept="image/*">
-              <small class="text-muted">Upload a new image file</small>
-              @if($attraction->image_url)
-                <div class="mt-1">
-                  <small class="text-muted">Current: <a href="{{ \App\Helpers\Helpers::imageUrl($attraction->image_url) }}" target="_blank">View Image</a></small>
-                </div>
-              @endif
-            </div>
-            
-            {{-- Image URL Field --}}
-            <div class="col-md-6">
-              <label class="form-label fw-semibold small">Image URL</label>
-              <input type="url" name="image_url" class="form-control" placeholder="https://example.com/image.jpg" value="{{ old('image_url', $attraction->image_url ?? '') }}">
-              <small class="text-muted">Or paste an image URL (e.g., from Unsplash)</small>
-            </div>
+            {{-- ─── Images ─── --}}
+<div class="col-12 mt-4">
+  <h6 class="fw-bold text-muted mb-3"><i class="bi bi-images me-1"></i>Images</h6>
+</div>
 
-            {{-- EDSTA Rich Fields --}}
+<div class="col-md-4">
+  <label class="form-label fw-semibold small">Primary Image (upload)</label>
+  <input type="file" name="image" class="form-control" accept="image/*">
+  <small class="text-muted">Shown on cards, lists, and as fallback when no gallery exists</small>
+  @if($attraction->image_url)
+    <div class="mt-1">
+      <small class="text-muted">Current: <a href="{{ \App\Helpers\Helpers::imageUrl($attraction->image_url) }}" target="_blank">View Image</a></small>
+    </div>
+  @endif
+</div>
+
+<div class="col-md-4">
+  <label class="form-label fw-semibold small">Primary Image (URL)</label>
+  <input type="url" name="image_url" class="form-control" placeholder="https://example.com/image.jpg" value="{{ old('image_url', $attraction->image_url ?? '') }}">
+  <small class="text-muted">Alternative to upload — paste a URL (e.g. from Unsplash)</small>
+</div>
+
+<div class="col-md-4">
+  <label class="form-label fw-semibold small">Gallery Images (Max 10)</label>
+  <input type="file" name="gallery[]" class="form-control" multiple accept="image/*">
+  <small class="text-muted">Carousel on the public page</small>
+</div>
+
+@if(isset($attraction) && $attraction->images && $attraction->images->count() > 0)
+<div class="col-12 mt-2">
+  <label class="form-label fw-semibold small">Current Gallery</label>
+  <div class="row g-2">
+    @foreach($attraction->images as $img)
+      <div class="col-3 col-md-2">
+        <div class="card border-0 shadow-sm position-relative">
+          <img src="{{ asset('storage/' . $img->image_path) }}" class="card-img-top rounded" style="height: 80px; object-fit: cover;">
+          <a href="{{ route('admin.attraction_image_delete', $img->id) }}"
+             class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+             style="padding: 2px 6px; font-size: 0.7rem;"
+             onclick="return confirm('Delete this image?')">×</a>
+        </div>
+      </div>
+    @endforeach
+  </div>
+</div>
+@endif{{-- EDSTA Rich Fields --}}
             <div class="col-12"><hr class="my-3"><h6 class="fw-bold text-muted mb-3"><i class="bi bi-file-text me-1"></i>Rich Content (EDSTA)</h6></div>
 
             <div class="col-12">

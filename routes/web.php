@@ -189,6 +189,9 @@ Route::prefix('/admin')->middleware(['auth', 'admin'])->name('admin.')->group(fu
     Route::get('/attractions',               [AdminController::class, 'attractions'])->name('attractions');
     Route::get('/attractions/new',           [AdminController::class, 'attractionCreate'])->name('attraction_create');
     Route::post('/attractions/new',          [AdminController::class, 'attractionStore'])->name('attraction_store');
+
+    // Attraction gallery image delete
+    Route::get('/attractions/image/{id}/delete', [AdminController::class, 'deleteAttractionImage'])->name('attraction_image_delete');
     Route::get('/attractions/{id}/edit',     [AdminController::class, 'attractionEdit'])->name('attraction_edit');
     Route::post('/attractions/{id}/edit',    [AdminController::class, 'attractionUpdate'])->name('attraction_update');
     Route::post('/attractions/{id}/delete',  [AdminController::class, 'attractionDelete'])->name('attraction_delete');
@@ -222,6 +225,7 @@ Route::prefix('/admin')->middleware(['auth', 'admin'])->name('admin.')->group(fu
     Route::post('/hotels/{id}/edit',   [AdminController::class, 'hotelUpdate'])->name('hotel_update');
     Route::post('/hotels/{id}/delete', [AdminController::class, 'hotelDelete'])->name('hotel_delete');
     Route::post('/hotels/{id}/approve', [AdminController::class, 'approveHotel'])->name('hotel_approve');
+    Route::get('/hotels/image/{id}/delete', [AdminController::class, 'deleteHotelImage'])->name('hotel_image_delete');
 
     // Bulk Upload Restaurants
     Route::get('/restaurants/template', [AdminController::class, 'downloadRestaurantTemplate'])->name('restaurant_template');

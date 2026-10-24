@@ -79,4 +79,10 @@ class Attraction extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // ✅ New relationship: gallery images (10 per attraction)
+    public function images()
+    {
+        return $this->hasMany(AttractionImage::class);
+    }
 }
