@@ -1421,4 +1421,65 @@ class AdminController extends Controller
         return back()->with('success', 'Category deleted.');
     }
 
+
+    public function staffIndex()
+    {
+        $staff = \App\Models\StaffMember::orderBy('sort_order')->get();
+        return view('admin.staff.index', compact('staff'));
+    }
+
+    public function staffCreate()
+    {
+        return view('admin.staff.form', ['member' => new \App\Models\StaffMember()]);
+    }
+
+    public function staffStore(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
+            'email' => 'nullable|email',
+            'image_url' => 'nullable|string',
+            'image_file' => 'nullable|image|max:2048',
+            'sort_order' => 'nullable|integer',
+        ]);
+        if ($request->hasFile('image_file')) {
+            $data['image_url'] = '/storage/' . $request->file('image_file')->store('staff', 'public');
+        }
+        \App\Models\StaffMember::create($data);
+        return redirect()->route('admin.staff.index')->with('success', 'Staff member added.');
+    }
+
+    public function staffEdit(int $id)
+    {
+        $member = \App\Models\StaffMember::findOrFail($id);
+        return view('admin.staff.form', compact('member'));
+    }
+
+    public function staffUpdate(Request $request, int $id)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
+            'email' => 'nullable|email',
+            'image_url' => 'nullable|string',
+            'image_file' => 'nullable|image|max:2048',
+            'sort_order' => 'nullable|integer',
+        ]);
+        if ($request->hasFile('image_file')) {
+            $data['image_url'] = '/storage/' . $request->file('image_file')->store('staff', 'public');
+        }
+        \App\Models\StaffMember::findOrFail($id)->update($data);
+        return redirect()->route('admin.staff.index')->with('success', 'Staff member updated.');
+    }
+
+    public function staffDelete(int $id)
+    {
+        \App\Models\StaffMember::findOrFail($id)->delete();
+        return back()->with('success', 'Staff member deleted.');
+    }
 }

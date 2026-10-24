@@ -164,4 +164,10 @@ class MainController extends Controller
     {
         return view('main.terms');
     }
+
+    public function staff()
+    {
+        $staff = \App\Models\StaffMember::orderBy('sort_order')->get();
+        return view('staff.index', compact('staff'));
+    }
 }

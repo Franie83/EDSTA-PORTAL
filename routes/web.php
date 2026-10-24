@@ -337,3 +337,16 @@ Route::get('/forgot-password', [\App\Http\Controllers\Auth\ForgotPasswordControl
 Route::post('/forgot-password', [\App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/reset-password/{token}', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset')->where('token', '.*');
 Route::post('/reset-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+
+// Public Staff Directory
+Route::get('/staff', [\App\Http\Controllers\MainController::class, 'staff'])->name('main.staff');
+
+// Admin Staff Management (inside admin group)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/staff', [\App\Http\Controllers\AdminController::class, 'staffIndex'])->name('staff.index');
+    Route::get('/staff/new', [\App\Http\Controllers\AdminController::class, 'staffCreate'])->name('staff.create');
+    Route::post('/staff/new', [\App\Http\Controllers\AdminController::class, 'staffStore'])->name('staff.store');
+    Route::get('/staff/{id}/edit', [\App\Http\Controllers\AdminController::class, 'staffEdit'])->name('staff.edit');
+    Route::post('/staff/{id}/edit', [\App\Http\Controllers\AdminController::class, 'staffUpdate'])->name('staff.update');
+    Route::post('/staff/{id}/delete', [\App\Http\Controllers\AdminController::class, 'staffDelete'])->name('staff.delete');
+});

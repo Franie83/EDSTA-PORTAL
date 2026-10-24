@@ -53,6 +53,7 @@
     <a href="{{ route('admin.tour-operators.index') }}" class="nav-link {{ request()->routeIs('admin.tour-operators.*') ? 'active' : '' }}"><i class="bi bi-bus-front"></i> Tour Operators</a>
     <a href="{{ route('admin.clubs-lounges.index') }}" class="nav-link {{ request()->routeIs('admin.clubs-lounges.*') ? 'active' : '' }}"><i class="bi bi-music-note-beamed"></i> Clubs &amp; Lounges</a>
 
+    <a href="{{ route('admin.staff.index') }}" class="nav-link {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}"><i class="bi bi-people"></i> Staff Directory</a>
     <div class="nav-section mt-2">Operations</div>
     <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.user*') ? 'active' : '' }}"><i class="bi bi-people"></i> Users</a>
     <a href="{{ route('admin.bookings') }}" class="nav-link {{ request()->routeIs('admin.booking*') ? 'active' : '' }}"><i class="bi bi-calendar-check"></i> Bookings</a>

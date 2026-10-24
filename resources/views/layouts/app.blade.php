@@ -245,6 +245,7 @@
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('events.*') ? 'active' : '' }}" href="{{ route('events.list_events') }}">Events</a></li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('news.*') ? 'active' : '' }}" href="{{ route('news.list_news') }}">News</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('main.about') }}">About</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('main.staff') ? 'active' : '' }}" href="{{ route('main.staff') }}">Our Team</a></li>
       <li class="nav-item"><a class="nav-link {{ request()->routeIs('main.culture') ? 'active' : '' }}" href="{{ route('main.culture') }}">Culture</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('main.contact') }}">Contact</a></li>
         </ul>
@@ -370,6 +371,7 @@
           <h6 class="text-gold fw-bold mb-3 text-uppercase letter-spacing">EDSTA</h6>
           <ul class="list-unstyled footer-links">
             <li><a href="{{ route('main.about') }}">About EDSTA</a></li>
+            <li><a href="{{ route('main.staff') }}">Our Team</a></li>
             <li><a href="{{ route('news.list_news') }}">Tourism News</a></li>
             <li><a href="{{ route('main.faq') }}">FAQs</a></li>
             <li><a href="{{ route('main.contact') }}">Contact</a></li>
