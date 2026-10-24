@@ -1,12 +1,22 @@
 @extends('layouts.app')
 @section('title', 'Register – Edo Tourism')
 @section('content')
-<div class="min-vh-100 d-flex align-items-center" style="background:linear-gradient(135deg,var(--blue-900) 0%,var(--blue-700) 100%)">
+@php
+$heroBg = !empty($settings['hero_image']) ? asset('storage/' . $settings['hero_image']) : 'https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600';
+@endphp
+<section class="hero-section" style="min-height: 100vh;">
+  <div class="hero-bg" style="background-image:url('{{ $heroBg }}')"></div>
+  <div class="hero-overlay"></div>
+  <div class="min-vh-100 d-flex align-items-center w-100 position-relative" style="z-index: 2;">
   <div class="container py-5">
     <div class="row justify-content-center">
       <div class="col-md-7 col-lg-5">
         <div class="text-center mb-4">
-          <div class="brand-icon mx-auto mb-3" style="width:56px;height:56px;font-size:1.6rem"><i class="bi bi-compass-fill"></i></div>
+          @if(isset($settings['site_logo']) && $settings['site_logo'])
+              <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="mx-auto mb-3" style="width:80px;height:auto; display:block; mix-blend-mode: screen;">
+            @else
+              <div class="brand-icon mx-auto mb-3" style="width:56px;height:56px;font-size:1.6rem"><i class="bi bi-compass-fill"></i></div>
+            @endif
           <h2 class="text-white fw-bold" style="font-family:'Playfair Display',serif">Create Account</h2>
           <p class="text-white-50 small">Join the Edo Tourism community</p>
         </div>
@@ -67,4 +77,5 @@
     </div>
   </div>
 </div>
+</section>
 @endsection
