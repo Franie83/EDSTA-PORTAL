@@ -43,6 +43,7 @@ class Restaurant extends Model
 
     public function user()   { return $this->belongsTo(User::class); }
     public function menu()   { return $this->hasMany(RestaurantMenu::class); }
+    public function images() { return $this->hasMany(RestaurantImage::class); }
     public function reviews()
     {
         return $this->hasMany(Review::class, 'target_id')

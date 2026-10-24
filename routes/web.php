@@ -238,6 +238,7 @@ Route::prefix('/admin')->middleware(['auth', 'admin'])->name('admin.')->group(fu
     Route::post('/restaurants/{id}/edit',   [AdminController::class, 'restaurantUpdate'])->name('restaurant_update');
     Route::post('/restaurants/{id}/delete', [AdminController::class, 'restaurantDelete'])->name('restaurant_delete');
     Route::post('/restaurants/{id}/approve', [AdminController::class, 'approveRestaurant'])->name('restaurant_approve');
+    Route::get('/restaurants/image/{id}/delete', [AdminController::class, 'deleteRestaurantImage'])->name('restaurant_image_delete');
 
     // Events
     Route::get('/events',              [AdminController::class, 'events'])->name('events');

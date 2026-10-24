@@ -710,6 +710,16 @@ class AdminController extends Controller
         $data['is_active']   = $request->has('is_active');
         if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'restaurants');
         $rest = Restaurant::create($data);
+
+        // Handle gallery images (multi-upload)
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('restaurants/gallery', 'public');
+                    $rest->images()->create(['image_path' => $path]);
+                }
+            }
+        }
         Helpers::logAction('admin_create_restaurant', 'Restaurant', $rest->id);
         return redirect()->route('admin.restaurants')->with('success', 'Restaurant created.');
     }
@@ -744,6 +754,16 @@ class AdminController extends Controller
         $data['is_active']   = $request->has('is_active');
         if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'restaurants');
         $rest->update($data);
+
+        // Handle gallery images (multi-upload)
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('restaurants/gallery', 'public');
+                    $rest->images()->create(['image_path' => $path]);
+                }
+            }
+        }
         Helpers::logAction('admin_update_restaurant', 'Restaurant', $id);
         return redirect()->route('admin.restaurants')->with('success', 'Restaurant updated.');
     }
@@ -752,6 +772,15 @@ class AdminController extends Controller
     {
         Restaurant::findOrFail($id)->delete();
         return back()->with('success', 'Restaurant deleted.');
+    }
+
+    public function deleteRestaurantImage(int $id)
+    {
+        $image = \App\Models\RestaurantImage::findOrFail($id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        Helpers::logAction('admin_delete_restaurant_image', 'RestaurantImage', $id);
+        return back()->with('success', 'Gallery image deleted.');
     }
 
     public function approveRestaurant(int $id)
