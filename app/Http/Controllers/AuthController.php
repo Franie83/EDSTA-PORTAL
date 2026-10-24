@@ -154,6 +154,8 @@ class AuthController extends Controller
             'guide'      => ['email' => 'guide@edoodyssey.ng',       'role' => 'Guide',         'fn' => 'Osaro',   'ln' => 'Edokpayi'],
             'hotel'      => ['email' => 'hotel@edoodyssey.ng',       'role' => 'Hotel',         'fn' => 'Patience', 'ln' => 'Osagie'],
             'restaurant' => ['email' => 'restaurant@edoodyssey.ng',  'role' => 'Restaurant',    'fn' => 'Blessing', 'ln' => 'Uwagboe'],
+            'touroperator' => ['email' => 'operator@edoodyssey.ng', 'role' => 'Tour Operator', 'fn' => 'Edosa',     'ln' => 'Igbinedion'],
+            'clublounge'   => ['email' => 'club@edoodyssey.ng',     'role' => 'Club/Lounge',   'fn' => 'Nosakhare', 'ln' => 'Obaseki'],
         ];
 
         $data = $roleMap[strtolower($role)] ?? null;

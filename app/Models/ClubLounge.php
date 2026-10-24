@@ -9,6 +9,7 @@ class ClubLounge extends Model
     protected $table = 'clubs_lounges';
 
     protected $fillable = [
+        'user_id',
         'name',
         'address',
         'phone',
@@ -57,5 +58,10 @@ class ClubLounge extends Model
             'is_featured'       => 'boolean',
             'is_active'         => 'boolean',
         ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

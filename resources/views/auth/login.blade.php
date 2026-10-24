@@ -50,6 +50,8 @@
                 <div class="col-4"><a href="{{ route('auth.quick_login', 'hotel') }}" class="btn btn-outline-secondary btn-sm w-100"><i class="bi bi-building me-1"></i>Hotel</a></div>
               </div>
               <a href="{{ route('auth.quick_login', 'restaurant') }}" class="btn btn-outline-secondary btn-sm w-100 mt-1"><i class="bi bi-cup-hot me-1"></i>Restaurant</a>
+              <a href="{{ route('auth.quick_login', 'touroperator') }}" class="btn btn-outline-secondary btn-sm w-100 mt-1"><i class="bi bi-map me-1"></i>Tour Operator</a>
+              <a href="{{ route('auth.quick_login', 'clublounge') }}" class="btn btn-outline-secondary btn-sm w-100 mt-1"><i class="bi bi-music-note-beamed me-1"></i>Club / Lounge</a>
             </div>
           </div>
           <div class="card-footer bg-gray-50 text-center py-3" style="border-radius:0 0 16px 16px">

@@ -9,6 +9,7 @@ class TourOperator extends Model
     protected $table = 'tour_operators';
 
     protected $fillable = [
+        'user_id',
         'name',
         'address',
         'phone',
@@ -41,5 +42,10 @@ class TourOperator extends Model
             'yearly_interstate_visitors'    => 'integer',
             'yearly_international_visitors' => 'integer',
         ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

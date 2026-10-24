@@ -36,6 +36,16 @@ class User extends Authenticatable
         return in_array($this->role, ['Agency Admin', 'Super Admin']);
     }
 
+    public function getIsTourOperatorAttribute(): bool
+    {
+        return $this->role === 'Tour Operator';
+    }
+
+    public function getIsClubLoungeAttribute(): bool
+    {
+        return $this->role === 'Club/Lounge';
+    }
+
     // ── Relationships ─────────────────────────────────────────────────────────
     public function guide()
     {
@@ -65,5 +75,15 @@ class User extends Authenticatable
     public function auditLogs()
     {
         return $this->hasMany(AuditLog::class);
+    }
+
+    public function tourOperator()
+    {
+        return $this->hasOne(TourOperator::class, 'user_id');
+    }
+
+    public function clubLounge()
+    {
+        return $this->hasOne(ClubLounge::class, 'user_id');
     }
 }

@@ -75,8 +75,10 @@ class DashboardController extends Controller
             }
 
             $guide_profile = $user->guide ?? null;
+            $tour_operator = $user->tourOperator ?? null;
+            $club_lounge   = $user->clubLounge ?? null;
 
-            return view('dashboard.index', compact('bookings', 'stats', 'notifications', 'reviews', 'guide_profile'));
+            return view('dashboard.index', compact('bookings', 'stats', 'notifications', 'reviews', 'guide_profile', 'tour_operator', 'club_lounge'));
         } catch (\Exception $e) {
             Log::error('Dashboard index error: ' . $e->getMessage());
             
@@ -472,5 +474,25 @@ class DashboardController extends Controller
             $msg = 'Added to favourites! +5 Heritage Points.';
         }
         return back()->with('success', $msg);
+    }
+
+    public function myTourOperators()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Tour Operator') {
+            abort(403, 'Tour Operator access required.');
+        }
+        $tours = \App\Models\TourOperator::where('user_id', $user->id)->orderByDesc('created_at')->get();
+        return view('dashboard.tour-operator.index', compact('tours', 'user'));
+    }
+
+    public function myClubLounges()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Club/Lounge') {
+            abort(403, 'Club/Lounge access required.');
+        }
+        $clubs = \App\Models\ClubLounge::where('user_id', $user->id)->orderByDesc('created_at')->get();
+        return view('dashboard.club-lounge.index', compact('clubs', 'user'));
     }
 }

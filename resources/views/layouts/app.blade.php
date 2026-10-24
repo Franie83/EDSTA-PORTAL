@@ -316,6 +316,8 @@
             <a href="{{ route('auth.quick_login', 'guide') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-person-badge me-1"></i>Guide</a>
             <a href="{{ route('auth.quick_login', 'hotel') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-building me-1"></i>Hotel</a>
             <a href="{{ route('auth.quick_login', 'restaurant') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-cup-hot me-1"></i>Restaurant</a>
+            <a href="{{ route('auth.quick_login', 'touroperator') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-bus-front me-1"></i>Tour Operator</a>
+            <a href="{{ route('auth.quick_login', 'clublounge') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-music-note-beamed me-1"></i>Club / Lounge</a>
           </div>
           @endif
           <h6 class="text-gold fw-bold mb-2 text-uppercase letter-spacing" style="font-size:0.7rem">Contact</h6>

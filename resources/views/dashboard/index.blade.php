@@ -211,6 +211,8 @@
           'Hotel' => ['route' => 'dashboard.hotels.index', 'label' => 'My Hotels', 'icon' => 'bi-building-fill'],
           'Restaurant' => ['route' => 'dashboard.restaurants.index', 'label' => 'My Restaurants', 'icon' => 'bi-cup-hot'],
           'Event Organizer' => ['route' => 'dashboard.events.index', 'label' => 'My Events', 'icon' => 'bi-calendar-event'],
+          'Tour Operator' => ['route' => 'dashboard.tour-operator.index', 'label' => 'My Tour Listings', 'icon' => 'bi-bus-front'],
+          'Club/Lounge' => ['route' => 'dashboard.club-lounge.index', 'label' => 'My Club / Lounge', 'icon' => 'bi-music-note-beamed'],
         ];
       @endphp
       @if(array_key_exists($role, $offerings))

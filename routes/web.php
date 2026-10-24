@@ -122,6 +122,10 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard',           [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/dashboard/profile',   [DashboardController::class, 'profile'])->name('dashboard.profile');
+
+    // Tour Operator & Club/Lounge dashboards
+    Route::get('/dashboard/tours', [DashboardController::class, 'myTourOperators'])->name('dashboard.tour-operator.index');
+    Route::get('/dashboard/venue', [DashboardController::class, 'myClubLounges'])->name('dashboard.club-lounge.index');
     Route::post('/dashboard/profile',  [DashboardController::class, 'updateProfile'])->name('dashboard.update_profile');
     Route::post('/dashboard/notifications/{id}/read',  [DashboardController::class, 'markRead'])->name('dashboard.mark_read');
     Route::post('/dashboard/notifications/read-all',   [DashboardController::class, 'markAllRead'])->name('dashboard.mark_all_read');
