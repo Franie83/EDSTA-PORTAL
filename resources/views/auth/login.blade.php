@@ -6,11 +6,9 @@
     <div class="row justify-content-center">
       <div class="col-md-5 col-lg-4">
         <div class="text-center mb-4">
-          @if(!empty($settings['site_logo']))
-                  <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="mx-auto mb-3" style="width:90px; height:auto; display:block; margin: 0 auto 1.5rem auto; mix-blend-mode: screen;">
-                @else
-                  <div class="brand-icon mx-auto mb-3" style="width:56px;height:56px;font-size:1.6rem"><i class="bi bi-compass-fill"></i></div>
-                @endif
+          <div class="mx-auto mb-3 d-flex align-items-center justify-content-center bg-white rounded-circle shadow" style="width:100px; height:100px;">
+              <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" alt="Logo" style="width:70px; height:auto;">
+          </div>
           <h2 class="text-white fw-bold" style="font-family:'Playfair Display',serif">Welcome Back</h2>
           <p class="text-white-50 small">Sign in to your Edo Tourism account</p>
         </div>

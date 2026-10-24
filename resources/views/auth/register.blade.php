@@ -12,11 +12,9 @@ $heroBg = !empty($settings['hero_image']) ? asset('storage/' . $settings['hero_i
     <div class="row justify-content-center">
       <div class="col-md-7 col-lg-5">
         <div class="text-center mb-4">
-          @if(isset($settings['site_logo']) && $settings['site_logo'])
-              <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="mx-auto mb-3" style="width:80px;height:auto; display:block; mix-blend-mode: screen;">
-            @else
-              <div class="brand-icon mx-auto mb-3" style="width:56px;height:56px;font-size:1.6rem"><i class="bi bi-compass-fill"></i></div>
-            @endif
+          <div class="mx-auto mb-3 d-flex align-items-center justify-content-center bg-white rounded-circle shadow" style="width:100px; height:100px;">
+              <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" alt="Logo" style="width:70px; height:auto;">
+          </div>
           <h2 class="text-white fw-bold" style="font-family:'Playfair Display',serif">Create Account</h2>
           <p class="text-white-50 small">Join the Edo Tourism community</p>
         </div>
