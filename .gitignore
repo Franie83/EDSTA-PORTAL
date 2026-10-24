@@ -70,3 +70,9 @@ storage/app/exports/generate-*.php
 list.php
 *.bak_social
 *.bak_*
+
+*.bak_*
+
+snapshots/
+
+*.ps1

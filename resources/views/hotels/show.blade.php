@@ -14,7 +14,26 @@
 <div class="container py-4">
   <div class="row g-4">
     <div class="col-lg-8">
-      <div class="detail-image mb-4"><img src="{{ \App\Helpers\Helpers::imageUrl($hotel->image_url) }}" alt="{{ $hotel->name }}"></div>
+      @if($hotel->images && $hotel->images->count() > 0)
+        <div id="hotelGallery" class="carousel slide mb-4" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            @foreach($hotel->images as $i => $img)
+              <button type="button" data-bs-target="#hotelGallery" data-bs-slide-to="{{ $i }}" class="{{ $i === 0 ? 'active' : '' }}"></button>
+            @endforeach
+          </div>
+          <div class="carousel-inner rounded-3 shadow">
+            @foreach($hotel->images as $i => $img)
+              <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
+                <img src="{{ asset('storage/' . $img->image_path) }}" class="d-block w-100" alt="{{ $hotel->name }}" style="height:500px;object-fit:cover;">
+              </div>
+            @endforeach
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#hotelGallery" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+          <button class="carousel-control-next" type="button" data-bs-target="#hotelGallery" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+        </div>
+      @else
+        <div class="detail-image mb-4"><img src="{{ \App\Helpers\Helpers::imageUrl($hotel->image_url) }}" alt="{{ $hotel->name }}"></div>
+      @endif
       <h3 class="text-blue fw-bold">About {{ $hotel->name }}</h3>
       <p class="text-muted">{{ $hotel->description }}</p>
 

@@ -230,6 +230,15 @@ class AdminController extends Controller
         }
         
         $attr->update($data);
+                // Handle gallery images (multi-upload)
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('attractions/gallery', 'public');
+                    $attr->images()->create(['image_path' => $path]);
+                }
+            }
+        }
         Helpers::logAction('admin_update_attraction', 'Attraction', $id);
         return redirect()->route('admin.attractions')->with('success', 'Attraction updated successfully.');
     }
@@ -239,6 +248,15 @@ class AdminController extends Controller
         Attraction::findOrFail($id)->delete();
         Helpers::logAction('admin_delete_attraction', 'Attraction', $id);
         return back()->with('success', 'Attraction deleted.');
+    }
+
+    public function deleteAttractionImage($id)
+    {
+        $image = \App\Models\AttractionImage::findOrFail($id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        Helpers::logAction('admin_delete_attraction_image', 'AttractionImage', $id);
+        return back()->with('success', 'Gallery image deleted.');
     }
 
     public function attractionRegenQr(int $id)
@@ -508,6 +526,16 @@ class AdminController extends Controller
         $data['is_active']   = $request->has('is_active');
         if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'hotels');
         $hotel = Hotel::create($data);
+
+        // Handle gallery images (multi-upload)
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('hotels/gallery', 'public');
+                    $hotel->images()->create(['image_path' => $path]);
+                }
+            }
+        }
         Helpers::logAction('admin_create_hotel', 'Hotel', $hotel->id);
         return redirect()->route('admin.hotels')->with('success', 'Hotel created.');
     }
@@ -515,7 +543,7 @@ class AdminController extends Controller
     public function hotelEdit(int $id)
     {
         return view('admin.hotels.form', [
-            'hotel' => Hotel::findOrFail($id),
+            'hotel' => Hotel::findOrFail($id)->load('images'),
             'users' => User::orderBy('first_name')->get(),
         ]);
     }
@@ -567,6 +595,16 @@ class AdminController extends Controller
         $data['is_active']   = $request->has('is_active');
         if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'hotels');
         $hotel->update($data);
+
+        // Handle gallery images (multi-upload)
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('hotels/gallery', 'public');
+                    $hotel->images()->create(['image_path' => $path]);
+                }
+            }
+        }
         Helpers::logAction('admin_update_hotel', 'Hotel', $id);
         return redirect()->route('admin.hotels')->with('success', 'Hotel updated.');
     }
@@ -575,6 +613,15 @@ class AdminController extends Controller
     {
         Hotel::findOrFail($id)->delete();
         return back()->with('success', 'Hotel deleted.');
+    }
+
+    public function deleteHotelImage(int $id)
+    {
+        $image = \App\Models\HotelImage::findOrFail($id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        Helpers::logAction('admin_delete_hotel_image', 'HotelImage', $id);
+        return back()->with('success', 'Gallery image deleted.');
     }
 
     public function approveHotel(int $id)
