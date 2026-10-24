@@ -74,7 +74,7 @@ class DashboardController extends Controller
                 $reviews = collect();
             }
 
-            $guide_profile = $user->guide - null;
+            $guide_profile = $user->guide ?? null;
 
             return view('dashboard.index', compact('bookings', 'stats', 'notifications', 'reviews', 'guide_profile'));
         } catch (\Exception $e) {

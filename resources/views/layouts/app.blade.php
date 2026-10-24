@@ -93,6 +93,32 @@
     ::-webkit-scrollbar-track { background: #f1f1f1; }
     ::-webkit-scrollbar-thumb { background: var(--gold-500); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--gold-600); }
+    /* ══════════ Global Background Image (from CMS hero_image) ══════════ */
+    body {
+        background-color: #f5f7fa;
+        background-image: url('{{ \App\Helpers\Helpers::imageUrl(\App\Models\CmsSetting::get('hero_image', '')) }}');
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+    /* Semi-transparent overlay so content stays readable */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.92) 100%);
+        z-index: -1;
+        pointer-events: none;
+    }
+    /* Exempt home page hero section — it has its own full-bleed background */
+    body:has(.hero-section)::before {
+        background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.92) 60%, rgba(255,255,255,0.95) 100%);
+    }
+    /* Admin panel unaffected — different layout */
+    .admin-body {
+        background-image: none !important;
+    }
   </style>
 </head>
 <body>

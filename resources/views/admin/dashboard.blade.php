@@ -4,6 +4,24 @@
 @section('page_subtitle', 'Overview of Edo Tourism platform')
 @section('content')
 
+{{-- Quick Actions --}}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body d-flex flex-wrap gap-2">
+                <a href="{{ route('admin.attractions') }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-building me-1"></i>Manage Attractions</a>
+                <a href="{{ route('admin.guides', ['status' => 'Pending']) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-person-badge me-1"></i>Pending Guides</a>
+                <a href="{{ route('admin.hotels', ['status' => 'inactive']) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-building-fill me-1"></i>Pending Hotels</a>
+                <a href="{{ route('admin.restaurants', ['status' => 'inactive']) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-cup-hot me-1"></i>Pending Restaurants</a>
+                <a href="{{ route('admin.events', ['status' => 'inactive']) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-calendar-event me-1"></i>Pending Events</a>
+                <a href="{{ route('admin.users') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-people me-1"></i>All Users</a>
+                <a href="{{ route('admin.bookings', ['status' => 'Pending']) }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-calendar-check me-1"></i>Pending Bookings</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {{-- Stats Cards --}}
 <div class="row g-3 mb-4">
     <div class="col-6 col-md-2">
@@ -200,20 +218,4 @@
     </div>
 </div>
 
-{{-- Quick Actions --}}
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body d-flex flex-wrap gap-2">
-                <a href="{{ route('admin.attractions') }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-building me-1"></i>Manage Attractions</a>
-                <a href="{{ route('admin.guides', ['status' => 'Pending']) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-person-badge me-1"></i>Pending Guides</a>
-                <a href="{{ route('admin.hotels', ['status' => 'inactive']) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-building-fill me-1"></i>Pending Hotels</a>
-                <a href="{{ route('admin.restaurants', ['status' => 'inactive']) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-cup-hot me-1"></i>Pending Restaurants</a>
-                <a href="{{ route('admin.events', ['status' => 'inactive']) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-calendar-event me-1"></i>Pending Events</a>
-                <a href="{{ route('admin.users') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-people me-1"></i>All Users</a>
-                <a href="{{ route('admin.bookings', ['status' => 'Pending']) }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-calendar-check me-1"></i>Pending Bookings</a>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
