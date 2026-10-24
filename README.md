@@ -1,59 +1,59 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+﻿# Edo Odyssey - Edo State Tourism Agency Portal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 12 CMS for the Edo State Tourism Agency (EDSTA), built around the "Beyond the Bronzes" mission to celebrate the history, heritage, and culture of Edo State, Nigeria.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Full admin CMS for attractions, guides, hotels, restaurants, events, news, categories, FAQs, and partners
+- Edo Culture Hub at /culture: indigenous languages, traditional cuisine, and ethnic attire
+- Bulk upload (Excel/CSV) for 10 content types with template download
+- Rich attraction detail pages showing extended history, unique selling points, ownership, investment opportunities, visiting tips, landmarks, and proximity
+- 12 featured attractions on home page carousel
+- Review system with ratings, favourites/wishlist, and QR-code scanning
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Current Content
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Content Type | Records |
+|---|---|
+| Attractions | 88 |
+| Edo Languages | 9 |
+| Traditional Cuisine | 17 |
+| Ethnic Attire | 10 |
+| Categories | 8 |
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- Laravel 12.63
+- PHP 8.5
+- SQLite (dev) / PostgreSQL-compatible (prod)
+- Bootstrap 5, Bootstrap Icons
+- Maatwebsite/Excel 3.x for imports
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Quick Start
 
-## Laravel Sponsors
+```r
+composer install
+npm install && npm run build
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+php artisan serve
+```r
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Then open http://127.0.0.1:8000
 
-### Premium Partners
+## Admin Access
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- Super Admin: superadmin@edoodyssey.ng
+- Admin panel: http://127.0.0.1:8000/admin
+- One-click demo logins available on the home page
 
-## Contributing
+## Credits
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Original project by @Franie83. Enhancement work delivered: mojibake repair across source files and DB, 7 new migrations (5 new content tables + 2 extended), 5 new admin CRUDs with bulk upload, extended Attraction and Hotel admin forms, public Culture page, 88 enriched attractions, 36 culture records, and final house cleaning.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proprietary - Edo State Tourism Agency (EDSTA), 2026.
+
