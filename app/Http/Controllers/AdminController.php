@@ -51,6 +51,10 @@ class AdminController extends Controller
             'pending_hotels'    => Hotel::where('is_active', false)->count(),
             'pending_restaurants' => Restaurant::where('is_active', false)->count(),
             'pending_events'    => Event::where('is_active', false)->count(),
+            'total_clubs'       => \App\Models\ClubLounge::count(),
+            'total_permits'     => \App\Models\TourismPermit::count(),
+            'total_staff'       => \App\Models\StaffMember::count(),
+            'pending_clubs'     => \App\Models\ClubLounge::where('is_active', false)->count(),
         ];
 
         $recent_pending = [
@@ -62,8 +66,9 @@ class AdminController extends Controller
 
         $recent_bookings = Booking::with('user')->orderByDesc('created_at')->limit(8)->get();
         $recent_users    = User::orderByDesc('created_at')->limit(5)->get();
+        $recent_permits  = \App\Models\TourismPermit::orderByDesc('created_at')->limit(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'recent_pending', 'recent_bookings', 'recent_users'));
+        return view('admin.dashboard', compact('stats', 'recent_pending', 'recent_bookings', 'recent_users', 'recent_permits'));
     }
 
     // Section
