@@ -1,0 +1,8 @@
+/vendor
+/node_modules
+/database/database.sqlite
+/storage/logs
+/storage/framework
+/snapshots
+.git
+.env
