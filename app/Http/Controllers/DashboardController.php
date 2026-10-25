@@ -235,9 +235,18 @@ class DashboardController extends Controller
         $data['user_id'] = Auth::id();
         $data['is_featured'] = false;
         $data['is_active'] = false; // pending admin approval
-        Hotel::create($data);
+        $hotel = Hotel::create($data);
 
-        Helpers::logAction('create_hotel', 'Hotel', null);
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('hotels/gallery', 'public');
+                    $hotel->images()->create(['image_path' => $path]);
+                }
+            }
+        }
+
+        Helpers::logAction('create_hotel', 'Hotel', $hotel->id);
         return redirect()->route('dashboard.hotels.index')->with('success', 'Hotel added and submitted for review.');
     }
 
@@ -326,9 +335,18 @@ class DashboardController extends Controller
         $data['user_id'] = Auth::id();
         $data['is_featured'] = false;
         $data['is_active'] = false; // pending admin approval
-        Restaurant::create($data);
+        $rest = Restaurant::create($data);
 
-        Helpers::logAction('create_restaurant', 'Restaurant', null);
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('restaurants/gallery', 'public');
+                    $rest->images()->create(['image_path' => $path]);
+                }
+            }
+        }
+
+        Helpers::logAction('create_restaurant', 'Restaurant', $rest->id);
         return redirect()->route('dashboard.restaurants.index')->with('success', 'Restaurant added and submitted for review.');
     }
 
