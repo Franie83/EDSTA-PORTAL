@@ -13,10 +13,7 @@
         <h1 class="mb-0" style="font-size:1.6rem">Welcome, {{ Auth::user()->first_name }}!</h1>
         <p class="text-white-50 mb-0 small">{{ Auth::user()->role }} Account · <i class="bi bi-trophy-fill text-gold me-1"></i>{{ Auth::user()->heritage_points - 0 }} Heritage Points</p>
       </div>
-      <div class="ms-auto d-flex gap-2">
-        <a href="{{ route('dashboard.profile') }}" class="btn btn-outline-gold btn-sm"><i class="bi bi-person me-1"></i>Profile</a>
-        @if(Auth::user()->is_admin)<a href="{{ route('admin.dashboard') }}" class="btn btn-gold btn-sm"><i class="bi bi-shield-check me-1"></i>Admin Panel</a>@endif
-      </div>
+
     </div>
   </div>
 </div>

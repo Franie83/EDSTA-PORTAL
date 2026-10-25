@@ -216,7 +216,7 @@
       <div class="navbar-brand d-flex align-items-center gap-3">
         @if(isset($settings['site_logo']) && $settings['site_logo'])
           <!-- Left Logo purely triggers modal -->
-          <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="nav-logo-img" data-bs-toggle="modal" data-bs-target="#leftLogoModal" title="View Logo">
+          <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="nav-logo-img" style="mix-blend-mode: screen; background: transparent; border: none; box-shadow: none; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#leftLogoModal">
         @else
           <div class="brand-icon"><i class="bi bi-compass-fill"></i></div>
         @endif
@@ -240,14 +240,14 @@
               <li><a class="dropdown-item" href="{{ route('guides.list_guides') }}"><i class="bi bi-person-badge me-2 text-primary"></i>Tour Guides</a></li>
               <li><a class="dropdown-item" href="{{ route('hotels.list_hotels') }}"><i class="bi bi-building-fill me-2 text-primary"></i>Hotels</a></li>
               <li><a class="dropdown-item" href="{{ route('restaurants.list_restaurants') }}"><i class="bi bi-cup-hot me-2 text-primary"></i>Restaurants</a></li>
+                <li><a class="dropdown-item" href="{{ route('clubs.list') }}"><i class="bi bi-music-note-beamed me-2 text-primary"></i>Clubs & Lounges</a></li>
+                <li><a class="dropdown-item" href="{{ route('main.culture') }}"><i class="bi bi-palette me-2 text-primary"></i>Culture</a></li>
+                <li><a class="dropdown-item" href="{{ route('main.staff') }}"><i class="bi bi-people me-2 text-primary"></i>Our Team</a></li>
             </ul>
           </li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('events.*') ? 'active' : '' }}" href="{{ route('events.list_events') }}">Events</a></li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('news.*') ? 'active' : '' }}" href="{{ route('news.list_news') }}">News</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('main.about') }}">About</a></li>
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('main.staff') ? 'active' : '' }}" href="{{ route('main.staff') }}">Our Team</a></li>
-      <li class="nav-item"><a class="nav-link {{ request()->routeIs('main.culture') ? 'active' : '' }}" href="{{ route('main.culture') }}">Culture</a></li>
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('clubs.*') ? 'active' : '' }}" href="{{ route('clubs.list') }}">Clubs & Lounges</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('main.contact') }}">Contact</a></li>
         </ul>
 
@@ -302,7 +302,7 @@
             <!-- Right Logo (Modal Trigger) -->
             @if(isset($settings['site_logo_right']) && $settings['site_logo_right'])
                 <div class="d-none d-lg-block">
-                    <img src="{{ asset('storage/' . $settings['site_logo_right']) }}" alt="Right Logo" class="nav-logo-right" style="border-radius: 4px !important; width: auto !important; height: 50px !important; object-fit: contain;" style="border-radius: 4px !important;" data-bs-toggle="modal" data-bs-target="#rightLogoModal" title="View Coat of Arms">
+                    <img src="{{ asset('storage/' . $settings['site_logo_right']) }}" alt="Right Logo" class="nav-logo-right" style="width:34px;height:34px;object-fit:contain;mix-blend-mode: screen; border-radius: 50%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#rightLogoModal" title="View Coat of Arms">
                 </div>
             @endif
         </div>
@@ -339,7 +339,7 @@
         <div class="col-lg-4">
           <div class="d-flex align-items-center gap-2 mb-3">
             @if(isset($settings['site_logo']) && $settings['site_logo'])
-              <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="nav-logo-img" style="border-radius: 4px !important;" data-bs-toggle="modal" data-bs-target="#leftLogoModal">
+              <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="nav-logo-img" style="mix-blend-mode: screen; background: transparent; border: none; box-shadow: none;" style="border-radius: 4px !important;" data-bs-toggle="modal" data-bs-target="#leftLogoModal">
             @else
               <div class="brand-icon"><i class="bi bi-compass-fill"></i></div>
             @endif
@@ -383,16 +383,6 @@
         </div>
         <div class="col-lg-4">
           @if(!app()->isProduction())
-          <h6 class="text-gold fw-bold mb-3 text-uppercase letter-spacing">Quick Login (Demo)</h6>
-          <div class="d-flex flex-wrap gap-1 mb-3">
-            <a href="{{ route('auth.quick_login', 'superadmin') }}" class="btn btn-outline-gold btn-sm"><i class="bi bi-shield-star me-1"></i>Super Admin</a>
-            <a href="{{ route('auth.quick_login', 'tourist') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-person me-1"></i>Tourist</a>
-            <a href="{{ route('auth.quick_login', 'guide') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-person-badge me-1"></i>Guide</a>
-            <a href="{{ route('auth.quick_login', 'hotel') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-building me-1"></i>Hotel</a>
-            <a href="{{ route('auth.quick_login', 'restaurant') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-cup-hot me-1"></i>Restaurant</a>
-            <a href="{{ route('auth.quick_login', 'touroperator') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-bus-front me-1"></i>Tour Operator</a>
-            <a href="{{ route('auth.quick_login', 'clublounge') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-music-note-beamed me-1"></i>Club / Lounge</a>
-          </div>
           @endif
           <h6 class="text-gold fw-bold mb-2 text-uppercase letter-spacing" style="font-size:0.7rem">Contact</h6>
           <p class="text-white-50 small mb-1"><i class="bi bi-geo-alt me-1"></i>{{ $settings['contact_address'] ?? 'EDSTA HQ, Government House Road, GRA, Benin City' }}</p>

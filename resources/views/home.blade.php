@@ -42,18 +42,6 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-5 d-none d-lg-flex justify-content-end">
-        <div class="quick-login-banner">
-          <p class="text-gold fw-bold mb-2 small text-uppercase letter-spacing"><i class="bi bi-lightning-fill me-1"></i>Quick Demo Login</p>
-          <div class="d-flex flex-column gap-2">
-            <a href="{{ route('auth.quick_login', 'superadmin') }}" class="btn btn-sm btn-gold w-100 text-start"><i class="bi bi-shield-star me-2"></i>Super Admin — Full Access</a>
-            <a href="{{ route('auth.quick_login', 'admin') }}" class="btn btn-sm btn-outline-gold w-100 text-start"><i class="bi bi-shield-check me-2"></i>Agency Admin</a>
-            <a href="{{ route('auth.quick_login', 'tourist') }}" class="btn btn-sm btn-outline-light w-100 text-start"><i class="bi bi-person me-2"></i>Tourist — Akenzua Musa</a>
-            <a href="{{ route('auth.quick_login', 'guide') }}" class="btn btn-sm btn-outline-light w-100 text-start"><i class="bi bi-person-badge me-2"></i>Guide — Osaro Edokpayi</a>
-            <a href="{{ route('auth.quick_login', 'hotel') }}" class="btn btn-sm btn-outline-light w-100 text-start"><i class="bi bi-building me-2"></i>Hotel Manager</a>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
