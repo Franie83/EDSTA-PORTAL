@@ -170,4 +170,16 @@ class MainController extends Controller
         $staff = \App\Models\StaffMember::orderBy('sort_order')->get();
         return view('staff.index', compact('staff'));
     }
+
+    public function clubs()
+    {
+        $clubs = \App\Models\ClubLounge::where('is_active', true)->orderByDesc('id')->get();
+        return view('clubs.index', compact('clubs'));
+    }
+
+    public function clubShow(int $id)
+    {
+        $club = \App\Models\ClubLounge::where('is_active', true)->findOrFail($id);
+        return view('clubs.show', compact('club'));
+    }
 }

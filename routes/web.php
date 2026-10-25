@@ -350,3 +350,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/staff/{id}/edit', [\App\Http\Controllers\AdminController::class, 'staffUpdate'])->name('staff.update');
     Route::post('/staff/{id}/delete', [\App\Http\Controllers\AdminController::class, 'staffDelete'])->name('staff.delete');
 });
+
+// Public Clubs & Lounges
+Route::get('/clubs-lounges', [\App\Http\Controllers\MainController::class, 'clubs'])->name('clubs.list');
+Route::get('/clubs-lounges/{id}', [\App\Http\Controllers\MainController::class, 'clubShow'])->name('clubs.detail');

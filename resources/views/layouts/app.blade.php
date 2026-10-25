@@ -247,6 +247,7 @@
           <li class="nav-item"><a class="nav-link" href="{{ route('main.about') }}">About</a></li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('main.staff') ? 'active' : '' }}" href="{{ route('main.staff') }}">Our Team</a></li>
       <li class="nav-item"><a class="nav-link {{ request()->routeIs('main.culture') ? 'active' : '' }}" href="{{ route('main.culture') }}">Culture</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('clubs.*') ? 'active' : '' }}" href="{{ route('clubs.list') }}">Clubs & Lounges</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('main.contact') }}">Contact</a></li>
         </ul>
 
@@ -374,6 +375,7 @@
             <li><a href="{{ route('main.staff') }}">Our Team</a></li>
             <li><a href="{{ route('news.list_news') }}">Tourism News</a></li>
             <li><a href="{{ route('main.faq') }}">FAQs</a></li>
+            <li><a href="{{ route('clubs.list') }}">Clubs & Lounges</a></li>
             <li><a href="{{ route('main.contact') }}">Contact</a></li>
             <li><a href="{{ route('main.privacy') }}">Privacy Policy</a></li>
           </ul>
