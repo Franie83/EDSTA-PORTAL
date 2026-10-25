@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" type="image/png" href="{{ asset('storage/' . ($settings['site_logo'] ?? 'cms/favicon.png')) }}">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', ($settings['site_name'] ?? 'Edo Odyssey') . ' – Official Edo State Tourism Platform')</title>
@@ -216,7 +217,7 @@
       <div class="navbar-brand d-flex align-items-center gap-3">
         @if(isset($settings['site_logo']) && $settings['site_logo'])
           <!-- Left Logo purely triggers modal -->
-          <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="nav-logo-img" style="mix-blend-mode: screen; background: transparent; border: none; box-shadow: none; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#leftLogoModal">
+          <div style="width: 44px; height: 44px; background-color: #fff !important; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" data-bs-toggle="modal" data-bs-target="#leftLogoModal"><img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;"></div>
         @else
           <div class="brand-icon"><i class="bi bi-compass-fill"></i></div>
         @endif
@@ -302,7 +303,7 @@
             <!-- Right Logo (Modal Trigger) -->
             @if(isset($settings['site_logo_right']) && $settings['site_logo_right'])
                 <div class="d-none d-lg-block">
-                    <img src="{{ asset('storage/' . $settings['site_logo_right']) }}" alt="Right Logo" class="nav-logo-right" style="width:34px;height:34px;object-fit:contain;mix-blend-mode: screen; border-radius: 50%; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#rightLogoModal" title="View Coat of Arms">
+                    <div style="width: 44px; height: 44px; background-color: #fff !important; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" data-bs-toggle="modal" data-bs-target="#rightLogoModal"><img src="{{ asset('storage/' . $settings['site_logo_right']) }}" alt="Right Logo" style="width: 100%; height: 100%; object-fit: cover;"></div>
                 </div>
             @endif
         </div>
