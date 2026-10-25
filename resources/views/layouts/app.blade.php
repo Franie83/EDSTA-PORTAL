@@ -280,6 +280,7 @@
                 <li class="dropdown-header">{{ Auth::user()->full_name }}<br><small class="text-muted">{{ Auth::user()->role }}</small></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{ route('dashboard.index') }}"><i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard</a></li>
+                <li><a class="dropdown-item" href="{{ route('dashboard.permits.index') }}"><i class="bi bi-award me-2 text-gold"></i>My Permits</a></li>
                 <li><a class="dropdown-item" href="{{ route('dashboard.profile') }}"><i class="bi bi-person me-2 text-primary"></i>Profile</a></li>
                 @if(Auth::user()->is_admin)
                 <li><a class="dropdown-item text-primary fw-semibold" href="{{ route('admin.dashboard') }}"><i class="bi bi-shield-check me-2"></i>Admin Panel</a></li>

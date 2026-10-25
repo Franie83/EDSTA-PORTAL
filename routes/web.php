@@ -354,3 +354,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 // Public Clubs & Lounges
 Route::get('/clubs-lounges', [\App\Http\Controllers\MainController::class, 'clubs'])->name('clubs.list');
 Route::get('/clubs-lounges/{id}', [\App\Http\Controllers\MainController::class, 'clubShow'])->name('clubs.detail');
+// Permits & Certificates
+Route::get('/verify/{number}', [\App\Http\Controllers\PermitController::class, 'verify'])->name('permits.verify');
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/permits', [\App\Http\Controllers\PermitController::class, 'index'])->name('permits.index');
+    Route::get('/permits/create', [\App\Http\Controllers\PermitController::class, 'create'])->name('permits.create');
+    Route::post('/permits', [\App\Http\Controllers\PermitController::class, 'store'])->name('permits.store');
+    Route::get('/permits/{id}', [\App\Http\Controllers\PermitController::class, 'show'])->name('permits.show');
+    Route::get('/permits/{id}/edit', [\App\Http\Controllers\PermitController::class, 'edit'])->name('permits.edit');
+    Route::put('/permits/{id}', [\App\Http\Controllers\PermitController::class, 'update'])->name('permits.update');
+    Route::delete('/permits/{id}', [\App\Http\Controllers\PermitController::class, 'destroy'])->name('permits.destroy');
+    Route::post('/permits/{id}/expire', [\App\Http\Controllers\PermitController::class, 'expire'])->name('permits.expire');
+});
+    // Business Owner Permit Routes
+    Route::prefix('dashboard/permits')->name('dashboard.permits.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\PermitApplicationController::class, 'index'])->name('index');
+        Route::get('/apply', [\App\Http\Controllers\PermitApplicationController::class, 'create'])->name('create');
+        Route::post('/pay', [\App\Http\Controllers\PermitApplicationController::class, 'processPayment'])->name('process');
+        Route::get('/{id}', [\App\Http\Controllers\PermitApplicationController::class, 'show'])->name('show');
+    });
