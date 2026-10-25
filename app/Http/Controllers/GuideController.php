@@ -11,7 +11,7 @@ class GuideController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Guide::where('verification_status', 'Approved')->with('user');
+        $query = Guide::where('verification_status', 'Approved')->with('user', 'images');
 
         // 🔍 Search (name, bio, languages, specializations)
         if ($search = $request->q) {
@@ -71,7 +71,7 @@ class GuideController extends Controller
 
     public function show(int $id)
     {
-        $guide = Guide::with('user', 'reviews.user', 'availability')->findOrFail($id);
+        $guide = Guide::with('user', 'reviews.user', 'availability', 'images')->findOrFail($id);
         $isFav = false;
         if (Auth::check()) {
             $isFav = Favourite::where('user_id', Auth::id())

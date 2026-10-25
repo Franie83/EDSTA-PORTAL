@@ -43,7 +43,17 @@
                                 <input type="text" name="certification" class="form-control" value="{{ old('certification', $guide->certification) }}" placeholder="e.g., Licensed by Edo State Tourism Board">
                             </div>
                         </div>
-                        <div class="d-flex gap-2 mt-4">
+                        
+                            <div class="col-12 mt-3"><h6 class="fw-bold text-muted mb-3"><i class="bi bi-images me-1"></i>Portfolio Images</h6></div>
+                            <div class="col-md-6"><label class="form-label fw-semibold small">Gallery Images (Max 10)</label><input type="file" name="gallery[]" class="form-control" multiple accept="image/*"></div>
+                            @if(isset($guide) && $guide->images && $guide->images->count() > 0)
+                            <div class="col-12 mt-2"><label class="form-label fw-semibold small">Current Portfolio</label><div class="row g-2">
+                            @foreach($guide->images as $img)
+                            <div class="col-3 col-md-2"><div class="card border-0 shadow-sm position-relative"><img src="{{ asset('storage/' . $img->image_path) }}" class="card-img-top rounded" style="height:80px;object-fit:cover;"><a href="{{ route('dashboard.guide.image_delete', $img->id) }}" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" style="padding:2px 6px;font-size:0.7rem;" onclick="return confirm('Delete?')">x</a></div></div>
+                            @endforeach
+                            </div></div>
+                            @endif
+                            <div class="d-flex gap-2 mt-4">
                             <button class="btn btn-gold">Update & Submit for Review</button>
                             <a href="{{ route('dashboard.index') }}" class="btn btn-outline-secondary">Cancel</a>
                         </div>

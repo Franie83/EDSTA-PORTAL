@@ -54,10 +54,12 @@
   <div class="row g-4">
     @forelse($guides as $guide)
     <div class="col-md-6 col-lg-3">
-      <div class="guide-card card p-3 text-center h-100">
+      <div class="guide-card card p-3 text-center h-100" style="cursor: pointer;" onclick="window.location='{{ route('guides.detail', $guide->id) }}'">
         <div class="mb-3">
           @if($guide->user?->avatar_url)
-          <img src="{{ \App\Helpers\Helpers::imageUrl($guide->user->avatar_url) }}" class="guide-avatar mx-auto" alt="">
+          <img src="{{ \App\Helpers\Helpers::imageUrl($guide->user->avatar_url) }}" class="guide-avatar mx-auto" alt="{{ $guide->user?->full_name }}">
+          @elseif($guide->images && $guide->images->count() > 0)
+          <img src="{{ asset('storage/' . $guide->images->first()->image_path) }}" class="guide-avatar mx-auto" alt="{{ $guide->user?->full_name }}" style="object-fit: cover;">
           @else
           <div class="guide-avatar-placeholder mx-auto"><i class="bi bi-person-fill"></i></div>
           @endif
@@ -75,7 +77,10 @@
         <p class="small text-muted text-truncate-2 mb-3">{{ Str::limit($guide->specializations, 60) }}</p>
         <div class="d-flex justify-content-between align-items-center mt-auto">
           <div class="text-gold fw-bold">₦{{ number_format($guide->hourly_rate - 0) }}/hr</div>
-          <a href="{{ route('bookings.new_booking', ['type' => 'Guide', 'id' => $guide->id]) }}" class="btn btn-blue btn-sm">Book</a>
+          <div class="d-flex gap-2 justify-content-center">
+          <a href="{{ route('guides.detail', $guide->id) }}" class="btn btn-outline-secondary btn-sm" onclick="event.stopPropagation();"><i class="bi bi-eye me-1"></i>View Profile</a>
+          <a href="{{ route('bookings.new_booking', ['type' => 'Guide', 'id' => $guide->id]) }}" class="btn btn-blue btn-sm" onclick="event.stopPropagation();">Book</a>
+        </div>
         </div>
       </div>
     </div>

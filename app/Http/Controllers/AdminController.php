@@ -844,6 +844,16 @@ class AdminController extends Controller
         $data['is_active']   = $request->has('is_active');
         if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'events');
         $event = Event::create($data);
+
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('events/gallery', 'public');
+                    $event->images()->create(['image_path' => $path]);
+                }
+            }
+        }
+
         Helpers::logAction('admin_create_event', 'Event', $event->id);
         return redirect()->route('admin.events')->with('success', 'Event created.');
     }
@@ -877,6 +887,14 @@ class AdminController extends Controller
         $data['is_active']   = $request->has('is_active');
         if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'events');
         $event->update($data);
+                if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('events/gallery', 'public');
+                    $event->images()->create(['image_path' => $path]);
+                }
+            }
+        }
         return redirect()->route('admin.events')->with('success', 'Event updated.');
     }
 
@@ -1486,5 +1504,14 @@ class AdminController extends Controller
     {
         \App\Models\StaffMember::findOrFail($id)->delete();
         return back()->with('success', 'Staff member deleted.');
+    }
+
+    public function deleteEventImage(int $id)
+    {
+        $image = \App\Models\EventImage::findOrFail($id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        Helpers::logAction('admin_delete_event_image', 'EventImage', $id);
+        return back()->with('success', 'Gallery image deleted.');
     }
 }

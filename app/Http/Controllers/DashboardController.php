@@ -188,6 +188,16 @@ class DashboardController extends Controller
         ]);
 
         $guide->update($data);
+
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('guides/gallery', 'public');
+                    $guide->images()->create(['image_path' => $path]);
+                }
+            }
+        }
+
         if ($guide->verification_status === 'Approved') {
             $guide->verification_status = 'Pending';
             $guide->save();
@@ -623,5 +633,23 @@ class DashboardController extends Controller
 
         Helpers::logAction('update_club_lounge', 'ClubLounge', $club->id);
         return redirect()->route('dashboard.club-lounge.index')->with('success', 'Club/Lounge updated and submitted for review.');
+    }
+
+    public function deleteDashboardEventImage(int $id)
+    {
+        $image = \App\Models\EventImage::findOrFail($id);
+        \App\Models\Event::where('user_id', Auth::id())->findOrFail($image->event_id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        return back()->with('success', 'Gallery image deleted.');
+    }
+
+    public function deleteDashboardGuideImage(int $id)
+    {
+        $image = \App\Models\GuideImage::findOrFail($id);
+        \App\Models\Guide::where('user_id', Auth::id())->findOrFail($image->guide_id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        return back()->with('success', 'Gallery image deleted.');
     }
 }

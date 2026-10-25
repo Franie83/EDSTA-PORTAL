@@ -15,7 +15,26 @@
 <div class="container py-4">
   <div class="row g-4">
     <div class="col-lg-8">
+      @if($event->images && $event->images->count() > 0)
+      <div id="eventGallery" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          @foreach($event->images as $i => $img)
+            <button type="button" data-bs-target="#eventGallery" data-bs-slide-to="{{ $i }}" class="{{ $i === 0 ? 'active' : '' }}"></button>
+          @endforeach
+        </div>
+        <div class="carousel-inner rounded-3 shadow">
+          @foreach($event->images as $i => $img)
+            <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
+              <img src="{{ asset('storage/' . $img->image_path) }}" class="d-block w-100" alt="{{ $event->name }}" style="height:500px;object-fit:cover;">
+            </div>
+          @endforeach
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#eventGallery" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+        <button class="carousel-control-next" type="button" data-bs-target="#eventGallery" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+      </div>
+      @else
       <div class="detail-image mb-4"><img src="{{ \App\Helpers\Helpers::imageUrl($event->image_url) }}" alt="{{ $event->name }}"></div>
+      @endif
 
       @if($event->start_date && $event->start_date->isFuture())
       <div class="bg-blue-900 rounded p-3 mb-4 text-center">

@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function () {
     // Section
     Route::get('/dashboard/guide/edit',        [DashboardController::class, 'editGuide'])->name('dashboard.guide.edit');
     Route::post('/dashboard/guide/update',     [DashboardController::class, 'updateGuide'])->name('dashboard.guide.update');
+    Route::get('/dashboard/guide/image/{id}/delete', [DashboardController::class, 'deleteDashboardGuideImage'])->name('dashboard.guide.image_delete');
 
     // Section
     Route::get('/dashboard/hotels',           [DashboardController::class, 'myHotels'])->name('dashboard.hotels.index');
@@ -167,6 +168,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/events/{id}/edit', [DashboardController::class, 'editEvent'])->name('dashboard.events.edit');
     Route::put('/dashboard/events/{id}',      [DashboardController::class, 'updateEvent'])->name('dashboard.events.update');
     Route::post('/dashboard/events/{id}/update', [DashboardController::class, 'updateEvent'])->name('dashboard.events.update.post');
+    Route::get('/dashboard/events/image/{id}/delete', [DashboardController::class, 'deleteDashboardEventImage'])->name('dashboard.events.image_delete');
 
     // Bookings
     Route::get('/bookings/new/{type}/{id}',       [BookingController::class, 'create'])->name('bookings.new_booking');
@@ -252,6 +254,7 @@ Route::prefix('/admin')->middleware(['auth', 'admin'])->name('admin.')->group(fu
     Route::get('/events/new',          [AdminController::class, 'eventCreate'])->name('event_create');
     Route::post('/events/new',         [AdminController::class, 'eventStore'])->name('event_store');
     Route::get('/events/{id}/edit',    [AdminController::class, 'eventEdit'])->name('event_edit');
+    Route::get('/events/image/{id}/delete', [AdminController::class, 'deleteEventImage'])->name('events.image_delete');
     Route::post('/events/{id}/edit',   [AdminController::class, 'eventUpdate'])->name('event_update');
     Route::post('/events/{id}/delete', [AdminController::class, 'eventDelete'])->name('event_delete');
     Route::post('/events/{id}/approve', [AdminController::class, 'approveEvent'])->name('event_approve');

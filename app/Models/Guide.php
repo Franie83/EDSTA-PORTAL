@@ -29,6 +29,8 @@ class Guide extends Model
         return round($this->reviews()->avg('rating') - 0, 1);
     }
 
+    public function images() { return $this->hasMany(GuideImage::class); }
+
     public function user()
     {
         return $this->belongsTo(User::class);

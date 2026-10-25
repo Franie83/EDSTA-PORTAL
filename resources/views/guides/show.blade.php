@@ -17,6 +17,24 @@
         @else
         <div class="guide-avatar-placeholder flex-shrink-0"><i class="bi bi-person-fill"></i></div>
         @endif
+        @if($guide->images && $guide->images->count() > 0)
+        <div id="guidePortfolio" class="carousel slide mt-4 mb-3" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            @foreach($guide->images as $i => $img)
+              <button type="button" data-bs-target="#guidePortfolio" data-bs-slide-to="{{ $i }}" class="{{ $i === 0 ? 'active' : '' }}"></button>
+            @endforeach
+          </div>
+          <div class="carousel-inner rounded-3 shadow">
+            @foreach($guide->images as $i => $img)
+              <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
+                <img src="{{ asset('storage/' . $img->image_path) }}" class="d-block w-100" alt="{{ $guide->user?->full_name }}" style="height:400px;object-fit:cover;">
+              </div>
+            @endforeach
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#guidePortfolio" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+          <button class="carousel-control-next" type="button" data-bs-target="#guidePortfolio" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+        </div>
+        @endif
         <div>
           <h4 class="fw-bold text-blue mb-1">{{ $guide->user?->full_name }}</h4>
           <div class="d-flex align-items-center gap-2 mb-2">

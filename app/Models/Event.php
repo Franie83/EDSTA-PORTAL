@@ -50,6 +50,8 @@ class Event extends Model
     }
 
     // ✅ New relationship: the user who created/owns this event
+    public function images() { return $this->hasMany(EventImage::class); }
+
     public function user()
     {
         return $this->belongsTo(User::class);

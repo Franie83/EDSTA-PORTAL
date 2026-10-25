@@ -34,6 +34,17 @@
         <div class="col-md-6"><label class="form-label fw-semibold small">Organizer</label><input type="text" name="organizer" class="form-control" value="{{ old('organizer', $event->organizer) }}"></div>
         <div class="col-md-6"><label class="form-label fw-semibold small">Capacity</label><input type="number" name="capacity" class="form-control" value="{{ old('capacity', $event->capacity) }}"></div>
         <div class="col-md-6"><label class="form-label fw-semibold small">Main Image</label><input type="file" name="image" class="form-control" accept="image/*">@if($event->image_url)<small class="text-muted">Current: <a href="{{ \App\Helpers\Helpers::imageUrl($event->image_url) }}" target="_blank">View</a></small>@endif</div>
+        <div class="col-md-6">
+            <label class="form-label fw-semibold small">Gallery Images (Max 10)</label>
+            <input type="file" name="gallery[]" class="form-control" multiple accept="image/*">
+        </div>
+        @if(isset($event) && $event->images && $event->images->count() > 0)
+        <div class="col-12 mt-2"><label class="form-label fw-semibold small">Current Gallery</label><div class="row g-2">
+        @foreach($event->images as $img)
+        <div class="col-3 col-md-2"><div class="card border-0 shadow-sm position-relative"><img src="{{ asset('storage/' . $img->image_path) }}" class="card-img-top rounded" style="height:80px;object-fit:cover;"><a href="{{ route('admin.events.image_delete', $img->id) }}" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" style="padding:2px 6px;font-size:0.7rem;" onclick="return confirm('Delete this image?')">x</a></div></div>
+        @endforeach
+        </div></div>
+        @endif
         <div class="col-md-3"><div class="form-check mt-4"><input class="form-check-input" type="checkbox" name="is_featured" {{ old('is_featured', $event->is_featured)?'checked':'' }}><label class="form-check-label">Featured</label></div></div>
 <div class="col-md-3"><div class="form-check mt-4"><input class="form-check-input" type="checkbox" name="is_active" {{ old('is_active', $event->is_active) ? 'checked' : '' }}><label class="form-check-label">Active</label></div></div>      </div>
       <div class="d-flex gap-2 mt-4"><button class="btn btn-gold">{{ $event->id ? 'Update Event' : 'Create Event' }}</button><a href="{{ route('admin.events') }}" class="btn btn-outline-secondary">Cancel</a></div>
