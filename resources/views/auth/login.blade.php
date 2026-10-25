@@ -6,8 +6,8 @@
     <div class="row justify-content-center">
       <div class="col-md-5 col-lg-4">
         <div class="text-center mb-4">
-          <div class="mx-auto mb-3 d-flex align-items-center justify-content-center bg-white rounded-circle shadow" style="width:100px; height:100px;">
-              <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" alt="Logo" style="width:70px; height:auto;">
+          <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle shadow" style="width:100px; height:100px; background-color: #ffffff !important; overflow: hidden;">
+              <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#loginLogoModal">
           </div>
           <h2 class="text-white fw-bold" style="font-family:'Playfair Display',serif">Welcome Back</h2>
           <p class="text-white-50 small">Sign in to your Edo Tourism account</p>
@@ -74,4 +74,23 @@ function togglePwd(){
   i.className=p.type==='password'?'bi bi-eye':'bi bi-eye-slash';
 }
 </script>
+</div> <!-- END CONTAINER -->
+
+<!-- LOGO MODAL -->
+<div class="modal fade" id="loginLogoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; background: #fff;">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" style="font-family: 'Playfair Display', serif; color: #0d2447;">Edo State Tourism Agency</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center p-4">
+        <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" alt="Site Logo" class="img-fluid" style="max-height: 60vh; object-fit: contain;">
+      </div>
+      <div class="modal-footer border-0 justify-content-center pb-4">
+        <button type="button" class="btn btn-gold px-4" data-bs-dismiss="modal" style="border-radius: 20px;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
