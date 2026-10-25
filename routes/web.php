@@ -126,6 +126,11 @@ Route::middleware('auth')->group(function () {
     // Tour Operator & Club/Lounge dashboards
     Route::get('/dashboard/tours', [DashboardController::class, 'myTourOperators'])->name('dashboard.tour-operator.index');
     Route::get('/dashboard/venue', [DashboardController::class, 'myClubLounges'])->name('dashboard.club-lounge.index');
+    Route::get('/dashboard/venue/create', [DashboardController::class, 'createClubLounge'])->name('dashboard.club-lounge.create');
+    Route::post('/dashboard/venue', [DashboardController::class, 'storeClubLounge'])->name('dashboard.club-lounge.store');
+    Route::get('/dashboard/venue/{id}/edit', [DashboardController::class, 'editClubLounge'])->name('dashboard.club-lounge.edit');
+    Route::post('/dashboard/venue/{id}/update', [DashboardController::class, 'updateClubLounge'])->name('dashboard.club-lounge.update');
+    Route::get('/dashboard/venue/image/{id}/delete', [DashboardController::class, 'deleteDashboardClubImage'])->name('dashboard.club-lounge.image_delete');
     Route::post('/dashboard/profile',  [DashboardController::class, 'updateProfile'])->name('dashboard.update_profile');
     Route::post('/dashboard/notifications/{id}/read',  [DashboardController::class, 'markRead'])->name('dashboard.mark_read');
     Route::post('/dashboard/notifications/read-all',   [DashboardController::class, 'markAllRead'])->name('dashboard.mark_all_read');
@@ -144,6 +149,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/hotels/{id}',      [DashboardController::class, 'updateHotel'])->name('dashboard.hotels.update');
     // Fallback for browsers that don't support PUT
     Route::post('/dashboard/hotels/{id}/update', [DashboardController::class, 'updateHotel'])->name('dashboard.hotels.update.post');
+    Route::get('/dashboard/hotels/image/{id}/delete', [DashboardController::class, 'deleteDashboardHotelImage'])->name('dashboard.hotels.image_delete');
 
     // Section
     Route::get('/dashboard/restaurants',           [DashboardController::class, 'myRestaurants'])->name('dashboard.restaurants.index');
@@ -152,6 +158,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/restaurants/{id}/edit', [DashboardController::class, 'editRestaurant'])->name('dashboard.restaurants.edit');
     Route::put('/dashboard/restaurants/{id}',      [DashboardController::class, 'updateRestaurant'])->name('dashboard.restaurants.update');
     Route::post('/dashboard/restaurants/{id}/update', [DashboardController::class, 'updateRestaurant'])->name('dashboard.restaurants.update.post');
+    Route::get('/dashboard/restaurants/image/{id}/delete', [DashboardController::class, 'deleteDashboardRestaurantImage'])->name('dashboard.restaurants.image_delete');
 
     // Section
     Route::get('/dashboard/events',           [DashboardController::class, 'myEvents'])->name('dashboard.events.index');

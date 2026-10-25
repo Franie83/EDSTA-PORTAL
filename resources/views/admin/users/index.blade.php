@@ -26,7 +26,11 @@
         <tr>
           <td>
             <div class="d-flex align-items-center gap-2">
-              <div class="avatar-initials-sm flex-shrink-0">{{ $u->first_name[0] }}{{ $u->last_name[0] }}</div>
+              @if($u->avatar_url)
+    <img src="{{ asset('storage/' . $u->avatar_url) }}" class="rounded-circle" style="width: 36px; height: 36px; object-fit: cover;" alt="Avatar">
+@else
+    <div class="avatar-initials-sm flex-shrink-0">{{ $u->first_name[0] }}{{ $u->last_name[0] }}</div>
+@endif
               <span class="fw-semibold small">{{ $u->full_name }}</span>
             </div>
           </td>

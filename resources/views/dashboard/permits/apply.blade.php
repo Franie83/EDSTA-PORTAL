@@ -16,38 +16,68 @@
 
                     <form method="POST" action="{{ route('dashboard.permits.process') }}">
                         @csrf
+                        
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Business Name *</label>
-                            <input type="text" name="business_name" class="form-control" value="{{ Auth::user()->first_name }}'s Business" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Business Type *</label>
-                            <select name="business_type" class="form-select" required>
-                                <option value="Hotel">Hotel</option>
-                                <option value="Restaurant">Restaurant</option>
-                                <option value="Club">Club / Lounge</option>
-                                <option value="Tour Operator">Tour Operator</option>
+                            <label class="form-label fw-semibold">Select Facility *</label>
+                            <select name="facility_select" id="facilitySelect" class="form-select" required>
+                                <option value="" disabled selected>-- Choose a facility --</option>
+                                @foreach($facilities as $fac)
+                                    <option value="{{ $fac['id'] }}" data-type="{{ $fac['type'] }}" data-name="{{ $fac['name'] }}">
+                                        {{ $fac['name'] }} ({{ $fac['type'] }})
+                                    </option>
+                                @endforeach
                             </select>
+                            <small class="text-muted">Select the specific business you want to permit.</small>
                         </div>
+
+                        <!-- Hidden fields populated by JS -->
+                        <input type="hidden" name="facility_id" id="facilityId">
+                        <input type="hidden" name="business_name" id="businessName">
+                        <input type="hidden" name="business_type" id="businessType">
+                        <input type="hidden" name="amount_paid" id="amountPaid">
+
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Business Address *</label>
-                            <input type="text" name="address" class="form-control" required>
+                            <input type="text" name="address" class="form-control" value="{{ old('address', Auth::user()->address ?? '') }}" required>
                         </div>
+
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Amount to Pay (₦) *</label>
-                            <input type="number" name="amount_paid" class="form-control form-control-lg" placeholder="e.g. 50000" required>
-                            <small class="text-muted">Standard fee applies based on business type.</small>
+                            <label class="form-label fw-semibold">Amount to Pay (₦)</label>
+                            <input type="text" id="displayAmount" class="form-control form-control-lg bg-light" value="0" readonly>
+                            <small class="text-muted">Price is fixed by the Agency based on the facility type.</small>
                         </div>
                         
                         <div class="alert alert-info">
-                            <i class="bi bi-shield-check"></i> <strong>Secure Payment:</strong> Clicking the button below will simulate a successful payment and instantly generate your official certificate.
+                            <i class="bi bi-shield-check"></i> <strong>Secure Payment:</strong> All details are locked. Click below to pay and generate your official certificate.
                         </div>
 
-                        <button type="submit" class="btn btn-gold btn-lg w-100">Pay & Generate Certificate</button>
+                        <button type="submit" class="btn btn-gold btn-lg w-100">Pay ₦<span id="btnAmount">0</span> & Generate Certificate</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const prices = @json($prices);
+    const select = document.getElementById('facilitySelect');
+    
+    select.addEventListener('change', function() {
+        const option = this.options[this.selectedIndex];
+        const type = option.getAttribute('data-type');
+        const name = option.getAttribute('data-name');
+        const id = this.value;
+        
+        const price = prices[type] || 20000;
+        
+        document.getElementById('facilityId').value = id;
+        document.getElementById('businessName').value = name;
+        document.getElementById('businessType').value = type;
+        document.getElementById('amountPaid').value = price;
+        
+        document.getElementById('displayAmount').value = Number(price).toLocaleString();
+        document.getElementById('btnAmount').textContent = Number(price).toLocaleString();
+    });
+</script>
 @endsection

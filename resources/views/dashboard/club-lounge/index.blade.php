@@ -2,6 +2,12 @@
 
 @section('title', 'My Club / Lounge - ' . ($settings['site_name'] ?? 'Edo Tourism'))
 @section('content')
+<div class="container pt-4">
+    <div class="mb-0 d-flex justify-content-end"><a href="{{ route('dashboard.club-lounge.create') }}" class="btn btn-gold"><i class="bi bi-plus-lg me-1"></i>Add New Club / Lounge</a></div>
+</div>
+<div class="container py-4">
+    
+</div>
 
 <div class="page-hero">
   <div class="container">

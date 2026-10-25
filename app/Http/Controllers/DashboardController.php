@@ -282,6 +282,14 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.hotels.index')->with('success', 'Hotel updated and submitted for review.');
     }
 
+    public function deleteDashboardHotelImage(int $id)
+    {
+        $image = \App\Models\HotelImage::findOrFail($id);
+        $hotel = \App\Models\Hotel::where('user_id', Auth::id())->findOrFail($image->hotel_id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        return back()->with('success', 'Gallery image deleted.');
+    }
     // ─── Restaurants ──────────────────────────────────────────────────────────
     public function myRestaurants()
     {
@@ -494,5 +502,108 @@ class DashboardController extends Controller
         }
         $clubs = \App\Models\ClubLounge::where('user_id', $user->id)->orderByDesc('created_at')->get();
         return view('dashboard.club-lounge.index', compact('clubs', 'user'));
+    }
+    public function deleteDashboardClubImage(int $id)
+    {
+        $image = \App\Models\ClubImage::findOrFail($id);
+        $club = \App\Models\ClubLounge::where('user_id', Auth::id())->findOrFail($image->club_lounge_id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        return back()->with('success', 'Gallery image deleted.');
+    }
+
+
+    public function createClubLounge()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Club/Lounge') abort(403);
+        return view('dashboard.club-lounge.form', ['club' => new \App\Models\ClubLounge()]);
+    }
+
+    public function storeClubLounge(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Club/Lounge') abort(403);
+
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'opening_hours' => 'nullable|string|max:100',
+            'phone' => 'nullable|string|max:50',
+            'email' => 'nullable|email',
+            'website' => 'nullable|url',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $data['image_url'] = Helpers::saveUpload($request->file('image'), 'clubs');
+        }
+
+        $data['user_id'] = $user->id;
+        $data['is_active'] = false;
+        $data['is_featured'] = false;
+        $club = \App\Models\ClubLounge::create($data);
+
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('clubs/gallery', 'public');
+                    $club->images()->create(['image_path' => $path]);
+                }
+            }
+        }
+
+        Helpers::logAction('create_club_lounge', 'ClubLounge', $club->id);
+        return redirect()->route('dashboard.club-lounge.index')->with('success', 'Club/Lounge added and submitted for review.');
+    }
+
+    public function editClubLounge(int $id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Club/Lounge') abort(403);
+        $club = \App\Models\ClubLounge::where('user_id', $user->id)->findOrFail($id);
+        return view('dashboard.club-lounge.form', compact('club'));
+    }
+
+    public function updateClubLounge(Request $request, int $id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Club/Lounge') abort(403);
+        $club = \App\Models\ClubLounge::where('user_id', $user->id)->findOrFail($id);
+
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'opening_hours' => 'nullable|string|max:100',
+            'phone' => 'nullable|string|max:50',
+            'email' => 'nullable|email',
+            'website' => 'nullable|url',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $data['image_url'] = Helpers::saveUpload($request->file('image'), 'clubs');
+        }
+
+        if ($club->is_active) $data['is_active'] = false;
+        $club->update($data);
+
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('clubs/gallery', 'public');
+                    $club->images()->create(['image_path' => $path]);
+                }
+            }
+        }
+
+        Helpers::logAction('update_club_lounge', 'ClubLounge', $club->id);
+        return redirect()->route('dashboard.club-lounge.index')->with('success', 'Club/Lounge updated and submitted for review.');
     }
 }

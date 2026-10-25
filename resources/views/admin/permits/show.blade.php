@@ -37,10 +37,20 @@
 
     <div class="row mt-5 pt-4 align-items-end">
         <div class="col-4 text-center">
-            <img src="{{ asset('storage/cms/stamp.png') }}" style="width:120px; opacity:0.8;" onerror="this.style.display='none'" alt="Stamp">
+            @php
+    $stamp = \App\Models\CmsSetting::where('key', 'permit_agency_stamp')->first();
+@endphp
+            @if($stamp && $stamp->value)
+                <img src="{{ asset('storage/' . $stamp->value) }}" style="width:120px; opacity:0.8;" alt="Stamp">
+            @endif
         </div>
         <div class="col-4 text-center">
-            <img src="{{ asset('storage/cms/signature.png') }}" style="width:150px; margin-bottom: 5px;" onerror="this.style.display='none'" alt="Signature">
+            @php
+    $sig = \App\Models\CmsSetting::where('key', 'permit_dg_signature')->first();
+@endphp
+            @if($sig && $sig->value)
+                <img src="{{ asset('storage/' . $sig->value) }}" style="width:150px; margin-bottom: 5px;" alt="Signature">
+            @endif
             <hr style="width: 80%; margin: 0 auto; border-top: 2px solid #000;">
             <p class="small fw-bold mt-1 mb-0">Director General</p>
         </div>

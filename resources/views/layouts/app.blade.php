@@ -528,5 +528,35 @@ function getDirections(destLat, destLng, destName) {
     );
 }
 </script>
+<script>
+async function autoFillGPS(latId, lngId) {
+    if (!navigator.geolocation) {
+        alert('Geolocation is not supported.');
+        return;
+    }
+    const btn = event.currentTarget;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Locating...';
+    btn.disabled = true;
+    try {
+        const pos = await new Promise((resolve, reject) =>
+            navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 10000 })
+        );
+        document.getElementById(latId).value = pos.coords.latitude.toFixed(7);
+        document.getElementById(lngId).value = pos.coords.longitude.toFixed(7);
+        btn.innerHTML = '<i class="bi bi-check2"></i> Captured';
+        btn.classList.replace('btn-outline-secondary', 'btn-success');
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.replace('btn-success', 'btn-outline-secondary');
+            btn.disabled = false;
+        }, 3000);
+    } catch (err) {
+        alert('Unable to get location. Ensure GPS is on and permissions are granted.');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+</script>
 </body>
 </html>
