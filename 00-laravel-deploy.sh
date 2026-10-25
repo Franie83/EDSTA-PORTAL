@@ -13,7 +13,3 @@ php artisan migrate --force
 
 echo "Creating storage link..."
 php artisan storage:link
-
-echo "Fixing permissions..."
-chown -R www-data:www-data /var/www/html/storage
-chown -R www-data:www-data /var/www/html/bootstrap/cache
