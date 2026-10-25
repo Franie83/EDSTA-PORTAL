@@ -125,6 +125,12 @@ Route::middleware('auth')->group(function () {
 
     // Tour Operator & Club/Lounge dashboards
     Route::get('/dashboard/tours', [DashboardController::class, 'myTourOperators'])->name('dashboard.tour-operator.index');
+    Route::get('/dashboard/tours/create', [DashboardController::class, 'createTourAttraction'])->name('dashboard.tour-operator.create');
+    Route::post('/dashboard/tours', [DashboardController::class, 'storeTourAttraction'])->name('dashboard.tour-operator.store');
+    Route::get('/dashboard/tours/{id}/edit', [DashboardController::class, 'editTourAttraction'])->name('dashboard.tour-operator.edit');
+    Route::put('/dashboard/tours/{id}', [DashboardController::class, 'updateTourAttraction'])->name('dashboard.tour-operator.update');
+    Route::post('/dashboard/tours/{id}/update', [DashboardController::class, 'updateTourAttraction'])->name('dashboard.tour-operator.update.post');
+    Route::get('/dashboard/tours/image/{id}/delete', [DashboardController::class, 'deleteTourAttractionImage'])->name('dashboard.tour-operator.image_delete');
     Route::get('/dashboard/venue', [DashboardController::class, 'myClubLounges'])->name('dashboard.club-lounge.index');
     Route::get('/dashboard/venue/create', [DashboardController::class, 'createClubLounge'])->name('dashboard.club-lounge.create');
     Route::post('/dashboard/venue', [DashboardController::class, 'storeClubLounge'])->name('dashboard.club-lounge.store');

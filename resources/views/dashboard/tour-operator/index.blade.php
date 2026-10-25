@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'My Tour Operator Listings - ' . ($settings['site_name'] ?? 'Edo Tourism'))
+@section('title', 'My Attractions - Edo Tourism')
 @section('content')
 
 <div class="page-hero">
   <div class="container">
-    <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li><li class="breadcrumb-item active">My Tour Operator Listings</li></ol></nav>
-    <h1>My Tour Operator Listings</h1>
-    <p class="mb-0 text-white-50">Manage your tour operator business profile and offerings.</p>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li><li class="breadcrumb-item active">My Attractions</li></ol></nav>
+    <h1>My Attractions</h1>
+    <p class="mb-0 text-white-50">Manage the attractions you have registered with the Tourism Agency.</p>
   </div>
 </div>
 
@@ -20,55 +20,62 @@
   @endif
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-bold text-blue mb-0"><i class="bi bi-bus-front me-2"></i>My Listings</h5>
-    <small class="text-muted">New listings require admin approval before they appear publicly.</small>
+    <div>
+      <h5 class="fw-bold text-blue mb-0"><i class="bi bi-building me-2"></i>My Attractions</h5>
+      <small class="text-muted">New attractions require admin approval. Only admins can delete attractions.</small>
+    </div>
+    <a href="{{ route('dashboard.tour-operator.create') }}" class="btn btn-gold">
+      <i class="bi bi-plus-lg me-1"></i>Add New Attraction
+    </a>
   </div>
 
-  @if($tours->count())
+  @if(isset($attractions) && $attractions->count())
     <div class="card border-0 shadow-sm">
       <div class="table-responsive">
         <table class="table table-hover mb-0 align-middle">
           <thead class="table-light">
             <tr>
-              <th>#</th>
               <th>Name</th>
-              <th>Address</th>
-              <th>Phone</th>
+              <th>Category</th>
+              <th>City</th>
               <th>Status</th>
+              <th>Created</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            @foreach($tours as $tour)
-            <tr>
-              <td>{{ $tour->id }}</td>
-              <td><strong>{{ $tour->name }}</strong></td>
-              <td class="small">{{ $tour->address ?? '—' }}</td>
-              <td class="small">{{ $tour->phone ?? '—' }}</td>
-              <td>
-                @if($tour->is_active)
-                  <span class="badge bg-success">Active</span>
-                @else
-                  <span class="badge bg-warning text-dark">Pending Approval</span>
-                @endif
-              </td>
-              <td>
-                <a href="#" class="btn btn-sm btn-outline-secondary" title="Edit (coming soon)"><i class="bi bi-pencil"></i></a>
-              </td>
-            </tr>
+            @foreach($attractions as $attraction)
+              <tr>
+                <td class="fw-semibold">{{ $attraction->name }}</td>
+                <td>{{ $attraction->category?->name ?? '—' }}</td>
+                <td>{{ $attraction->city ?? '—' }}</td>
+                <td>
+                  @if($attraction->is_active)
+                    <span class="badge bg-success">Active</span>
+                  @else
+                    <span class="badge bg-warning text-dark">Pending Approval</span>
+                  @endif
+                </td>
+                <td class="small text-muted">{{ $attraction->created_at?->format('d M Y') }}</td>
+                <td>
+                  <a href="{{ route('dashboard.tour-operator.edit', $attraction->id) }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                  </a>
+                </td>
+              </tr>
             @endforeach
           </tbody>
         </table>
       </div>
     </div>
   @else
-    <div class="card border-0 shadow-sm">
-      <div class="card-body text-center py-5">
-        <i class="bi bi-bus-front fs-1 text-muted mb-3 d-block"></i>
-        <h5 class="fw-bold mb-2">No tour operator listings yet</h5>
-        <p class="text-muted mb-3">When you register a tour operator business, it will appear here.</p>
-        <p class="text-muted small mb-0">Contact the Edo State Tourism Agency admin to have your business listed.</p>
-      </div>
+    <div class="text-center py-5 bg-white rounded shadow-sm">
+      <i class="bi bi-building text-muted" style="font-size: 4rem;"></i>
+      <h5 class="mt-3">No attractions yet</h5>
+      <p class="text-muted">Add your first attraction to get started. It will be reviewed by an admin before appearing publicly.</p>
+      <a href="{{ route('dashboard.tour-operator.create') }}" class="btn btn-gold mt-2">
+        <i class="bi bi-plus-lg me-1"></i>Add Your First Attraction
+      </a>
     </div>
   @endif
 </div>

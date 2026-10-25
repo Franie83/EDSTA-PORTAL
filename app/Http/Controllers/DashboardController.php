@@ -518,8 +518,9 @@ class DashboardController extends Controller
         if ($user->role !== 'Tour Operator') {
             abort(403, 'Tour Operator access required.');
         }
-        $tours = \App\Models\TourOperator::where('user_id', $user->id)->orderByDesc('created_at')->get();
-        return view('dashboard.tour-operator.index', compact('tours', 'user'));
+        $attractions = \App\Models\Attraction::where('user_id', $user->id)->orderByDesc('created_at')->get();
+        $tourOperator = \App\Models\TourOperator::where('user_id', $user->id)->first();
+        return view('dashboard.tour-operator.index', compact('attractions', 'tourOperator', 'user'));
     }
 
     public function myClubLounges()
@@ -651,5 +652,74 @@ class DashboardController extends Controller
         \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
         $image->delete();
         return back()->with('success', 'Gallery image deleted.');
+    }
+
+    public function createTourAttraction()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Tour Operator') abort(403);
+        $categories = \App\Models\Category::orderBy('name')->get();
+        return view('dashboard.tour-operator.form', ['attraction' => new \App\Models\Attraction(), 'categories' => $categories]);
+    }
+
+    public function storeTourAttraction(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Tour Operator') abort(403);
+        $data = $request->validate(['name' => 'required|string|max:255', 'category_id' => 'nullable|exists:categories,id', 'description' => 'nullable|string', 'history' => 'nullable|string', 'address' => 'nullable|string|max:255', 'city' => 'nullable|string|max:100', 'latitude' => 'nullable|numeric', 'longitude' => 'nullable|numeric', 'ticket_price' => 'nullable|numeric|min:0', 'opening_hours' => 'nullable|string|max:255', 'phone' => 'nullable|string|max:50', 'email' => 'nullable|email', 'website' => 'nullable|url']);
+        $data['user_id'] = $user->id;
+        $data['is_featured'] = false;
+        $data['is_active'] = false;
+        if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'attractions');
+        $attraction = \App\Models\Attraction::create($data);
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('attractions/gallery', 'public');
+                    $attraction->images()->create(['image_path' => $path]);
+                }
+            }
+        }
+        Helpers::logAction('tour_operator_create_attraction', 'Attraction', $attraction->id);
+        return redirect()->route('dashboard.tour-operator.index')->with('success', 'Attraction added.');
+    }
+
+    public function editTourAttraction(int $id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Tour Operator') abort(403);
+        $attraction = \App\Models\Attraction::where('user_id', $user->id)->findOrFail($id);
+        $categories = \App\Models\Category::orderBy('name')->get();
+        return view('dashboard.tour-operator.form', compact('attraction', 'categories'));
+    }
+
+    public function updateTourAttraction(Request $request, int $id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'Tour Operator') abort(403);
+        $attraction = \App\Models\Attraction::where('user_id', $user->id)->findOrFail($id);
+        $data = $request->validate(['name' => 'required|string|max:255', 'category_id' => 'nullable|exists:categories,id', 'description' => 'nullable|string', 'history' => 'nullable|string', 'address' => 'nullable|string|max:255', 'city' => 'nullable|string|max:100', 'latitude' => 'nullable|numeric', 'longitude' => 'nullable|numeric', 'ticket_price' => 'nullable|numeric|min:0', 'opening_hours' => 'nullable|string|max:255', 'phone' => 'nullable|string|max:50', 'email' => 'nullable|email', 'website' => 'nullable|url']);
+        if ($attraction->is_active) $data['is_active'] = false;
+        if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'attractions');
+        $attraction->update($data);
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('attractions/gallery', 'public');
+                    $attraction->images()->create(['image_path' => $path]);
+                }
+            }
+        }
+        Helpers::logAction('tour_operator_update_attraction', 'Attraction', $attraction->id);
+        return redirect()->route('dashboard.tour-operator.index')->with('success', 'Attraction updated.');
+    }
+
+    public function deleteTourAttractionImage(int $id)
+    {
+        $image = \App\Models\AttractionImage::findOrFail($id);
+        \App\Models\Attraction::where('user_id', Auth::id())->findOrFail($image->attraction_id);
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        return back()->with('success', 'Image deleted.');
     }
 }
