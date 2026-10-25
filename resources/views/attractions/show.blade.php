@@ -123,6 +123,11 @@
       <div class="info-card mb-3">
         <h5 class="fw-bold text-blue mb-3">Info</h5>
         @if($attraction->address)<p class="small mb-1"><i class="bi bi-geo-alt me-2 text-gold"></i>{{ $attraction->address }}</p>@endif
+        @if($attraction->latitude && $attraction->longitude)
+        <button type="button" class="btn btn-sm btn-gold mt-2" onclick="getDirections({{ $attraction->latitude }}, {{ $attraction->longitude }}, '{{ addslashes($attraction->name ?? $attraction->location ?? '') }}')">
+            <i class="bi bi-geo-fill me-1"></i>Get Directions
+        </button>
+        @endif
         @if($attraction->opening_hours)<p class="small mb-1"><i class="bi bi-clock me-2 text-gold"></i>{{ $attraction->opening_hours }}</p>@endif
         @if($attraction->phone)<p class="small mb-1"><i class="bi bi-telephone me-2 text-gold"></i>{{ $attraction->phone }}</p>@endif
         @if($attraction->email)<p class="small mb-1"><i class="bi bi-envelope me-2 text-gold"></i>{{ $attraction->email }}</p>@endif

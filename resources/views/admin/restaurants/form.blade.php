@@ -26,6 +26,17 @@
         <div class="col-12"><label class="form-label fw-semibold small">Description</label><textarea name="description" class="form-control" rows="3">{{ old('description', $restaurant->description) }}</textarea></div>
         <div class="col-md-8"><label class="form-label fw-semibold small">Address</label><input type="text" name="address" class="form-control" value="{{ old('address', $restaurant->address) }}"></div>
         <div class="col-md-4"><label class="form-label fw-semibold small">City</label><input type="text" name="city" class="form-control" value="{{ old('city', $restaurant->city) }}"></div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Latitude</label>
+          <input type="number" step="any" name="latitude" id="lat_restaurant" class="form-control" value="{{ old('latitude', $restaurant->latitude ?? '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Longitude</label>
+          <input type="number" step="any" name="longitude" id="lng_restaurant" class="form-control" value="{{ old('longitude', $restaurant->longitude ?? '') }}">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="button" class="btn btn-outline-secondary w-100" onclick="autoFillGPS('lat_restaurant', 'lng_restaurant')"><i class="bi bi-geo-alt"></i> Use Current Location</button>
+        </div>
         <div class="col-md-4"><label class="form-label fw-semibold small">Phone</label><input type="text" name="phone" class="form-control" value="{{ old('phone', $restaurant->phone) }}"></div>
         <div class="col-md-4"><label class="form-label fw-semibold small">Opening Hours</label><input type="text" name="opening_hours" class="form-control" value="{{ old('opening_hours', $restaurant->opening_hours) }}" placeholder="11am–10pm"></div>
         <div class="col-md-4"><label class="form-label fw-semibold small">Avg Price (₦)</label><input type="number" name="avg_price" class="form-control" value="{{ old('avg_price', $restaurant->avg_price) }}"></div>

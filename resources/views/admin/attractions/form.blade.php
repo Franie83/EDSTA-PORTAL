@@ -39,8 +39,9 @@
             <div class="col-md-4"><label class="form-label fw-semibold small">Opening Hours</label><input type="text" name="opening_hours" class="form-control" value="{{ old('opening_hours', $attraction->opening_hours) }}" placeholder="9am–5pm daily"></div>
             <div class="col-md-4"><label class="form-label fw-semibold small">Phone</label><input type="text" name="phone" class="form-control" value="{{ old('phone', $attraction->phone) }}"></div>
             <div class="col-md-6"><label class="form-label fw-semibold small">Website</label><input type="url" name="website" class="form-control" value="{{ old('website', $attraction->website) }}"></div>
-            <div class="col-md-3"><label class="form-label fw-semibold small">Latitude</label><input type="number" name="latitude" class="form-control" step="any" value="{{ old('latitude', $attraction->latitude) }}"></div>
-            <div class="col-md-3"><label class="form-label fw-semibold small">Longitude</label><input type="number" name="longitude" class="form-control" step="any" value="{{ old('longitude', $attraction->longitude) }}"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold small">Latitude</label><input type="number" step="any" name="latitude" id="lat_attraction" class="form-control" value="{{ old('latitude', $attraction->latitude) }}"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold small">Longitude</label><input type="number" step="any" name="longitude" id="lng_attraction" class="form-control" value="{{ old('longitude', $attraction->longitude) }}"></div>
+            <div class="col-md-4 d-flex align-items-end"><button type="button" class="btn btn-outline-secondary w-100" onclick="autoFillGPS('lat_attraction', 'lng_attraction')"><i class="bi bi-geo-alt"></i> Use Current Location</button></div>
             
             {{-- ─── Images ─── --}}
 <div class="col-12 mt-4">

@@ -26,6 +26,17 @@
         <div class="col-12"><label class="form-label fw-semibold small">Description</label><textarea name="description" class="form-control" rows="4">{{ old('description', $hotel->description) }}</textarea></div>
         <div class="col-md-8"><label class="form-label fw-semibold small">Address</label><input type="text" name="address" class="form-control" value="{{ old('address', $hotel->address) }}"></div>
         <div class="col-md-4"><label class="form-label fw-semibold small">City</label><input type="text" name="city" class="form-control" value="{{ old('city', $hotel->city) }}"></div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Latitude</label>
+          <input type="number" step="any" name="latitude" id="lat_hotel" class="form-control" value="{{ old('latitude', $hotel->latitude ?? '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small">Longitude</label>
+          <input type="number" step="any" name="longitude" id="lng_hotel" class="form-control" value="{{ old('longitude', $hotel->longitude ?? '') }}">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="button" class="btn btn-outline-secondary w-100" onclick="autoFillGPS('lat_hotel', 'lng_hotel')"><i class="bi bi-geo-alt"></i> Use Current Location</button>
+        </div>
         <div class="col-md-4"><label class="form-label fw-semibold small">Price/Night (₦) *</label><input type="number" name="price_per_night" class="form-control" step="500" value="{{ old('price_per_night', $hotel->price_per_night) }}" required></div>
         <div class="col-md-4"><label class="form-label fw-semibold small">Phone</label><input type="text" name="phone" class="form-control" value="{{ old('phone', $hotel->phone) }}"></div>
         <div class="col-md-4"><label class="form-label fw-semibold small">Email</label><input type="email" name="email" class="form-control" value="{{ old('email', $hotel->email) }}"></div>

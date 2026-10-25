@@ -41,6 +41,11 @@
         @if($event->start_date)<p class="small mb-1"><i class="bi bi-calendar me-2 text-gold"></i>{{ $event->start_date->format('d M Y') }}</p>@endif
         @if($event->end_date)<p class="small mb-1"><i class="bi bi-calendar-check me-2 text-gold"></i>Ends: {{ $event->end_date->format('d M Y') }}</p>@endif
         @if($event->location)<p class="small mb-1"><i class="bi bi-geo-alt me-2 text-gold"></i>{{ $event->location }}</p>@endif
+        @if($event->latitude && $event->longitude)
+        <button type="button" class="btn btn-sm btn-gold mt-2" onclick="getDirections({{ $event->latitude }}, {{ $event->longitude }}, '{{ addslashes($event->name ?? $event->location ?? '') }}')">
+            <i class="bi bi-geo-fill me-1"></i>Get Directions
+        </button>
+        @endif
         @if($event->organizer)<p class="small mb-1"><i class="bi bi-person me-2 text-gold"></i>{{ $event->organizer }}</p>@endif
         @if($event->capacity)<p class="small mb-1"><i class="bi bi-people me-2 text-gold"></i>Capacity: {{ number_format($event->capacity) }}</p>@endif
         <hr>

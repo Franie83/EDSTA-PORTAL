@@ -69,6 +69,11 @@
       <div class="info-card mb-3" style="border-left-color:var(--restaurant)">
         <h5 class="fw-bold mb-3" style="color:var(--restaurant)">Restaurant Info</h5>
         @if($restaurant->address)<p class="small mb-1"><i class="bi bi-geo-alt me-2" style="color:var(--restaurant)"></i>{{ $restaurant->address }}</p>@endif
+        @if($restaurant->latitude && $restaurant->longitude)
+        <button type="button" class="btn btn-sm btn-gold mt-2" onclick="getDirections({{ $restaurant->latitude }}, {{ $restaurant->longitude }}, '{{ addslashes($restaurant->name ?? $restaurant->location ?? '') }}')">
+            <i class="bi bi-geo-fill me-1"></i>Get Directions
+        </button>
+        @endif
         @if($restaurant->phone)<p class="small mb-1"><i class="bi bi-telephone me-2" style="color:var(--restaurant)"></i>{{ $restaurant->phone }}</p>@endif
         @if($restaurant->opening_hours)<p class="small mb-1"><i class="bi bi-clock me-2" style="color:var(--restaurant)"></i>{{ $restaurant->opening_hours }}</p>@endif
         @if($restaurant->avg_price)<p class="small mb-0"><i class="bi bi-cash me-2" style="color:var(--restaurant)"></i>Avg: ₦{{ number_format($restaurant->avg_price) }}</p>@endif

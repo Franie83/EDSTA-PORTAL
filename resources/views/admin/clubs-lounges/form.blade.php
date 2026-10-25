@@ -28,6 +28,19 @@
           <div class="mb-3">
             <label class="form-label">Address</label>
             <input type="text" name="address" class="form-control" value="{{ old('address', $club->address) }}" maxlength="255">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Latitude</label>
+          <input type="number" step="any" name="latitude" id="lat_club" class="form-control" value="{{ old('latitude', $club->latitude ?? '') }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Longitude</label>
+          <input type="number" step="any" name="longitude" id="lng_club" class="form-control" value="{{ old('longitude', $club->longitude ?? '') }}">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="button" class="btn btn-outline-secondary w-100" onclick="autoFillGPS('lat_club', 'lng_club')"><i class="bi bi-geo-alt"></i> Use Current Location</button>
+        </div>
+        <div>
           </div>
           <div class="row">
             <div class="col-md-6 mb-3">

@@ -93,6 +93,11 @@
       <div class="info-card mb-3">
         <h5 class="fw-bold text-blue mb-3">Hotel Info</h5>
         @if($hotel->address)<p class="small mb-1"><i class="bi bi-geo-alt me-2 text-gold"></i>{{ $hotel->address }}</p>@endif
+        @if($hotel->latitude && $hotel->longitude)
+        <button type="button" class="btn btn-sm btn-gold mt-2" onclick="getDirections({{ $hotel->latitude }}, {{ $hotel->longitude }}, '{{ addslashes($hotel->name ?? $hotel->location ?? '') }}')">
+            <i class="bi bi-geo-fill me-1"></i>Get Directions
+        </button>
+        @endif
         @if($hotel->phone)<p class="small mb-1"><i class="bi bi-telephone me-2 text-gold"></i>{{ $hotel->phone }}</p>@endif
         @if($hotel->email)<p class="small mb-1"><i class="bi bi-envelope me-2 text-gold"></i>{{ $hotel->email }}</p>@endif
         @if($hotel->check_in_time)<p class="small mb-1"><i class="bi bi-clock me-2 text-gold"></i>Check-in: {{ $hotel->check_in_time }}</p>@endif

@@ -494,5 +494,36 @@
     }
   });
 </script>
+<script>
+function getDirections(destLat, destLng, destName) {
+    if (!destLat || !destLng) {
+        alert('Directions not available. Destination coordinates are missing.');
+        return;
+    }
+
+    alert('Fetching your GPS location. Please click Allow.');
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            var srcLat = pos.coords.latitude;
+            var srcLng = pos.coords.longitude;
+            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            var url = '';
+            
+            if (isIOS) {
+                url = 'http://maps.apple.com/?saddr=' + srcLat + ',' + srcLng + '&daddr=' + destLat + ',' + destLng;
+            } else {
+                url = 'https://www.google.com/maps/dir/?api=1&origin=' + srcLat + ',' + srcLng + '&destination=' + destLat + ',' + destLng + '&travelmode=driving';
+            }
+            
+            window.open(url, '_blank');
+        },
+        function(err) {
+            alert('GPS Error: ' + err.message + '. Make sure location permissions are allowed.');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+}
+</script>
 </body>
 </html>
