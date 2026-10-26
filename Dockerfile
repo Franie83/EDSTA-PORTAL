@@ -1,6 +1,11 @@
 FROM richarvey/nginx-php-fpm:latest
 
+# Force Render to use port 10000
+ENV PORT=10000
+
+
 # Install PostgreSQL extension for PDO
+RUN apk add --no-cache libpq
 RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Copy application code
