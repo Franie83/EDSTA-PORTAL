@@ -48,3 +48,6 @@ ENV LOG_CHANNEL stderr
 
 USER www-data
 
+# Ensure no stale caches from previous builds
+RUN rm -f bootstrap/cache/*.php
+
