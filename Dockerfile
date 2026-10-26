@@ -48,6 +48,10 @@ ENV LOG_CHANNEL stderr
 
 USER www-data
 
+COPY clear-cache.sh /usr/local/bin/clear-cache.sh
+RUN chmod +x /usr/local/bin/clear-cache.sh
+ENTRYPOINT ["/usr/local/bin/clear-cache.sh"]
+
 # Ensure no stale caches from previous builds
 RUN rm -f bootstrap/cache/*.php
 
