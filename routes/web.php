@@ -1,9 +1,15 @@
 <?php
 
-// TEMPORARY SEED ROUTE
-Route::get('/seed-database', function () {
-    \Illuminate\Support\Facades\Artisan::call('migrate:fresh --seed --force');
-    return 'Database seeded successfully!';
+Route::get('/debug-seed', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
+        return 'SUCCESS! Output: ' . \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception \) {
+        return 'ERROR: ' . \->getMessage() . ' | File: ' . \->getFile() . ' on line ' . \->getLine();
+    }
+});
+
+
 });
 
 
