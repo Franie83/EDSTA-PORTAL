@@ -1,5 +1,9 @@
 FROM serversideup/php:8.3-fpm-nginx
 
+# Set ports for Render and NGINX
+ENV PORT=10000
+ENV NGINX_PORT=10000
+
 # Install required PHP extensions
 # Switch to root to install extensions
 USER root
@@ -8,7 +12,6 @@ RUN install-php-extensions gd
 # Drop back to unprivileged user
 
 # Force Render to use port 10000
-ENV PORT=10000
 
 # Install PostgreSQL extension for PDO
 
