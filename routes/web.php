@@ -1,5 +1,45 @@
 <?php
 
+Route::get('/fix-broken-images', function () {
+    $cloudName = env('CLOUDINARY_CLOUD_NAME');
+    
+    // Fallback placeholder if Cloudinary is not configured
+    $fallbackUrl = 'https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg';
+    
+    $count = 0;
+    
+    // 1. Fix User Profile Pictures (assuming column is 'profile_picture' or 'avatar')
+    $users = \App\Models\User::all();
+    foreach ($users as $user) {
+        if ($user->profile_picture || $user->avatar) {
+            // If it doesn't start with http, replace it
+            $field = $user->profile_picture ? 'profile_picture' : 'avatar';
+            if (!str_starts_with($user->$field, 'http')) {
+                $user->$field = $cloudName ? "https://res.cloudinary.com/{$cloudName}/image/upload/" . basename($user->$field) : $fallbackUrl;
+                $user->save();
+                $count++;
+            }
+        }
+    }
+
+    // 2. Fix CMS Settings Logo (assuming column is 'logo' or 'site_logo')
+    if (\Schema::hasTable('cms_settings')) {
+        $cms = \DB::table('cms_settings')->first();
+        if ($cms && isset($cms->logo) && !str_starts_with($cms->logo, 'http')) {
+            \DB::table('cms_settings')->update([
+                'logo' => $cloudName ? "https://res.cloudinary.com/{$cloudName}/image/upload/" . basename($cms->logo) : $fallbackUrl
+            ]);
+            $count++;
+        }
+    }
+
+    // 3. Clear all caches so the new URLs show up instantly
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+
+    return "Success! Updated $count broken image paths and cleared caches. Refresh your homepage.";
+});
+
+
 Route::get('/force-seed-all', function () {
     try {
         // This runs the main DatabaseSeeder class
