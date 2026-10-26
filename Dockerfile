@@ -1,7 +1,12 @@
 FROM serversideup/php:8.3-fpm-nginx
 
 # Install required PHP extensions
+# Switch to root to install extensions
+USER root
 RUN install-php-extensions gd
+
+# Drop back to unprivileged user
+USER www-data
 
 
 # Force Render to use port 10000
