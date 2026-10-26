@@ -47,9 +47,6 @@ ENV LOG_CHANNEL stderr
 # Setup manual startup script
 
 
-# Add our cache clear script to the native serversideup startup folder
-COPY clear-cache.sh /etc/entrypoint.d/99-clear-cache.sh
-RUN chmod +x /etc/entrypoint.d/99-clear-cache.sh
 
 USER www-data
 
