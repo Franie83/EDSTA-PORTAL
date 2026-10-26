@@ -1,12 +1,10 @@
-FROM richarvey/nginx-php-fpm:latest
+FROM serversideup/php:8.3-fpm-nginx
 
 # Force Render to use port 10000
 ENV PORT=10000
 
 
 # Install PostgreSQL extension for PDO
-RUN apk add --no-cache postgresql-dev
-RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Copy application code
 COPY . /var/www/html
@@ -31,4 +29,4 @@ ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
 
 # Run the deploy script on startup
-CMD ["/start.sh"]
+CMD ["/etc/entrypoint.d/50-laravel-automations.sh"]
