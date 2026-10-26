@@ -44,5 +44,10 @@ ENV LOG_CHANNEL stderr
 # Run the deploy script on startup
 
 # Switch back to unprivileged user for runtime
+# Setup manual startup script
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+ENTRYPOINT ["/usr/local/bin/start.sh"]
+
 USER www-data
 
