@@ -1,11 +1,16 @@
 <?php
 
-Route::get('/debug-seed', function () {
+Route::get('/force-clear', function () {
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:cache');
+    \Illuminate\Support\Facades\Artisan::call('route:cache');
+    \Illuminate\Support\Facades\Artisan::call('view:cache');
+    return 'Caches cleared and rebuilt! Current Attractions count: ' . \App\Models\Attraction::count();
+});
+
+
     try {
-        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
-        return '<pre>SUCCESS! Output: ' . \Illuminate\Support\Facades\Artisan::output() . '</pre>';
     } catch (\Exception $e) {
-        return '<pre>ERROR: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' on line ' . $e->getLine() . '</pre>';
     }
 });
 
