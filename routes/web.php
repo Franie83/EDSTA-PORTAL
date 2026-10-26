@@ -9,12 +9,6 @@ Route::get('/force-clear', function () {
 });
 
 
-    try {
-    } catch (\Exception $e) {
-    }
-});
-
-
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AttractionController;
