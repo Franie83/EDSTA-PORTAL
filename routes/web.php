@@ -1,102 +1,48 @@
 <?php
 
-Route::get('/test-cloudinary', function () {
-    try {
-        $cloudName = env('CLOUDINARY_CLOUD_NAME');
-        $apiKey = env('CLOUDINARY_API_KEY');
-        $apiSecret = env('CLOUDINARY_API_SECRET');
-
-        if (!$cloudName || !$apiKey || !$apiSecret) {
-            return '<pre>❌ ERROR: Missing Cloudinary environment variables on Render!</pre>';
-        }
-
-        // Create a dummy image
-        $image = imagecreatetruecolor(100, 100);
-        ob_start();
-        imagejpeg($image);
-        $imageData = ob_get_clean();
-        
-        $tempPath = tempnam(sys_get_temp_dir(), 'cloud_test_') . '.jpg';
-        file_put_contents($tempPath, $imageData);
-
-        // Attempt upload using your SDK
-        $cloudinary = new \Cloudinary\Cloudinary([
-            'cloud' => [
-                'cloud_name' => $cloudName,
-                'api_key'    => $apiKey,
-                'api_secret' => $apiSecret,
-            ],
-        ]);
-        
-        $result = $cloudinary->uploadApi()->upload($tempPath);
-
-        return '<pre>✅ SUCCESS! Cloudinary is working.<br>URL: ' . $result['secure_url'] . '</pre>';
-        
-    } catch (\Exception $e) {
-        return '<pre>❌ UPLOAD FAILED: ' . $e->getMessage() . '</pre>';
-    }
-});
-
-
-Route::get('/fix-broken-images', function () {
+Route::get('/debug-cloud', function () {
+    $out = "<h3>Environment Check:</h3>";
     $cloudName = env('CLOUDINARY_CLOUD_NAME');
+    $apiKey = env('CLOUDINARY_API_KEY');
+    $apiSecret = env('CLOUDINARY_API_SECRET');
     
-    // Fallback placeholder if Cloudinary is not configured
-    $fallbackUrl = 'https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg';
-    
-    $count = 0;
-    
-    // 1. Fix User Profile Pictures (assuming column is 'profile_picture' or 'avatar')
-    $users = \App\Models\User::all();
-    foreach ($users as $user) {
-        if ($user->profile_picture || $user->avatar) {
-            // If it doesn't start with http, replace it
-            $field = $user->profile_picture ? 'profile_picture' : 'avatar';
-            if (!str_starts_with($user->$field, 'http')) {
-                $user->$field = $cloudName ? "https://res.cloudinary.com/{$cloudName}/image/upload/" . basename($user->$field) : $fallbackUrl;
-                $user->save();
-                $count++;
-            }
-        }
-    }
+    $out .= "Cloud Name: " . ($cloudName ? "? Set ($cloudName)" : "? Missing") . "<br>";
+    $out .= "API Key: " . ($apiKey ? "? Set" : "? Missing") . "<br>";
+    $out .= "API Secret: " . ($apiSecret ? "? Set" : "? Missing") . "<br><br>";
 
-    // 2. Fix CMS Settings Logo (assuming column is 'logo' or 'site_logo')
-    if (\Schema::hasTable('cms_settings')) {
-        $cms = \DB::table('cms_settings')->first();
-        if ($cms && isset($cms->logo) && !str_starts_with($cms->logo, 'http')) {
-            \DB::table('cms_settings')->update([
-                'logo' => $cloudName ? "https://res.cloudinary.com/{$cloudName}/image/upload/" . basename($cms->logo) : $fallbackUrl
+    if ($cloudName && $apiKey && $apiSecret) {
+        $out .= "<h3>Attempting Upload...</h3>";
+        try {
+            $cloudinary = new \Cloudinary\Cloudinary([
+                'cloud' => [
+                    'cloud_name' => $cloudName,
+                    'api_key'    => $apiKey,
+                    'api_secret' => $apiSecret,
+                ],
             ]);
-            $count++;
+            
+            $img = imagecreatetruecolor(100, 100);
+            ob_start();
+            imagejpeg($img);
+            $data = ob_get_clean();
+            
+            $temp = tempnam(sys_get_temp_dir(), 'cloud_') . '.jpg';
+            file_put_contents($temp, $data);
+            
+            $result = $cloudinary->uploadApi()->upload($temp, ['folder' => 'edoodyssey/debug']);
+            
+            $out .= "<b style='color:green'>? SUCCESS!</b><br>URL: <a href='{$result['secure_url']}' target='_blank'>{$result['secure_url']}</a><br>";
+            $out .= "<img src='{$result['secure_url']}' width='100'>";
+            
+        } catch (\Exception $e) {
+            $out .= "<b style='color:red'>? FAILED:</b> " . $e->getMessage();
         }
+    } else {
+        $out .= "<b style='color:red'>? Cannot attempt upload because variables are missing on Render.</b>";
     }
-
-    // 3. Clear all caches so the new URLs show up instantly
-    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-
-    return "Success! Updated $count broken image paths and cleared caches. Refresh your homepage.";
+    
+    return $out;
 });
-
-
-Route::get('/force-seed-all', function () {
-    try {
-        // This runs the main DatabaseSeeder class
-        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-        return 'Seeding completed! Check your homepage.';
-    } catch (\Exception $e) {
-        return 'ERROR: ' . $e->getMessage();
-    }
-});
-
-
-Route::get('/force-clear', function () {
-    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    \Illuminate\Support\Facades\Artisan::call('config:cache');
-    \Illuminate\Support\Facades\Artisan::call('route:cache');
-    \Illuminate\Support\Facades\Artisan::call('view:cache');
-    return 'Caches cleared and rebuilt! Current Attractions count: ' . \App\Models\Attraction::count();
-});
-
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApiController;
