@@ -4,7 +4,6 @@ services:
     runtime: docker
     plan: free
     healthCheckPath: /
-    preDeployCommand: php artisan optimize:clear
     envVars:
       - key: APP_ENV
         value: production
