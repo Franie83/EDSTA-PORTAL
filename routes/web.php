@@ -1,5 +1,43 @@
 <?php
 
+Route::get('/test-cloudinary', function () {
+    try {
+        $cloudName = env('CLOUDINARY_CLOUD_NAME');
+        $apiKey = env('CLOUDINARY_API_KEY');
+        $apiSecret = env('CLOUDINARY_API_SECRET');
+
+        if (!$cloudName || !$apiKey || !$apiSecret) {
+            return '<pre>❌ ERROR: Missing Cloudinary environment variables on Render!</pre>';
+        }
+
+        // Create a dummy image
+        $image = imagecreatetruecolor(100, 100);
+        ob_start();
+        imagejpeg($image);
+        $imageData = ob_get_clean();
+        
+        $tempPath = tempnam(sys_get_temp_dir(), 'cloud_test_') . '.jpg';
+        file_put_contents($tempPath, $imageData);
+
+        // Attempt upload using your SDK
+        $cloudinary = new \Cloudinary\Cloudinary([
+            'cloud' => [
+                'cloud_name' => $cloudName,
+                'api_key'    => $apiKey,
+                'api_secret' => $apiSecret,
+            ],
+        ]);
+        
+        $result = $cloudinary->uploadApi()->upload($tempPath);
+
+        return '<pre>✅ SUCCESS! Cloudinary is working.<br>URL: ' . $result['secure_url'] . '</pre>';
+        
+    } catch (\Exception $e) {
+        return '<pre>❌ UPLOAD FAILED: ' . $e->getMessage() . '</pre>';
+    }
+});
+
+
 Route::get('/fix-broken-images', function () {
     $cloudName = env('CLOUDINARY_CLOUD_NAME');
     
