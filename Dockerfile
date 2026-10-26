@@ -7,10 +7,8 @@ RUN install-php-extensions gd
 
 # Drop back to unprivileged user
 
-
 # Force Render to use port 10000
 ENV PORT=10000
-
 
 # Install PostgreSQL extension for PDO
 
@@ -45,4 +43,3 @@ ENV LOG_CHANNEL stderr
 # Switch back to unprivileged user for runtime
 USER www-data
 
-CMD ["/etc/entrypoint.d/50-laravel-automations.sh"]
