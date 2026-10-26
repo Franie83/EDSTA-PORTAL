@@ -3,13 +3,10 @@
 Route::get('/debug-seed', function () {
     try {
         \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
-        return 'SUCCESS! Output: ' . \Illuminate\Support\Facades\Artisan::output();
-    } catch (\Exception \) {
-        return 'ERROR: ' . \->getMessage() . ' | File: ' . \->getFile() . ' on line ' . \->getLine();
+        return '<pre>SUCCESS! Output: ' . \Illuminate\Support\Facades\Artisan::output() . '</pre>';
+    } catch (\Exception $e) {
+        return '<pre>ERROR: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' on line ' . $e->getLine() . '</pre>';
     }
-});
-
-
 });
 
 
