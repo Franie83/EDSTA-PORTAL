@@ -11,6 +11,9 @@ RUN docker-php-ext-install pdo pdo_pgsql pgsql
 # Copy application code
 COPY . /var/www/html
 
+# Install Composer dependencies
+RUN composer install --no-dev --optimize-autoloader
+
 # Set working directory
 WORKDIR /var/www/html
 
