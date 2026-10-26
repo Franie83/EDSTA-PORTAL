@@ -5,7 +5,7 @@ ENV PORT=10000
 
 
 # Install PostgreSQL extension for PDO
-RUN apk add --no-cache libpq
+RUN apk add --no-cache postgresql-dev
 RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Copy application code
