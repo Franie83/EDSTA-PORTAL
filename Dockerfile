@@ -46,10 +46,10 @@ ENV LOG_CHANNEL stderr
 # Switch back to unprivileged user for runtime
 # Setup manual startup script
 
-# Setup custom entrypoint (must run as root to chmod)
-COPY clear-cache.sh /usr/local/bin/clear-cache.sh
-RUN chmod +x /usr/local/bin/clear-cache.sh
-ENTRYPOINT ["/usr/local/bin/clear-cache.sh"]
+
+# Add our cache clear script to the native serversideup startup folder
+COPY clear-cache.sh /etc/entrypoint.d/99-clear-cache.sh
+RUN chmod +x /etc/entrypoint.d/99-clear-cache.sh
 
 USER www-data
 
