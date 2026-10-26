@@ -1,5 +1,12 @@
 <?php
 
+// TEMPORARY SEED ROUTE
+Route::get('/seed-database', function () {
+    \Illuminate\Support\Facades\Artisan::call('migrate:fresh --seed --force');
+    return 'Database seeded successfully!';
+});
+
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AttractionController;
