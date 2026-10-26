@@ -1,5 +1,16 @@
 <?php
 
+Route::get('/force-seed-all', function () {
+    try {
+        // This runs the main DatabaseSeeder class
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        return 'Seeding completed! Check your homepage.';
+    } catch (\Exception $e) {
+        return 'ERROR: ' . $e->getMessage();
+    }
+});
+
+
 Route::get('/force-clear', function () {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     \Illuminate\Support\Facades\Artisan::call('config:cache');
