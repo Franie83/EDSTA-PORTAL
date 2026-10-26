@@ -1,5 +1,9 @@
 FROM serversideup/php:8.3-fpm-nginx
 
+# Install required PHP extensions
+RUN install-php-extensions gd
+
+
 # Force Render to use port 10000
 ENV PORT=10000
 
