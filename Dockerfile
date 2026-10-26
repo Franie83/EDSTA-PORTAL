@@ -25,6 +25,9 @@ RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framewor
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Clear any cached routes/config from previous builds
+RUN rm -f bootstrap/cache/*.php
+
 # Set working directory
 WORKDIR /var/www/html
 
