@@ -13,77 +13,39 @@ class Helpers
     /**
      * Return a displayable image URL (absolute URL, storage URL, or placeholder).
      */
-    public static function imageUrl(?string $path, string $placeholder = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNjAwIDQwMCI+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IiNlOWVjZWYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM5NGEzYjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWFnZTwvdGV4dD48L3N2Zz4='): string
+        public static function imageUrl(?string $path, string $placeholder = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNjAwIDQwMCI+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IiNlOWVjZWYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM5NGEzYjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWFnZTwvdGV4dD48L3N2Zz4='): string
     {
-        // If no path, return placeholder
         if (empty($path)) {
             return $placeholder;
         }
         
-        // If it's already a full URL (http or https), return as is
+        // If it's already a full URL (Cloudinary or external), return as is
         if (Str::startsWith($path, ['http://', 'https://'])) {
             return $path;
         }
         
         // Clean the path
         $cleanPath = $path;
-        
-        // Remove leading slashes
         if (Str::startsWith($cleanPath, '/')) {
             $cleanPath = substr($cleanPath, 1);
         }
-        
-        // Remove 'storage/' prefix if present
         if (Str::startsWith($cleanPath, 'storage/')) {
             $cleanPath = substr($cleanPath, 8);
         }
         
-        // Check if file exists in public disk - use asset() for URL
+        // Check local storage first just in case it exists
         if (Storage::disk('public')->exists($cleanPath)) {
             return asset('storage/' . $cleanPath);
         }
-        
-        // Check if file exists in 'attractions/' folder
-        if (Storage::disk('public')->exists('attractions/' . $cleanPath)) {
-            return asset('storage/attractions/' . $cleanPath);
+
+        // If Cloudinary is configured, it's highly likely this was a Cloudinary image
+        // that lost its full URL in the database. Return the Cloudinary URL format.
+        $cloudName = env('CLOUDINARY_CLOUD_NAME');
+        if ($cloudName) {
+            // Try to guess the folder based on the path
+            return "https://res.cloudinary.com/{$cloudName}/image/upload/edoodyssey/{$cleanPath}";
         }
         
-        // Check if file exists in 'uploads/' folder
-        if (Storage::disk('public')->exists('uploads/' . $cleanPath)) {
-            return asset('storage/uploads/' . $cleanPath);
-        }
-        
-        // Check if file exists in 'hotels/' folder
-        if (Storage::disk('public')->exists('hotels/' . $cleanPath)) {
-            return asset('storage/hotels/' . $cleanPath);
-        }
-        
-        // Check if file exists in 'restaurants/' folder
-        if (Storage::disk('public')->exists('restaurants/' . $cleanPath)) {
-            return asset('storage/restaurants/' . $cleanPath);
-        }
-        
-        // Check if file exists in 'events/' folder
-        if (Storage::disk('public')->exists('events/' . $cleanPath)) {
-            return asset('storage/events/' . $cleanPath);
-        }
-        
-        // Check if file exists in 'partners/' folder
-        if (Storage::disk('public')->exists('partners/' . $cleanPath)) {
-            return asset('storage/partners/' . $cleanPath);
-        }
-        
-        // Check if file exists in 'avatars/' folder
-        if (Storage::disk('public')->exists('avatars/' . $cleanPath)) {
-            return asset('storage/avatars/' . $cleanPath);
-        }
-        
-        // If the path starts with 'attractions/' but doesn't exist, try to show it anyway
-        if (Str::startsWith($path, 'attractions/')) {
-            return asset('storage/' . $path);
-        }
-        
-        // Return placeholder if file doesn't exist
         return $placeholder;
     }
 
@@ -127,7 +89,7 @@ class Helpers
      * Handle file upload and return path.
      * Uploads to Cloudinary if configured, otherwise falls back to local storage.
      */
-    public static function saveUpload($file, string $folder = 'uploads'): ?string
+        public static function saveUpload($file, string $folder = 'uploads'): ?string
     {
         if (!$file || !$file->isValid()) {
             return null;
@@ -155,12 +117,11 @@ class Helpers
                 
                 return $upload['secure_url'];
             } catch (\Exception $e) {
-                // Fallback to local storage if Cloudinary fails
+                \Log::error('Cloudinary Upload Failed: ' . $e->getMessage());
                 return $file->store($folder, 'public');
             }
         }
         
-        // Fallback to local storage
         return $file->store($folder, 'public');
     }
 
