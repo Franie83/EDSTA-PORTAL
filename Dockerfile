@@ -46,11 +46,13 @@ ENV LOG_CHANNEL stderr
 # Switch back to unprivileged user for runtime
 # Setup manual startup script
 
-USER www-data
-
+# Setup custom entrypoint (must run as root to chmod)
 COPY clear-cache.sh /usr/local/bin/clear-cache.sh
 RUN chmod +x /usr/local/bin/clear-cache.sh
 ENTRYPOINT ["/usr/local/bin/clear-cache.sh"]
+
+USER www-data
+
 
 # Ensure no stale caches from previous builds
 RUN rm -f bootstrap/cache/*.php
