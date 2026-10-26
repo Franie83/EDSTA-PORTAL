@@ -11,10 +11,10 @@
 <div class="container py-4">
   <form class="filter-bar row g-2" method="GET">
     {{-- Search --}}
-    <div class="col-12 col-md-4"><input type="search" name="q" class="form-control" placeholder="Search attractions…" value="{{ request('q') }}"></div>
+    <div class="col-12 col-md-4 col-lg-3"><input type="search" name="q" class="form-control" placeholder="Search attractions…" value="{{ request('q') }}"></div>
 
     {{-- Category --}}
-    <div class="col-6 col-md-2">
+    <div class="col-6 col-md-2 col-lg-2">
       <select name="category" class="form-select">
         <option value="">All Categories</option>
         @foreach($categories as $cat)
@@ -24,7 +24,7 @@
     </div>
 
     {{-- City --}}
-    <div class="col-6 col-md-2">
+    <div class="col-6 col-md-2 col-lg-2">
       <select name="city" class="form-select">
         <option value="">All Cities</option>
         @foreach($cities as $city)
@@ -34,15 +34,15 @@
     </div>
 
     {{-- Price Range --}}
-    <div class="col-4 col-md-2">
+    <div class="col-6 col-md-2 col-lg-1">
       <input type="number" name="min_price" class="form-control" placeholder="Min ₦" value="{{ request('min_price') }}" min="0">
     </div>
-    <div class="col-4 col-md-2">
+    <div class="col-6 col-md-2 col-lg-1">
       <input type="number" name="max_price" class="form-control" placeholder="Max ₦" value="{{ request('max_price') }}" min="0">
     </div>
 
     {{-- Rating --}}
-    <div class="col-4 col-md-2">
+    <div class="col-6 col-md-2 col-lg-1">
       <select name="min_rating" class="form-select">
         <option value="">⭐ Any Rating</option>
         @for($i=1;$i<=5;$i++)
@@ -52,7 +52,7 @@
     </div>
 
     {{-- Sort & Submit --}}
-    <div class="col-6 col-md-2">
+    <div class="col-6 col-md-2 col-lg-1">
       <select name="sort" class="form-select">
         <option value="">Sort by</option>
         <option value="popular" {{ request('sort')=='popular'?'selected':'' }}>Most Popular</option>
@@ -61,7 +61,7 @@
         <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: High–Low</option>
       </select>
     </div>
-    <div class="col-6 col-md-2">
+    <div class="col-12 col-md-12 col-lg-1">
       <button class="btn btn-blue w-100" type="submit"><i class="bi bi-search me-1"></i>Filter</button>
     </div>
   </form>
