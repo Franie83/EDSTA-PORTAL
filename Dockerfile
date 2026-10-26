@@ -6,7 +6,6 @@ USER root
 RUN install-php-extensions gd
 
 # Drop back to unprivileged user
-USER www-data
 
 
 # Force Render to use port 10000
@@ -38,4 +37,11 @@ ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
 
 # Run the deploy script on startup
+# Set correct permissions for Laravel directories
+RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+# Switch back to unprivileged user for runtime
+USER www-data
+
 CMD ["/etc/entrypoint.d/50-laravel-automations.sh"]
