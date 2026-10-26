@@ -17,6 +17,10 @@ ENV PORT=10000
 # Copy application code
 COPY . /var/www/html
 
+# Create necessary directories and set permissions BEFORE composer install
+RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
 
@@ -37,9 +41,6 @@ ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
 
 # Run the deploy script on startup
-# Set correct permissions for Laravel directories
-RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
 
 # Switch back to unprivileged user for runtime
 USER www-data
