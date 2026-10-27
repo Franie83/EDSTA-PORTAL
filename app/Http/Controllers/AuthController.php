@@ -64,7 +64,7 @@ class AuthController extends Controller
             'role'       => $request->role,
         ]);
 
-        // ─── Auto‑create pending offering based on role ───
+        // â”€â”€â”€ Autoâ€‘create pending offering based on role â”€â”€â”€
         switch ($user->role) {
             case 'Guide':
                 Guide::create([
@@ -109,7 +109,7 @@ class AuthController extends Controller
                 break;
 
             default:
-                // Tourist or other roles – no auto‑creation
+                // Tourist or other roles â€“ no autoâ€‘creation
                 break;
         }
 
@@ -140,16 +140,66 @@ class AuthController extends Controller
      * Demo quick-login for prototyping / local development only.
      * TEMPORARILY ENABLED FOR TESTING - Disable in production!
      */
-    public function quickLogin(string $role)
+    public function showDemoAccess(string $role)
     {
-                // Passwordless demo login must never be available in production.
-        if (app()->environment('production')) {
-            abort(404);
+        $allowedRoles = [
+            'superadmin', 'admin', 'tourist', 'guide',
+            'hotel', 'restaurant', 'touroperator', 'clublounge',
+        ];
+
+        abort_unless(in_array($role, $allowedRoles, true), 404);
+        abort_unless(config('app.demo_login_enabled', false), 404);
+        abort_unless(trim((string) config('app.demo_access_secret', '')) !== '', 404);
+
+        return view('auth.demo-access', compact('role'));
+    }
+
+    public function authorizeDemoAccess(Request $request, string $role)
+    {
+        $allowedRoles = [
+            'superadmin', 'admin', 'tourist', 'guide',
+            'hotel', 'restaurant', 'touroperator', 'clublounge',
+        ];
+
+        abort_unless(in_array($role, $allowedRoles, true), 404);
+        abort_unless(config('app.demo_login_enabled', false), 404);
+
+        $configuredSecret = (string) config('app.demo_access_secret', '');
+        abort_if($configuredSecret === '', 404);
+
+        $request->validate([
+            'demo_secret' => ['required', 'string', 'max:512'],
+        ]);
+
+        if (!hash_equals($configuredSecret, (string) $request->input('demo_secret'))) {
+            return back()
+                ->withErrors(['demo_secret' => 'The demo access secret is incorrect.'])
+                ->withInput([]);
         }
 
-        // Explicit opt-in is required in non-production environments.
-        if (!config('app.demo_login_enabled', false)) {
-            abort(404);
+        $request->session()->regenerate();
+        $request->session()->put('demo_access_authorized', true);
+        $request->session()->put('demo_access_expires_at', now()->addMinutes(30)->timestamp);
+
+        return redirect()->route('auth.quick_login', ['role' => $role]);
+    }
+    public function quickLogin(string $role)
+    {
+        $allowedRoles = [
+            'superadmin', 'admin', 'tourist', 'guide',
+            'hotel', 'restaurant', 'touroperator', 'clublounge',
+        ];
+
+        abort_unless(in_array($role, $allowedRoles, true), 404);
+        abort_unless(config('app.demo_login_enabled', false), 404);
+        abort_unless(trim((string) config('app.demo_access_secret', '')) !== '', 404);
+
+        $authorized = session('demo_access_authorized') === true;
+        $expiresAt = (int) session('demo_access_expires_at', 0);
+
+        if (!$authorized || $expiresAt < now()->timestamp) {
+            session()->forget(['demo_access_authorized', 'demo_access_expires_at']);
+            return redirect()->route('auth.demo_access', ['role' => $role]);
         }
 // TEMPORARILY COMMENTED OUT FOR TESTING
         // if (app()->isProduction()) {

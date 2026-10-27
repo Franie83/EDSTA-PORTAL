@@ -45,6 +45,8 @@ Route::post('/auth/login',             [AuthController::class, 'login'])->name('
 Route::get('/auth/register',           [AuthController::class, 'showRegister'])->name('auth.register');
 Route::post('/auth/register',          [AuthController::class, 'register'])->name('auth.register_post');
 Route::get('/auth/logout',             [AuthController::class, 'logout'])->name('auth.logout');
+Route::get('/auth/demo-access/{role}', [AuthController::class, 'showDemoAccess'])->name('auth.demo_access');
+Route::post('/auth/demo-access/{role}', [AuthController::class, 'authorizeDemoAccess'])->name('auth.demo_access.post');
 Route::get('/auth/quick-login/{role}', [AuthController::class, 'quickLogin'])->name('auth.quick_login');
 
 // Section

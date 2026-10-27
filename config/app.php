@@ -43,6 +43,7 @@ return [
 
     // Demo role impersonation is disabled by default.
     'demo_login_enabled' => (bool) env('DEMO_LOGIN_ENABLED', false),
+    'demo_access_secret' => env('DEMO_ACCESS_SECRET', ''),
 
     /*
     |--------------------------------------------------------------------------
