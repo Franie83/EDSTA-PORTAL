@@ -177,4 +177,12 @@ class Helpers
     {
         return strtoupper(Str::random(3) . now()->format('ymd') . Str::random(2));
     }
+
+    /**
+     * Get a CMS setting value by key.
+     */
+    public static function setting(string $key, $default = null)
+    {
+        return \App\Models\CmsSetting::where('key', $key)->value('value') ?? $default;
+    }
 }
