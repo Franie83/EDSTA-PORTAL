@@ -136,7 +136,7 @@
     }
     [data-theme="dark"] body {
       background-color: #0f172a !important;
-      background-image: none !important; /* Remove the light background image */
+      background-image: url('{{ asset('images/hero-background.jpg') }}') !important;
       color: #cbd5e1 !important;
     }
     [data-theme="dark"] body.has-hero::before {
