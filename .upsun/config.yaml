@@ -1,24 +1,51 @@
-# Upsun configuration to use the existing Dockerfile
+# Upsun configuration for Laravel
 applications:
   edosta:
-    type: "docker"
+    type: php:8.5
     build:
       flavor: none
-    # Tell Upsun to use the Dockerfile in the root
-    source:
-      root: "."
-    # Expose the web port (adjust if your Dockerfile uses a different port)
+    hooks:
+      build: |
+        set -ex
+        composer install --no-progress --no-interaction --optimize-autoloader --no-dev
+        echo >> .environment 'export APP_KEY="base64:$(echo $PLATFORM_PROJECT_ENTROPY | base32 --decode | base64)"'
+        echo >> .environment 'export APP_URL=$(echo $PLATFORM_ROUTES | base64 --decode | jq -r "to_entries[] | select(.value.primary == true) | .key")'
+      deploy: |
+        set -ex
+        php artisan migrate --force
+        php artisan optimize
     web:
-      commands:
-        start: "apache2-foreground"
       locations:
         /:
-          passthru: true
-
+          root: public
+          passthru: /index.php
+          index: [index.php]
+        /storage:
+          root: storage/app/public
+          scripts: false
+    runtime:
+      extensions:
+        - pdo_pgsql
+        - gd
+    variables:
+      env:
+        APP_ENV: production
+        APP_DEBUG: false
+        DB_CONNECTION: pgsql
+        FILESYSTEM_DISK: cloudinary
+    relationships:
+      db: {}
+    mounts:
+      storage/app/public: { source: storage }
+      storage/app/private: { source: storage }
+      storage/framework/views: { source: storage }
+      storage/framework/sessions: { source: storage }
+      storage/logs: { source: storage }
+      storage/framework/cache: { source: tmp }
+      bootstrap/cache: { source: tmp }
 services:
   db:
     type: postgresql:18
-
 routes:
   https://{default}/:
     type: upstream
