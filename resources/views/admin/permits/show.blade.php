@@ -9,7 +9,7 @@
 
 <div class="card border-0 shadow-sm mx-auto" style="max-width: 900px; background: #fffdf5; border: 10px solid #c9a227 !important; padding: 40px; position: relative;">
     <div class="text-center mb-5">
-        <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" style="width:80px;" class="mb-3" alt="Logo">
+        <img src="{{ \App\Helpers\Helpers::imageUrl(\App\Models\CmsSetting::first()?->logo ?? '') }}" style="width:80px;" class="mb-3" alt="Logo">
         <h2 class="fw-bold" style="font-family: 'Playfair Display', serif; color: #0a1a33;">EDO STATE TOURISM AGENCY</h2>
         <h4 class="text-muted">Certificate of Permit</h4>
     </div>

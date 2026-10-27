@@ -30,7 +30,7 @@
                                     @if(!empty($settings['site_logo']))
                                         <div class="mx-auto mb-3 d-flex align-items-center justify-content-center bg-white rounded shadow-sm" style="width:120px; height:120px;">
     {{-- Switch back to the original JPG for sharpness --}}
-    <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" alt="Logo" style="width:90px; height:auto;">
+    <img src="{{ \App\Helpers\Helpers::imageUrl(\App\Models\CmsSetting::first()?->logo ?? '') }}" alt="Logo" style="width:90px; height:auto;">
 </div>
                                     @else
                                         <i class="bi bi-compass-fill text-gold mb-3" style="font-size: 3rem;"></i>

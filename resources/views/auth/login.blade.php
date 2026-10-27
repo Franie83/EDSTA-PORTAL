@@ -7,7 +7,7 @@
       <div class="col-md-5 col-lg-4">
         <div class="text-center mb-4">
           <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle shadow" style="width:100px; height:100px; background-color: #ffffff !important; overflow: hidden;">
-              <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#loginLogoModal">
+              <img src="{{ \App\Helpers\Helpers::imageUrl(\App\Models\CmsSetting::first()?->logo ?? '') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#loginLogoModal">
           </div>
           <h2 class="text-white fw-bold" style="font-family:'Playfair Display',serif">Welcome Back</h2>
           <p class="text-white-50 small">Sign in to your Edo Tourism account</p>
@@ -85,7 +85,7 @@ function togglePwd(){
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center p-4">
-        <img src="{{ asset('storage/cms/A5hmYtSfi6ptkFzKdl1VPeXF6SOkxQACuowGdbm0.jpg') }}" alt="Site Logo" class="img-fluid" style="max-height: 60vh; object-fit: contain;">
+        <img src="{{ \App\Helpers\Helpers::imageUrl(\App\Models\CmsSetting::first()?->logo ?? '') }}" alt="Site Logo" class="img-fluid" style="max-height: 60vh; object-fit: contain;">
       </div>
       <div class="modal-footer border-0 justify-content-center pb-4">
         <button type="button" class="btn btn-gold px-4" data-bs-dismiss="modal" style="border-radius: 20px;">Close</button>
