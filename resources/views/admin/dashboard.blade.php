@@ -13,18 +13,18 @@
 </div>
 
 <div class="row g-3 mb-4">
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_users']) }}</div><div class="small text-muted">Users</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_attractions']) }}</div><div class="small text-muted">Attractions</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_bookings']) }}</div><div class="small text-muted">Bookings</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_guides']) }}</div><div class="small text-muted">Guides</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_hotels']) }}</div><div class="small text-muted">Hotels</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_restaurants']) }}</div><div class="small text-muted">Restaurants</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_events']) }}</div><div class="small text-muted">Events</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_clubs']) }}</div><div class="small text-muted">Clubs</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number text-gold">{{ number_format($stats['total_permits']) }}</div><div class="small text-muted">Permits</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['total_staff']) }}</div><div class="small text-muted">Staff</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['pending_bookings']) }}</div><div class="small text-muted">Pending Bookings</div></div></div>
-    <div class="col-6 col-md-3 col-lg-2"><div class="stat-card"><div class="stat-number">{{ number_format($stats['pending_guides']) }}</div><div class="small text-muted">Pending Guides</div></div></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.users') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Users"><div class="stat-number">{{ number_format($stats['total_users']) }}</div><div class="small text-muted">Users</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.attractions') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Attractions"><div class="stat-number">{{ number_format($stats['total_attractions']) }}</div><div class="small text-muted">Attractions</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.bookings') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Bookings"><div class="stat-number">{{ number_format($stats['total_bookings']) }}</div><div class="small text-muted">Bookings</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.guides') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Guides"><div class="stat-number">{{ number_format($stats['total_guides']) }}</div><div class="small text-muted">Guides</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.hotels') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Hotels"><div class="stat-number">{{ number_format($stats['total_hotels']) }}</div><div class="small text-muted">Hotels</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.restaurants') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Restaurants"><div class="stat-number">{{ number_format($stats['total_restaurants']) }}</div><div class="small text-muted">Restaurants</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.events') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Events"><div class="stat-number">{{ number_format($stats['total_events']) }}</div><div class="small text-muted">Events</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.clubs-lounges.index') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Clubs"><div class="stat-number">{{ number_format($stats['total_clubs']) }}</div><div class="small text-muted">Clubs</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.permits.index') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Permits"><div class="stat-number text-gold">{{ number_format($stats['total_permits']) }}</div><div class="small text-muted">Permits</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.staff.index') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Staff"><div class="stat-number">{{ number_format($stats['total_staff']) }}</div><div class="small text-muted">Staff</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.bookings') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Pending Bookings"><div class="stat-number">{{ number_format($stats['pending_bookings']) }}</div><div class="small text-muted">Pending Bookings</div></a></div>
+    <div class="col-6 col-md-3 col-lg-2"><a href="{{ route('admin.guides') }}" class="stat-card d-block text-decoration-none" style="cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;" aria-label="Open Pending Guides"><div class="stat-number">{{ number_format($stats['pending_guides']) }}</div><div class="small text-muted">Pending Guides</div></a></div>
 </div>
 
 @php
@@ -99,4 +99,19 @@ $hasPending = ($stats['pending_hotels'] - 0) + ($stats['pending_restaurants'] - 
     </div>
 </div>
 
+
+<style>
+    .stat-card[href] {
+        height: 100%;
+        border: 1px solid rgba(139, 0, 0, 0.08);
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .stat-card[href]:hover,
+    .stat-card[href]:focus-visible {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 22px rgba(91, 0, 0, 0.14);
+        border-color: #C9A227;
+        outline: none;
+    }
+</style>
 @endsection

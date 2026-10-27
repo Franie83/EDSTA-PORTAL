@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Certificate')
 @section('page_title', 'Certificate Details')
 @section('content')
@@ -10,7 +10,7 @@
 <div class="card border-0 shadow-sm mx-auto" style="max-width: 900px; background: #fffdf5; border: 10px solid #c9a227 !important; padding: 40px; position: relative;">
     <div class="text-center mb-5">
         <img src="{{ \App\Helpers\Helpers::imageUrl(\App\Helpers\Helpers::setting('site_logo') ?? '') }}" style="width:80px;" class="mb-3" alt="Logo">
-        <h2 class="fw-bold" style="font-family: 'Playfair Display', serif; color: #0a1a33;">EDO STATE TOURISM AGENCY</h2>
+        <h2 class="fw-bold" style="font-family: 'Playfair Display', serif; color: #5B0000;">EDO STATE TOURISM AGENCY</h2>
         <h4 class="text-muted">Certificate of Permit</h4>
     </div>
     
@@ -21,7 +21,7 @@
             <p class="text-muted">{{ $permit->address }}</p>
             
             <p class="mt-4">Has been officially registered and granted permission to operate as a <strong>{{ $permit->business_type }}</strong> in Edo State for the period:</p>
-            <p class="fw-bold fs-5">{{ $permit->issue_date->format('F d, Y') }} – {{ $permit->expiry_date->format('F d, Y') }}</p>
+            <p class="fw-bold fs-5">{{ $permit->issue_date->format('F d, Y') }} â€“ {{ $permit->expiry_date->format('F d, Y') }}</p>
             
             <p class="mt-3"><strong>Certificate No:</strong> {{ $permit->certificate_number }}</p>
             <p><strong>Status:</strong> 
@@ -56,7 +56,7 @@
         </div>
         <div class="col-4 text-center">
             <p class="small text-muted mb-0">Official Use Only</p>
-            <p class="small text-muted">Paid: ₦{{ number_format($permit->amount_paid) }}</p>
+            <p class="small text-muted">Paid: â‚¦{{ number_format($permit->amount_paid) }}</p>
         </div>
     </div>
 </div>

@@ -4,7 +4,7 @@
   <link rel="icon" type="image/png" href="{{ \App\Helpers\Helpers::imageUrl($settings['site_favicon'] ?? 'cms/favicon.png') }}">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>@yield('title', ($settings['site_name'] ?? 'Edo Odyssey') . ' – Official Edo State Tourism Platform')</title>
+  <title>@yield('title', ($settings['site_name'] ?? 'Edo Odyssey') . ' â€“ Official Edo State Tourism Platform')</title>
   <meta name="description" content="{{ $settings['meta_description'] ?? 'Explore Edo State cultural heritage and tourism' }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -101,7 +101,7 @@
     ::-webkit-scrollbar-track { background: #f1f1f1; }
     ::-webkit-scrollbar-thumb { background: var(--gold-500); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--gold-600); }
-    /* ══════════ Global Background Image (from CMS hero_image) ══════════ */
+    /* â•â•â•â•â•â•â•â•â•â• Global Background Image (from CMS hero_image) â•â•â•â•â•â•â•â•â•â• */
     body {
         background-color: #f5f7fa;
         background-image: url('{{ asset('images/hero-background.jpg') }}');
@@ -119,11 +119,11 @@
         z-index: -1;
         pointer-events: none;
     }
-    /* Exempt home page hero section — it has its own full-bleed background */
+    /* Exempt home page hero section â€” it has its own full-bleed background */
     body:has(.hero-section)::before {
         background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.92) 60%, rgba(255,255,255,0.95) 100%);
     }
-    /* Admin panel unaffected — different layout */
+    /* Admin panel unaffected â€” different layout */
     .admin-body {
         background-image: none !important;
     }
@@ -163,8 +163,13 @@
       border-color: #334155 !important;
     }
     [data-theme="dark"] .hero-overlay {
-      background: rgba(0, 0, 0, 0.7) !important;
-    }
+    background: linear-gradient(
+        115deg,
+        rgba(65, 0, 0, 0.96) 0%,
+        rgba(139, 0, 0, 0.91) 55%,
+        rgba(91, 0, 0, 0.84) 100%
+    ) !important;
+}
     /* Toggle Button Style */
     .theme-toggle-btn {
       background: rgba(255,255,255,0.1);
@@ -394,7 +399,7 @@
     </div>
   </div>
   <div class="footer-bottom py-2 text-center">
-    <small class="text-white-50">{{ $settings['footer_text'] ?? '© 2026 Edo State Tourism Agency. All rights reserved.' }}</small>
+    <small class="text-white-50">{{ $settings['footer_text'] ?? 'Â© 2026 Edo State Tourism Agency. All rights reserved.' }}</small>
   </div>
 </footer>
 

@@ -1,7 +1,7 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Clubs & Lounges - Edo Tourism')
 @section('content')
-<div class="page-hero py-5" style="background: linear-gradient(rgba(10,26,51,0.85), rgba(10,26,51,0.85)), url('{{ !empty($settings['hero_image']) ? \App\Helpers\Helpers::imageUrl($settings['hero_image']) : 'https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600' }}') center/cover;">
+<div class="page-hero py-5" style="background: linear-gradient(rgba(91,0,0,0.93), rgba(91,0,0,0.93)), url('{{ !empty($settings['hero_image']) ? \App\Helpers\Helpers::imageUrl($settings['hero_image']) : 'https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600' }}') center/cover;">
   <div class="container text-center text-white py-4">
     <h1 class="display-5 fw-bold" style="font-family:'Playfair Display',serif">Clubs & Lounges</h1>
     <p class="lead mb-0">Experience Edo State's vibrant nightlife</p>

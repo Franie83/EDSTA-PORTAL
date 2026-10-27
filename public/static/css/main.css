@@ -192,3 +192,77 @@ img { max-width: 100%; }
 .badge-restaurant { background: var(--restaurant); color: #fff; }
 .border-gold { border-color: var(--gold-500) !important; }
 .min-width-0 { min-width: 0; }
+
+/* =========================================================
+   EDO ODYSSEY GLOBAL BLOOD RED & GOLD THEME OVERRIDE
+   Local verification first — do not deploy until approved.
+   ========================================================= */
+:root {
+    --blue-900: #5B0000;
+    --blue-800: #8B0000;
+    --blue-700: #B22222;
+    --blue-600: #A31224;
+    --blue-100: #FBEAEC;
+}
+
+.main-navbar,
+.main-navbar.navbar,
+nav.main-navbar {
+    background: linear-gradient(135deg, #5B0000 0%, #8B0000 65%, #A31224 100%) !important;
+}
+
+.top-banner,
+.site-footer,
+.admin-sidebar {
+    background-color: #5B0000 !important;
+}
+
+.hero-section .hero-overlay {
+    background: linear-gradient(
+        115deg,
+        rgba(65, 0, 0, 0.96) 0%,
+        rgba(139, 0, 0, 0.91) 55%,
+        rgba(91, 0, 0, 0.84) 100%
+    ) !important;
+}
+
+.page-hero,
+.quick-login-banner {
+    background: linear-gradient(135deg, #5B0000 0%, #8B0000 65%, #B22222 100%) !important;
+}
+
+.btn-blue,
+.btn-outline-blue:hover {
+    background-color: #8B0000 !important;
+    border-color: #8B0000 !important;
+    color: #FFFFFF !important;
+}
+
+.btn-blue:hover {
+    background-color: #B22222 !important;
+    border-color: #B22222 !important;
+}
+
+.text-blue,
+.card-title.text-blue,
+.pagination .page-link {
+    color: #8B0000 !important;
+}
+
+.bg-blue-100,
+.badge.bg-blue-100 {
+    background-color: #FBEAEC !important;
+}
+
+.section-title {
+    color: #5B0000;
+}
+
+.section-divider {
+    background: linear-gradient(90deg, #C9A227, #A31224);
+}
+
+a:not(.btn):hover {
+    color: #B22222;
+}
+/* End global theme override */

@@ -1,7 +1,7 @@
-@extends('layouts.app')
-@section('title', 'Login – Edo Tourism')
+﻿@extends('layouts.app')
+@section('title', 'Login â€“ Edo Tourism')
 @section('content')
-<div class="min-vh-100 d-flex align-items-center" style="background: linear-gradient(rgba(10,26,51,0.85), rgba(10,26,51,0.85)), url('{{ asset('images/hero-background.jpg') }}') center/cover no-repeat;">
+<div class="min-vh-100 d-flex align-items-center" style="background: linear-gradient(rgba(91,0,0,0.93), rgba(91,0,0,0.93)), url('{{ asset('images/hero-background.jpg') }}') center/cover no-repeat;">
   <div class="container py-5">
     <div class="row justify-content-center">
       <div class="col-md-5 col-lg-4">
@@ -29,7 +29,7 @@
                 <label class="form-label fw-semibold small">Password</label>
                 <div class="input-group">
                   <span class="input-group-text bg-blue-100 border-0"><i class="bi bi-lock text-blue"></i></span>
-                  <input type="password" name="password" id="pwd" class="form-control border-0 bg-blue-100" placeholder="••••••••" required>
+                  <input type="password" name="password" id="pwd" class="form-control border-0 bg-blue-100" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
                   <button class="btn bg-blue-100 border-0" type="button" onclick="togglePwd()"><i class="bi bi-eye" id="eyeIcon"></i></button>
                 </div>
               </div>
