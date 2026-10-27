@@ -104,7 +104,7 @@
     /* ══════════ Global Background Image (from CMS hero_image) ══════════ */
     body {
         background-color: #f5f7fa;
-        background-image: url('{{ \App\Helpers\Helpers::imageUrl(\App\Models\CmsSetting::get('hero_image', '')) }}');
+        background-image: url('{{ asset('images/hero-background.jpg') }}');
         background-size: cover;
         background-position: center center;
         background-attachment: fixed;
