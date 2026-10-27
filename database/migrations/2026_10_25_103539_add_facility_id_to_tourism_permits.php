@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::table('tourism_permits', function (Blueprint $table) {
-            $table->unsignedBigInteger('facility_id')->nullable()->after('user_id');
-            $table->string('facility_type')->nullable()->after('facility_id');
+            $table->unsignedBigInteger('facility_id')->nullable();
+            $table->string('facility_type')->nullable();
         });
     }
     public function down(): void {
