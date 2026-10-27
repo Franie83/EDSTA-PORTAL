@@ -1,72 +1,19 @@
-# Upsun configuration, generated using AI
+# Upsun configuration to use the existing Dockerfile
 applications:
   edosta:
-    type: php:8.5
-
+    type: "docker"
     build:
       flavor: none
-
-    hooks:
-      build: |
-        set -ex
-        composer install --no-progress --no-interaction --optimize-autoloader --no-dev
-
-        # Generate Laravel APP_KEY from platform entropy
-        echo >> .environment 'export APP_KEY="base64:$(echo $PLATFORM_PROJECT_ENTROPY | base32 --decode | base64)"'
-
-        # Set DB_URL for PostgreSQL service
-        echo >> .environment 'export DB_URL="postgresql://$DB_USERNAME:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_PATH"'
-
-        # Set APP_URL from primary route
-        echo >> .environment 'export APP_URL=$(echo $PLATFORM_ROUTES | base64 --decode | jq -r "to_entries[] | select(.value.primary == true) | .key")'
-
-      deploy: |
-        set -ex
-        php artisan migrate --force
-        php artisan optimize
-
+    # Tell Upsun to use the Dockerfile in the root
+    source:
+      root: "."
+    # Expose the web port (adjust if your Dockerfile uses a different port)
     web:
+      commands:
+        start: "apache2-foreground"
       locations:
         /:
-          root: public
-          passthru: /index.php
-          index: [index.php]
-        /storage:
-          root: storage/app/public
-          scripts: false
-
-    runtime:
-      extensions:
-        - pdo_pgsql
-        - gd
-
-    variables:
-      env:
-        APP_ENV: production
-        APP_DEBUG: false
-        DB_CONNECTION: pgsql
-        FILESYSTEM_DISK: cloudinary
-        AUTORUN_ENABLED: "false"
-
-    relationships:
-      db: {}
-
-    mounts:
-      storage/app/public:
-        source: storage
-      storage/app/private:
-        source: storage
-      storage/framework/views:
-        source: storage
-      storage/framework/sessions:
-        source: storage
-      storage/logs:
-        source: storage
-
-      storage/framework/cache:
-        source: tmp
-      bootstrap/cache:
-        source: tmp
+          passthru: true
 
 services:
   db:
