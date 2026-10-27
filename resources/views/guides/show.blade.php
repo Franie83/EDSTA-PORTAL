@@ -27,7 +27,7 @@
           <div class="carousel-inner rounded-3 shadow">
             @foreach($guide->images as $i => $img)
               <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
-                <img src="{{ asset('storage/' . $img->image_path) }}" class="d-block w-100" alt="{{ $guide->user?->full_name }}" style="height:400px;object-fit:cover;">
+                <img src="{{ \App\Helpers\Helpers::imageUrl($img->image_path) }}" class="d-block w-100" alt="{{ $guide->user?->full_name }}" style="height:400px;object-fit:cover;">
               </div>
             @endforeach
           </div>

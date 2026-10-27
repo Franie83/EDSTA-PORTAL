@@ -82,7 +82,7 @@
               <input type="file" name="image" class="form-control" accept="image/*">
               @if($attraction->image_url)
                 <small class="text-muted">Current: 
-                  <a href="{{ asset('storage/' . $attraction->image_url) }}" target="_blank">View</a>
+                  <a href="{{ \App\Helpers\Helpers::imageUrl($attraction->image_url) }}" target="_blank">View</a>
                 </small>
               @endif
             </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Our Team - Edo Tourism')
 @section('content')
-<div class="page-hero py-5" style="background: linear-gradient(rgba(10,26,51,0.8), rgba(10,26,51,0.8)), url('{{ !empty($settings['hero_image']) ? asset('storage/' . $settings['hero_image']) : 'https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600' }}') center/cover;">
+<div class="page-hero py-5" style="background: linear-gradient(rgba(10,26,51,0.8), rgba(10,26,51,0.8)), url('{{ !empty($settings['hero_image']) ? \App\Helpers\Helpers::imageUrl($settings['hero_image']) : 'https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600' }}') center/cover;">
   <div class="container text-center text-white py-4">
     <h1 class="display-5 fw-bold" style="font-family:'Playfair Display',serif">Our Team</h1>
     <p class="lead mb-0">The dedicated staff of the Edo State Tourism Agency</p>

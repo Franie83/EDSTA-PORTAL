@@ -24,7 +24,7 @@
           <div class="carousel-inner rounded-3 shadow">
             @foreach($hotel->images as $i => $img)
               <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
-                <img src="{{ asset('storage/' . $img->image_path) }}" class="d-block w-100" alt="{{ $hotel->name }}" style="height:500px;object-fit:cover;">
+                <img src="{{ \App\Helpers\Helpers::imageUrl($img->image_path) }}" class="d-block w-100" alt="{{ $hotel->name }}" style="height:500px;object-fit:cover;">
               </div>
             @endforeach
           </div>

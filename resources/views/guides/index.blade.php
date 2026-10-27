@@ -59,7 +59,7 @@
           @if($guide->user?->avatar_url)
           <img src="{{ \App\Helpers\Helpers::imageUrl($guide->user->avatar_url) }}" class="guide-avatar mx-auto" alt="{{ $guide->user?->full_name }}">
           @elseif($guide->images && $guide->images->count() > 0)
-          <img src="{{ asset('storage/' . $guide->images->first()->image_path) }}" class="guide-avatar mx-auto" alt="{{ $guide->user?->full_name }}" style="object-fit: cover;">
+          <img src="{{ \App\Helpers\Helpers::imageUrl($guide->images->first()->image_path) }}" class="guide-avatar mx-auto" alt="{{ $guide->user?->full_name }}" style="object-fit: cover;">
           @else
           <div class="guide-avatar-placeholder mx-auto"><i class="bi bi-person-fill"></i></div>
           @endif

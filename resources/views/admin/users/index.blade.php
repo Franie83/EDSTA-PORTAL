@@ -27,7 +27,7 @@
           <td>
             <div class="d-flex align-items-center gap-2">
               @if($u->avatar_url)
-    <img src="{{ asset('storage/' . $u->avatar_url) }}" class="rounded-circle" style="width: 36px; height: 36px; object-fit: cover;" alt="Avatar">
+    <img src="{{ \App\Helpers\Helpers::imageUrl($u->avatar_url) }}" class="rounded-circle" style="width: 36px; height: 36px; object-fit: cover;" alt="Avatar">
 @else
     <div class="avatar-initials-sm flex-shrink-0">{{ $u->first_name[0] }}{{ $u->last_name[0] }}</div>
 @endif

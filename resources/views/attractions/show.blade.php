@@ -28,7 +28,7 @@
           <div class="carousel-inner rounded-3 shadow">
             @foreach($attraction->images as $i => $img)
               <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
-                <img src="{{ asset('storage/' . $img->image_path) }}"
+                <img src="{{ \App\Helpers\Helpers::imageUrl($img->image_path) }}"
                      class="d-block w-100" alt="{{ $attraction->name }}"
                      style="height:500px;object-fit:cover;">
               </div>
@@ -183,7 +183,7 @@
           // Use image_path if available, otherwise fallback to code
           $qrPath = $attraction->qrCode->image_path ?? 'qr_codes/' . $attraction->qrCode->code . '.svg';
         @endphp
-        <img src="{{ asset('storage/' . $qrPath) }}" width="120" alt="QR Code" class="qr-frame">
+        <img src="{{ \App\Helpers\Helpers::imageUrl($qrPath) }}" width="120" alt="QR Code" class="qr-frame">
         <p class="small text-muted mt-2">Scan to visit this attraction</p>
       </div>
       @endif

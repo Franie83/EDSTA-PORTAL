@@ -15,7 +15,7 @@
   <div class="row g-4">
     <div class="col-lg-8">
       @if($club->image_url)
-        <div class="detail-image mb-4"><img src="{{ asset('storage/' . $club->image_url) }}" class="img-fluid rounded-3" alt="{{ $club->name }}"></div>
+        <div class="detail-image mb-4"><img src="{{ \App\Helpers\Helpers::imageUrl($club->image_url) }}" class="img-fluid rounded-3" alt="{{ $club->name }}"></div>
       @endif
       <div class="mb-4">
         <h3 class="text-blue fw-bold">About {{ $club->name }}</h3>

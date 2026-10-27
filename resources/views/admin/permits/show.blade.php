@@ -41,7 +41,7 @@
     $stamp = \App\Models\CmsSetting::where('key', 'permit_agency_stamp')->first();
 @endphp
             @if($stamp && $stamp->value)
-                <img src="{{ asset('storage/' . $stamp->value) }}" style="width:120px; opacity:0.8;" alt="Stamp">
+                <img src="{{ \App\Helpers\Helpers::imageUrl($stamp->value) }}" style="width:120px; opacity:0.8;" alt="Stamp">
             @endif
         </div>
         <div class="col-4 text-center">
@@ -49,7 +49,7 @@
     $sig = \App\Models\CmsSetting::where('key', 'permit_dg_signature')->first();
 @endphp
             @if($sig && $sig->value)
-                <img src="{{ asset('storage/' . $sig->value) }}" style="width:150px; margin-bottom: 5px;" alt="Signature">
+                <img src="{{ \App\Helpers\Helpers::imageUrl($sig->value) }}" style="width:150px; margin-bottom: 5px;" alt="Signature">
             @endif
             <hr style="width: 80%; margin: 0 auto; border-top: 2px solid #000;">
             <p class="small fw-bold mt-1 mb-0">Director General</p>

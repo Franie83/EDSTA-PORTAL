@@ -92,7 +92,7 @@
                                     @foreach($hotel->images as $img)
                                     <div class="col-3 col-md-2">
                                         <div class="card border-0 shadow-sm position-relative">
-                                            <img src="{{ asset('storage/' . $img->image_path) }}" class="card-img-top rounded" style="height: 80px; object-fit: cover;">
+                                            <img src="{{ \App\Helpers\Helpers::imageUrl($img->image_path) }}" class="card-img-top rounded" style="height: 80px; object-fit: cover;">
                                             <a href="{{ route('dashboard.hotels.image_delete', $img->id) }}" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" style="padding: 2px 6px; font-size: 0.7rem;" onclick="return confirm('Delete this image?')">×</a>
                                         </div>
                                     </div>
