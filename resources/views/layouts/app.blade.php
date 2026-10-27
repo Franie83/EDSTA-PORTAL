@@ -16,8 +16,8 @@
       --gold-400: #e0b83a;
       --gold-500: #c9a227;
       --gold-600: #b08a1f;
-      --blue-800: #0d2447;
-      --blue-900: #0a1a33;
+      --blue-800: #8b0000;
+      --blue-900: #5b0000;
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .main-navbar { box-shadow: 0 4px 20px rgba(0,0,0,0.1); background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-800) 100%); }
@@ -29,7 +29,7 @@
     
     .mega-dropdown { border: none; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); padding: 0.5rem; min-width: 220px; animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     .mega-dropdown .dropdown-item { border-radius: 8px; padding: 0.6rem 1rem; transition: var(--transition); font-weight: 500; }
-    .mega-dropdown .dropdown-item:hover { background: rgba(26, 58, 107, 0.05); color: var(--blue-800); transform: translateX(4px); }
+    .mega-dropdown .dropdown-item:hover { background: rgba(139, 0, 0, 0.05); color: var(--blue-800); transform: translateX(4px); }
     .mega-dropdown .dropdown-item i { transition: var(--transition); }
     .mega-dropdown .dropdown-item:hover i { color: var(--gold-500) !important; transform: scale(1.1); }
     
@@ -191,7 +191,7 @@
 <div class="sticky-top">
 
   <!-- TOP BANNER -->
-  <div class="top-banner py-1 d-none d-md-block" style="background: #081628; border-bottom: 1px solid rgba(255,255,255,0.05);">
+  <div class="top-banner py-1 d-none d-md-block" style="background: #5b0000; border-bottom: 1px solid rgba(255,255,255,0.05);">
     <div class="container d-flex justify-content-between align-items-center">
       <div class="d-flex gap-3 small text-white-50">
         <span><i class="bi bi-telephone-fill me-1 text-gold"></i>{{ $settings['contact_phone'] ?? '+234 (0) 52 255 000' }}</span>
