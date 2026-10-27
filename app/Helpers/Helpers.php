@@ -38,14 +38,17 @@ class Helpers
             return asset('storage/' . $cleanPath);
         }
 
-        // If Cloudinary is configured, it's highly likely this was a Cloudinary image
-        // that lost its full URL in the database. Return the Cloudinary URL format.
-        $cloudName = env('CLOUDINARY_CLOUD_NAME');
+        // If Cloudinary is configured, reconstruct the URL without duplicating
+        // the edoodyssey folder if it is already included in the saved path.
+        $cloudName = config('services.cloudinary.cloud_name');
         if ($cloudName) {
-            // Try to guess the folder based on the path
-            return "https://res.cloudinary.com/{$cloudName}/image/upload/edoodyssey/{$cleanPath}";
+            $publicPath = Str::startsWith($cleanPath, 'edoodyssey/')
+                ? $cleanPath
+                : 'edoodyssey/' . $cleanPath;
+
+            return "https://res.cloudinary.com/{$cloudName}/image/upload/{$publicPath}";
         }
-        
+
         return $placeholder;
     }
 
@@ -86,20 +89,20 @@ class Helpers
     }
 
     /**
-     * Handle file upload and return path.
-     * Uploads to Cloudinary if configured, otherwise falls back to local storage.
+     * Upload a file to Cloudinary when configured, otherwise use local storage.
+     * If Cloudinary is configured but unavailable, fail explicitly instead of
+     * silently saving a temporary local copy on production hosting.
      */
-        public static function saveUpload($file, string $folder = 'uploads'): ?string
+    public static function saveUpload($file, string $folder = 'uploads'): ?string
     {
         if (!$file || !$file->isValid()) {
             return null;
         }
-        
-        // Check if Cloudinary is configured
-        $cloudName = env('CLOUDINARY_CLOUD_NAME');
-        $apiKey = env('CLOUDINARY_API_KEY');
-        $apiSecret = env('CLOUDINARY_API_SECRET');
-        
+
+        $cloudName = config('services.cloudinary.cloud_name');
+        $apiKey = config('services.cloudinary.api_key');
+        $apiSecret = config('services.cloudinary.api_secret');
+
         if ($cloudName && $apiKey && $apiSecret) {
             try {
                 $cloudinary = new Cloudinary([
@@ -109,22 +112,64 @@ class Helpers
                         'api_secret' => $apiSecret,
                     ],
                 ]);
-                
+
                 $upload = $cloudinary->uploadApi()->upload($file->getRealPath(), [
-                    'folder' => 'edoodyssey/' . $folder,
+                    'folder' => 'edoodyssey/' . trim($folder, '/'),
                     'public_id' => time() . '_' . Str::random(10),
+                    'resource_type' => 'image',
                 ]);
-                
-                return $upload['secure_url'];
-            } catch (\Exception $e) {
-                \Log::error('Cloudinary Upload Failed: ' . $e->getMessage());
-                return $file->store($folder, 'public');
+
+                $secureUrl = $upload['secure_url'] ?? null;
+
+                if (!is_string($secureUrl) || !Str::startsWith($secureUrl, 'https://')) {
+                    throw new \RuntimeException('Cloudinary did not return a valid HTTPS image URL.');
+                }
+
+                return $secureUrl;
+            } catch (\Throwable $e) {
+                \Log::error('Cloudinary upload failed.', [
+                    'folder' => $folder,
+                    'exception' => get_class($e),
+                    'message' => $e->getMessage(),
+                ]);
+
+                throw new \RuntimeException(
+                    'Image upload failed. Please check the Cloudinary configuration and try again.',
+                    0,
+                    $e
+                );
             }
         }
-        
-        return $file->store($folder, 'public');
-    }
 
+        // Production uploads must use persistent cloud storage.
+        $hasAnyCloudinaryCredential = $cloudName || $apiKey || $apiSecret;
+        $hasAllCloudinaryCredentials = $cloudName && $apiKey && $apiSecret;
+
+        if ($hasAnyCloudinaryCredential && !$hasAllCloudinaryCredentials) {
+            throw new \RuntimeException(
+                'Cloudinary configuration is incomplete. Please configure all required credentials.'
+            );
+        }
+
+        if (app()->environment('production')) {
+            throw new \RuntimeException(
+                'Cloudinary is not configured. Image uploads are unavailable until cloud storage is configured.'
+            );
+        }
+
+        // Local storage fallback is for development only.
+        try {
+            return $file->store($folder, 'public') ?: null;
+        } catch (\Throwable $e) {
+            \Log::error('Local image upload failed.', [
+                'folder' => $folder,
+                'exception' => get_class($e),
+                'message' => $e->getMessage(),
+            ]);
+
+            throw new \RuntimeException('Image upload failed. Please try again.', 0, $e);
+        }
+    }
     /**
      * Generate an 8-char unique reference code.
      */

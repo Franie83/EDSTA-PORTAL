@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="{{ asset('storage/' . ($settings['site_logo'] ?? 'cms/favicon.png')) }}">
+  <link rel="icon" type="image/png" href="{{ \App\Helpers\Helpers::imageUrl($settings['site_favicon'] ?? 'cms/favicon.png') }}">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', ($settings['site_name'] ?? 'Edo Odyssey') . ' – Official Edo State Tourism Platform')</title>
@@ -217,7 +217,7 @@
       <div class="navbar-brand d-flex align-items-center gap-3">
         @if(isset($settings['site_logo']) && $settings['site_logo'])
           <!-- Left Logo purely triggers modal -->
-          <div style="width: 44px; height: 44px; background-color: #fff !important; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" data-bs-toggle="modal" data-bs-target="#leftLogoModal"><img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;"></div>
+          <div style="width: 44px; height: 44px; background-color: #fff !important; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" data-bs-toggle="modal" data-bs-target="#leftLogoModal"><img src="{{ \App\Helpers\Helpers::imageUrl($settings['site_logo']) }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;"></div>
         @else
           <div class="brand-icon"><i class="bi bi-compass-fill"></i></div>
         @endif
@@ -303,7 +303,7 @@
             <!-- Right Logo (Modal Trigger) -->
             @if(isset($settings['site_logo_right']) && $settings['site_logo_right'])
                 <div class="d-none d-lg-block">
-                    <div style="width: 44px; height: 44px; background-color: #fff !important; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" data-bs-toggle="modal" data-bs-target="#rightLogoModal"><img src="{{ asset('storage/' . $settings['site_logo_right']) }}" alt="Right Logo" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                    <div style="width: 44px; height: 44px; background-color: #fff !important; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" data-bs-toggle="modal" data-bs-target="#rightLogoModal"><img src="{{ \App\Helpers\Helpers::imageUrl($settings['site_logo_right']) }}" alt="Right Logo" style="width: 100%; height: 100%; object-fit: cover;"></div>
                 </div>
             @endif
         </div>
@@ -340,7 +340,7 @@
         <div class="col-lg-4">
           <div class="d-flex align-items-center gap-2 mb-3">
             @if(isset($settings['site_logo']) && $settings['site_logo'])
-              <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="nav-logo-img" style="mix-blend-mode: screen; background: transparent; border: none; box-shadow: none;" style="border-radius: 4px !important;" data-bs-toggle="modal" data-bs-target="#leftLogoModal">
+              <img src="{{ \App\Helpers\Helpers::imageUrl($settings['site_logo']) }}" alt="Logo" class="nav-logo-img" style="mix-blend-mode: screen; background: transparent; border: none; box-shadow: none;" style="border-radius: 4px !important;" data-bs-toggle="modal" data-bs-target="#leftLogoModal">
             @else
               <div class="brand-icon"><i class="bi bi-compass-fill"></i></div>
             @endif
@@ -408,7 +408,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center p-4">
-        <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Site Logo" class="modal-logo-img shadow-sm p-3" style="background: #f8f9fa; border-radius: 12px;">
+        <img src="{{ \App\Helpers\Helpers::imageUrl($settings['site_logo']) }}" alt="Site Logo" class="modal-logo-img shadow-sm p-3" style="background: #f8f9fa; border-radius: 12px;">
       </div>
       <div class="modal-footer border-0 justify-content-center pb-4">
         <button type="button" class="btn btn-gold px-4" data-bs-dismiss="modal" style="border-radius: 20px;">Close</button>
@@ -428,7 +428,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center p-4">
-        <img src="{{ asset('storage/' . $settings['site_logo_right']) }}" alt="Coat of Arms" class="modal-logo-img shadow-sm p-3" style="background: #f8f9fa; border-radius: 12px;">
+        <img src="{{ \App\Helpers\Helpers::imageUrl($settings['site_logo_right']) }}" alt="Coat of Arms" class="modal-logo-img shadow-sm p-3" style="background: #f8f9fa; border-radius: 12px;">
       </div>
       <div class="modal-footer border-0 justify-content-center pb-4">
         <button type="button" class="btn btn-gold px-4" data-bs-dismiss="modal" style="border-radius: 20px;">Close</button>

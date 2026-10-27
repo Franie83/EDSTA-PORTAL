@@ -1,4 +1,4 @@
-# Laravel
+﻿# Laravel
 /vendor/
 /node_modules/
 /storage/*.key
@@ -21,7 +21,6 @@ Thumbs.db
 
 # Composer
 composer.phar
-composer.lock
 
 # NPM
 package-lock.json
@@ -76,3 +75,13 @@ list.php
 snapshots/
 
 *.ps1
+
+# Local secrets and development backups
+.env
+.env.*
+!.env.example
+*.bak
+*.backup-*
+.phpunit.result.cache
+composer.json.backup-*
+composer.lock.backup-*

@@ -6,7 +6,7 @@
 <section class="hero-section">
   @php
   $heroBg = !empty($settings['hero_image'])
-      ? asset('storage/' . $settings['hero_image'])
+      ? \App\Helpers\Helpers::imageUrl($settings['hero_image'])
       : 'https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600';
 @endphp
 <div class="hero-bg" style="background-image:url('{{ $heroBg }}')"></div>

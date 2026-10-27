@@ -142,7 +142,16 @@ class AuthController extends Controller
      */
     public function quickLogin(string $role)
     {
-        // TEMPORARILY COMMENTED OUT FOR TESTING
+                // Passwordless demo login must never be available in production.
+        if (app()->environment('production')) {
+            abort(404);
+        }
+
+        // Explicit opt-in is required in non-production environments.
+        if (!config('app.demo_login_enabled', false)) {
+            abort(404);
+        }
+// TEMPORARILY COMMENTED OUT FOR TESTING
         // if (app()->isProduction()) {
         //     abort(403, 'Quick-login is disabled in production.');
         // }

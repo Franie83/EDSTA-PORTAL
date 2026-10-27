@@ -1,15 +1,18 @@
-#!/usr/bin/env bash
-echo "Running composer"
-composer install --no-dev --working-dir=/var/www/html
+﻿#!/bin/sh
+set -eu
 
-echo "Caching config..."
+cd /var/www/html
+
+echo "Caching Laravel configuration..."
 php artisan config:cache
 
-echo "Caching routes..."
+echo "Caching Laravel routes..."
 php artisan route:cache
 
-echo "Running migrations..."
+echo "Running database migrations..."
 php artisan migrate --force
 
-echo "Creating storage link..."
-php artisan storage:link
+echo "Creating Laravel storage link..."
+php artisan storage:link --force
+
+echo "Laravel deployment preparation completed."

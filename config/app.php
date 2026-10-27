@@ -41,6 +41,9 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
+    // Demo role impersonation is disabled by default.
+    'demo_login_enabled' => (bool) env('DEMO_LOGIN_ENABLED', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application URL

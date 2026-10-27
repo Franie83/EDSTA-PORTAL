@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helpers;
 use App\Models\Attraction;
 use App\Models\Category;
 use App\Models\Favourite;
@@ -132,14 +133,22 @@ class AttractionController extends Controller
             'website'       => 'nullable|url|max:255',
             'latitude'      => 'nullable|numeric',
             'longitude'     => 'nullable|numeric',
-            'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'is_featured'   => 'nullable|boolean',
             'is_active'     => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('attractions', 'public');
-            $validated['image_url'] = $path;
+            try {
+                $validated['image_url'] = Helpers::saveUpload(
+                    $request->file('image'),
+                    'attractions'
+                );
+            } catch (\RuntimeException $e) {
+                return back()->withInput()->withErrors([
+                    'image' => $e->getMessage(),
+                ]);
+            }
         }
 
         $validated['is_featured'] = $request->has('is_featured');
@@ -175,18 +184,27 @@ class AttractionController extends Controller
             'website'       => 'nullable|url|max:255',
             'latitude'      => 'nullable|numeric',
             'longitude'     => 'nullable|numeric',
-            'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'is_featured'   => 'nullable|boolean',
             'is_active'     => 'nullable|boolean',
         ]);
 
-        // Handle image upload
+        // Upload the replacement before changing the existing image reference.
         if ($request->hasFile('image')) {
-            if ($attraction->image_url) {
-                Storage::disk('public')->delete($attraction->image_url);
+            try {
+                $newImage = Helpers::saveUpload(
+                    $request->file('image'),
+                    'attractions'
+                );
+            } catch (\RuntimeException $e) {
+                return back()->withInput()->withErrors([
+                    'image' => $e->getMessage(),
+                ]);
             }
-            $path = $request->file('image')->store('attractions', 'public');
-            $validated['image_url'] = $path;
+
+            if ($newImage) {
+                $validated['image_url'] = $newImage;
+            }
         } else {
             $validated['image_url'] = $attraction->image_url;
         }
@@ -203,10 +221,17 @@ class AttractionController extends Controller
     public function destroy($id)
     {
         $attraction = Attraction::findOrFail($id);
-        if ($attraction->image_url) {
-            Storage::disk('public')->delete($attraction->image_url);
-        }
+        $imagePath = $attraction->image_url;
         $attraction->delete();
+
+        // Only delete local relative paths. Cloudinary assets are remote URLs.
+        if (
+            is_string($imagePath) &&
+            $imagePath !== '' &&
+            !filter_var($imagePath, FILTER_VALIDATE_URL)
+        ) {
+            Storage::disk('public')->delete($imagePath);
+        }
 
         return redirect()->route('admin.attractions.index')
                          ->with('success', 'Attraction deleted.');

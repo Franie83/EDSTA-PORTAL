@@ -1,48 +1,5 @@
 <?php
 
-Route::get('/debug-cloud', function () {
-    $out = "<h3>Environment Check:</h3>";
-    $cloudName = env('CLOUDINARY_CLOUD_NAME');
-    $apiKey = env('CLOUDINARY_API_KEY');
-    $apiSecret = env('CLOUDINARY_API_SECRET');
-    
-    $out .= "Cloud Name: " . ($cloudName ? "? Set ($cloudName)" : "? Missing") . "<br>";
-    $out .= "API Key: " . ($apiKey ? "? Set" : "? Missing") . "<br>";
-    $out .= "API Secret: " . ($apiSecret ? "? Set" : "? Missing") . "<br><br>";
-
-    if ($cloudName && $apiKey && $apiSecret) {
-        $out .= "<h3>Attempting Upload...</h3>";
-        try {
-            $cloudinary = new \Cloudinary\Cloudinary([
-                'cloud' => [
-                    'cloud_name' => $cloudName,
-                    'api_key'    => $apiKey,
-                    'api_secret' => $apiSecret,
-                ],
-            ]);
-            
-            $img = imagecreatetruecolor(100, 100);
-            ob_start();
-            imagejpeg($img);
-            $data = ob_get_clean();
-            
-            $temp = tempnam(sys_get_temp_dir(), 'cloud_') . '.jpg';
-            file_put_contents($temp, $data);
-            
-            $result = $cloudinary->uploadApi()->upload($temp, ['folder' => 'edoodyssey/debug']);
-            
-            $out .= "<b style='color:green'>? SUCCESS!</b><br>URL: <a href='{$result['secure_url']}' target='_blank'>{$result['secure_url']}</a><br>";
-            $out .= "<img src='{$result['secure_url']}' width='100'>";
-            
-        } catch (\Exception $e) {
-            $out .= "<b style='color:red'>? FAILED:</b> " . $e->getMessage();
-        }
-    } else {
-        $out .= "<b style='color:red'>? Cannot attempt upload because variables are missing on Render.</b>";
-    }
-    
-    return $out;
-});
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApiController;
@@ -65,51 +22,9 @@ use App\Models\Notification;
 use App\Models\Review;
 
 // Section
-Route::get('/test', function () {
-    return response()->json([
-        'status' => 'OK',
-        'message' => 'Laravel is working!',
-        'environment' => app()->environment(),
-        'database' => config('database.default'),
-        'timestamp' => now()->toDateTimeString()
-    ]);
-});
 
-Route::get('/test-laravel', function () {
-    return 'Laravel route is working!';
-});
 
 // Section
-Route::get('/debug-dashboard', function () {
-    try {
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json(['error' => 'Not logged in'], 401);
-        }
-        
-        $data = [
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->first_name,
-                'email' => $user->email,
-                'role' => $user->role,
-            ],
-            'guide_exists' => $user->guide ? true : false,
-            'bookings_count' => Booking::where('user_id', $user->id)->count(),
-            'notifications_count' => Notification::where('user_id', $user->id)->count(),
-            'reviews_count' => Review::where('user_id', $user->id)->count(),
-        ];
-        
-        return response()->json($data);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'trace' => $e->getTraceAsString()
-        ], 500);
-    }
-});
 
 // Section
 Route::get('/dashboard-test', [DashboardController::class, 'test'])->name('dashboard.test')->middleware('auth');
@@ -360,14 +275,12 @@ Route::prefix('/admin')->middleware(['auth', 'admin'])->name('admin.')->group(fu
     Route::get('/analytics/export', [AdminController::class, 'analyticsExport'])->name('analytics_export');
 
     // Database Tools
-    Route::post('/database/flush', [AdminController::class, 'flushDatabase'])->name('flush_database');
-    Route::post('/database/reseed', [AdminController::class, 'reseedDatabase'])->name('reseed_database');
+    Route::post('/database/flush', [AdminController::class, 'flushDatabase'])->name('database.flush');
+    Route::post('/database/reseed', [AdminController::class, 'reseedDatabase'])->name('database.reseed');
         // Download ZIP
     Route::get('/download-zip', [AdminController::class, 'downloadZip'])->name('download_zip');
 
         // Danger Zone Routes
-        Route::post('/database/flush', [\App\Http\Controllers\AdminController::class, 'flushDatabase'])->name('database.flush');
-        Route::post('/database/reseed', [\App\Http\Controllers\AdminController::class, 'reseedDatabase'])->name('database.reseed');
 
         // -- Edo Culture entities --
         Route::resource('languages', \App\Http\Controllers\EdoLanguageController::class);

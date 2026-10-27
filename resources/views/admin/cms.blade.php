@@ -51,7 +51,7 @@
                   @elseif(($setting['type'] ?? 'text') === 'image')
                     <div class="d-flex align-items-center gap-3">
                       @if(!empty($setting['value']))
-                        <img src="{{ asset('storage/' . $setting['value']) }}" alt="Current Image" class="img-thumbnail rounded" style="height: 80px; object-fit: contain;">
+                        <img src="{{ \App\Helpers\Helpers::imageUrl($setting['value']) }}" alt="Current Image" class="img-thumbnail rounded" style="height: 80px; object-fit: contain;">
                       @endif
                       <div class="flex-grow-1">
                         <input type="file" name="images[{{ $setting['key'] }}]" class="form-control" accept="image/*">

@@ -4,7 +4,7 @@
 @section('content')
 
 <!-- ── CULTURE HERO ───────────────────────────────── -->
-<section class="py-5" style="background: linear-gradient(rgba(10,26,51,0.8), rgba(10,26,51,0.8)), url('{{ !empty($settings['hero_image']) ? asset('storage/' . $settings['hero_image']) : "https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600" }}') center/cover no-repeat;">
+<section class="py-5" style="background: linear-gradient(rgba(10,26,51,0.8), rgba(10,26,51,0.8)), url('{{ !empty($settings['hero_image']) ? \App\Helpers\Helpers::imageUrl($settings['hero_image']) : "https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600" }}') center/cover no-repeat;">
   <div class="container py-4">
     <div class="text-center text-white">
       <div class="section-badge d-inline-block mb-3"><i class="bi bi-people-fill me-1"></i>Culture & People</div>

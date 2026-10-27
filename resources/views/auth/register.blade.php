@@ -2,7 +2,7 @@
 @section('title', 'Register – Edo Tourism')
 @section('content')
 @php
-$heroBg = !empty($settings['hero_image']) ? asset('storage/' . $settings['hero_image']) : 'https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600';
+$heroBg = !empty($settings['hero_image']) ? \App\Helpers\Helpers::imageUrl($settings['hero_image']) : 'https://images.unsplash.com/photo-1580654712603-eb43273aff33?auto=format&fit=crop&q=80&w=1600';
 @endphp
 <section class="hero-section" style="min-height: 100vh;">
   <div class="hero-bg" style="background-image:url('{{ $heroBg }}')"></div>

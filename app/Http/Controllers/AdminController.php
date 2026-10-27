@@ -161,6 +161,10 @@ class AdminController extends Controller
             'visiting_tips'            => 'nullable|string',
             'landmarks'                => 'nullable|string|max:255',
             'proximity_from_city'      => 'nullable|string|max:120',
+        
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery'     => 'nullable|array|max:10',
+            'gallery.*'   => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         
         $data['is_featured'] = $request->has('is_featured');
@@ -173,8 +177,15 @@ class AdminController extends Controller
             } elseif ($request->filled('image_url')) {
                 $data['image_url'] = $request->input('image_url');
             }
-        } catch (\Exception $e) {
-            Log::error('Image upload failed: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            Log::error('Image upload failed.', [
+                'context' => 'attraction image upload',
+                'exception' => get_class($e),
+            ]);
+
+            return back()
+                ->withInput()
+                ->with('error', 'Image upload failed. Please try again. No attraction changes were saved.');
         }
         
         $attr = Attraction::create($data);
@@ -218,6 +229,10 @@ class AdminController extends Controller
             'visiting_tips'            => 'nullable|string',
             'landmarks'                => 'nullable|string|max:255',
             'proximity_from_city'      => 'nullable|string|max:120',
+        
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery'     => 'nullable|array|max:10',
+            'gallery.*'   => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         
         $data['is_featured'] = $request->has('is_featured');
@@ -230,8 +245,15 @@ class AdminController extends Controller
             } elseif ($request->filled('image_url')) {
                 $data['image_url'] = $request->input('image_url');
             }
-        } catch (\Exception $e) {
-            Log::error('Image upload failed: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            Log::error('Image upload failed.', [
+                'context' => 'attraction image upload',
+                'exception' => get_class($e),
+            ]);
+
+            return back()
+                ->withInput()
+                ->with('error', 'Image upload failed. Please try again. No attraction changes were saved.');
         }
         
         $attr->update($data);
@@ -526,10 +548,31 @@ class AdminController extends Controller
             'price_range_feeding'      => 'nullable|string|max:80',
             'recreation_offerings'     => 'nullable|string',
             'booking_terms'            => 'nullable|string|max:120',
+        
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery'     => 'nullable|array|max:10',
+            'gallery.*'   => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         $data['is_featured'] = $request->has('is_featured');
         $data['is_active']   = $request->has('is_active');
-        if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'hotels');
+        try {
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $uploadedPath = Helpers::saveUpload($request->file('image'), 'hotels');
+                if ($uploadedPath) {
+                    $data['image_url'] = $uploadedPath;
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('Image upload failed.', [
+                'context' => 'hotel image upload',
+                'exception' => get_class($e),
+            ]);
+
+            return back()->withInput()->with(
+                'error',
+                'Image upload failed. Please check the image storage configuration and try again.'
+            );
+        }
         $hotel = Hotel::create($data);
 
         // Handle gallery images (multi-upload)
@@ -595,10 +638,31 @@ class AdminController extends Controller
             'price_range_feeding'      => 'nullable|string|max:80',
             'recreation_offerings'     => 'nullable|string',
             'booking_terms'            => 'nullable|string|max:120',
+        
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery'     => 'nullable|array|max:10',
+            'gallery.*'   => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         $data['is_featured'] = $request->has('is_featured');
         $data['is_active']   = $request->has('is_active');
-        if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'hotels');
+        try {
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $uploadedPath = Helpers::saveUpload($request->file('image'), 'hotels');
+                if ($uploadedPath) {
+                    $data['image_url'] = $uploadedPath;
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('Image upload failed.', [
+                'context' => 'hotel image upload',
+                'exception' => get_class($e),
+            ]);
+
+            return back()->withInput()->with(
+                'error',
+                'Image upload failed. Please check the image storage configuration and try again.'
+            );
+        }
         $hotel->update($data);
 
         // Handle gallery images (multi-upload)
@@ -710,17 +774,38 @@ class AdminController extends Controller
             'phone'        => 'nullable|string|max:50',
             'email'        => 'nullable|email',
             'user_id'      => 'required|exists:users,id',
+        
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery'     => 'nullable|array|max:10',
+            'gallery.*'   => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         $data['is_featured'] = $request->has('is_featured');
         $data['is_active']   = $request->has('is_active');
-        if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'restaurants');
+        try {
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $uploadedPath = Helpers::saveUpload($request->file('image'), 'restaurants');
+                if ($uploadedPath) {
+                    $data['image_url'] = $uploadedPath;
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('Image upload failed.', [
+                'context' => 'restaurant image upload',
+                'exception' => get_class($e),
+            ]);
+
+            return back()->withInput()->with(
+                'error',
+                'Image upload failed. Please check the image storage configuration and try again.'
+            );
+        }
         $rest = Restaurant::create($data);
 
         // Handle gallery images (multi-upload)
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 if ($file->isValid()) {
-                    $path = $file->store('restaurants/gallery', 'public');
+                    $path = Helpers::saveUpload($file, 'restaurants/gallery');
                     $rest->images()->create(['image_path' => $path]);
                 }
             }
@@ -754,17 +839,38 @@ class AdminController extends Controller
             'phone'        => 'nullable|string|max:50',
             'email'        => 'nullable|email',
             'user_id'      => 'required|exists:users,id',
+        
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery'     => 'nullable|array|max:10',
+            'gallery.*'   => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         $data['is_featured'] = $request->has('is_featured');
         $data['is_active']   = $request->has('is_active');
-        if ($request->hasFile('image')) $data['image_url'] = Helpers::saveUpload($request->file('image'), 'restaurants');
+        try {
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $uploadedPath = Helpers::saveUpload($request->file('image'), 'restaurants');
+                if ($uploadedPath) {
+                    $data['image_url'] = $uploadedPath;
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('Image upload failed.', [
+                'context' => 'restaurant image upload',
+                'exception' => get_class($e),
+            ]);
+
+            return back()->withInput()->with(
+                'error',
+                'Image upload failed. Please check the image storage configuration and try again.'
+            );
+        }
         $rest->update($data);
 
         // Handle gallery images (multi-upload)
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 if ($file->isValid()) {
-                    $path = $file->store('restaurants/gallery', 'public');
+                    $path = Helpers::saveUpload($file, 'restaurants/gallery');
                     $rest->images()->create(['image_path' => $path]);
                 }
             }
@@ -839,6 +945,10 @@ class AdminController extends Controller
             'category'     => 'nullable|string|max:100',
             'website'      => 'nullable|url',
             'user_id'      => 'required|exists:users,id',
+        
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery'     => 'nullable|array|max:10',
+            'gallery.*'   => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         $data['is_featured'] = $request->has('is_featured');
         $data['is_active']   = $request->has('is_active');
@@ -848,7 +958,7 @@ class AdminController extends Controller
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 if ($file->isValid()) {
-                    $path = $file->store('events/gallery', 'public');
+                    $path = Helpers::saveUpload($file, 'events/gallery');
                     $event->images()->create(['image_path' => $path]);
                 }
             }
@@ -882,6 +992,10 @@ class AdminController extends Controller
             'category'     => 'nullable|string|max:100',
             'website'      => 'nullable|url',
             'user_id'      => 'required|exists:users,id',
+        
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery'     => 'nullable|array|max:10',
+            'gallery.*'   => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         $data['is_featured'] = $request->has('is_featured');
         $data['is_active']   = $request->has('is_active');
@@ -890,7 +1004,7 @@ class AdminController extends Controller
                 if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 if ($file->isValid()) {
-                    $path = $file->store('events/gallery', 'public');
+                    $path = Helpers::saveUpload($file, 'events/gallery');
                     $event->images()->create(['image_path' => $path]);
                 }
             }
@@ -1153,25 +1267,62 @@ class AdminController extends Controller
 
     public function cmsUpdate(Request $request)
     {
-        foreach ($request->input('settings', []) as $key => $value) {
-            // Convert null to empty string to prevent database constraint crashes
-            CmsSetting::where('key', $key)->update(['value' => $value ?? '']);
-        }
+        // Upload images first so a failed upload does not replace existing image settings.
+        $uploadedImages = [];
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $key => $file) {
-                if ($file->isValid()) {
-                    $oldSetting = CmsSetting::where('key', $key)->first();
-                    if ($oldSetting && $oldSetting->value) {
-                        \Illuminate\Support\Facades\Storage::disk('public')->delete($oldSetting->value);
+                if (!$file || !$file->isValid()) {
+                    return back()->with('error', 'An image upload was invalid. Existing images were preserved.');
+                }
+
+                try {
+                    $uploadedPath = \App\Helpers\Helpers::saveUpload($file, 'cms');
+
+                    if (!$uploadedPath) {
+                        return back()->with('error', 'An image could not be uploaded. Existing images were preserved.');
                     }
-                    $path = \App\Helpers\Helpers::saveUpload($file, 'cms');
-                    CmsSetting::where('key', $key)->update(['value' => $path]);
+
+                    $uploadedImages[$key] = $uploadedPath;
+                } catch (\Throwable $e) {
+                    \Log::warning('CMS image upload failed.', [
+                        'setting_key' => (string) $key,
+                        'exception' => get_class($e),
+                    ]);
+
+                    return back()
+                        ->withInput()
+                        ->with('error', 'Image upload failed. Please check the upload configuration and try again.');
+                }
+            }
+        }
+
+        foreach ($request->input('settings', []) as $key => $value) {
+            CmsSetting::where('key', $key)->update([
+                'value' => $value ?? '',
+            ]);
+        }
+
+        foreach ($uploadedImages as $key => $uploadedPath) {
+            $oldSetting = CmsSetting::where('key', $key)->first();
+            $oldValue = $oldSetting ? (string) $oldSetting->value : '';
+
+            CmsSetting::where('key', $key)->update([
+                'value' => $uploadedPath,
+            ]);
+
+            // Delete only the previous local file, and only after the new upload succeeds.
+            if ($oldValue !== '' && !preg_match('#^https?://#i', $oldValue)) {
+                $localPath = preg_replace('#^/?storage/#', '', $oldValue);
+
+                if ($localPath !== $uploadedPath) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($localPath);
                 }
             }
         }
 
         Helpers::logAction('admin_update_cms', 'CmsSetting');
+
         return back()->with('success', 'Site settings and branding updated successfully.');
     }
 
@@ -1312,6 +1463,10 @@ class AdminController extends Controller
     // Section
     public function flushDatabase()
     {
+        if (app()->environment('production')) {
+            abort(404, 'Disabled in production for safety.');
+        }
+
         if (Auth::user()->role !== 'Super Admin') {
             return back()->with('danger', 'Only a Super Admin can flush the database.');
         }
@@ -1327,6 +1482,10 @@ class AdminController extends Controller
 
     public function reseedDatabase()
     {
+        if (app()->environment('production')) {
+            abort(404, 'Disabled in production for safety.');
+        }
+
         if (Auth::user()->role !== 'Super Admin') {
             return back()->with('danger', 'Only a Super Admin can reseed the database.');
         }
@@ -1344,6 +1503,10 @@ class AdminController extends Controller
     // Section
     public function downloadZip()
     {
+        if (app()->environment('production')) {
+            abort(404, 'Disabled in production for safety.');
+        }
+
         $projectRoot = base_path();
         $zipName     = 'edo-tourism-laravel-' . now()->format('Ymd-His') . '.zip';
         $tmpPath     = sys_get_temp_dir() . '/' . $zipName;
