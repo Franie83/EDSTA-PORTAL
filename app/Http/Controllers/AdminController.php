@@ -239,7 +239,7 @@ class AdminController extends Controller
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 if ($file->isValid()) {
-                    $path = $file->store('attractions/gallery', 'public');
+                    $path = \App\Helpers\Helpers::saveUpload($file, 'attractions/gallery');
                     $attr->images()->create(['image_path' => $path]);
                 }
             }
@@ -536,7 +536,7 @@ class AdminController extends Controller
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 if ($file->isValid()) {
-                    $path = $file->store('hotels/gallery', 'public');
+                    $path = \App\Helpers\Helpers::saveUpload($file, 'hotels/gallery');
                     $hotel->images()->create(['image_path' => $path]);
                 }
             }
@@ -605,7 +605,7 @@ class AdminController extends Controller
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 if ($file->isValid()) {
-                    $path = $file->store('hotels/gallery', 'public');
+                    $path = \App\Helpers\Helpers::saveUpload($file, 'hotels/gallery');
                     $hotel->images()->create(['image_path' => $path]);
                 }
             }
@@ -1165,7 +1165,7 @@ class AdminController extends Controller
                     if ($oldSetting && $oldSetting->value) {
                         \Illuminate\Support\Facades\Storage::disk('public')->delete($oldSetting->value);
                     }
-                    $path = $file->store('cms', 'public');
+                    $path = \App\Helpers\Helpers::saveUpload($file, 'cms');
                     CmsSetting::where('key', $key)->update(['value' => $path]);
                 }
             }
@@ -1469,7 +1469,7 @@ class AdminController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
         if ($request->hasFile('image_file')) {
-            $data['image_url'] = '/storage/' . $request->file('image_file')->store('staff', 'public');
+            $data['image_url'] = \App\Helpers\Helpers::saveUpload($request->file('image_file'), 'staff');
         }
         \App\Models\StaffMember::create($data);
         return redirect()->route('admin.staff.index')->with('success', 'Staff member added.');
@@ -1494,7 +1494,7 @@ class AdminController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
         if ($request->hasFile('image_file')) {
-            $data['image_url'] = '/storage/' . $request->file('image_file')->store('staff', 'public');
+            $data['image_url'] = \App\Helpers\Helpers::saveUpload($request->file('image_file'), 'staff');
         }
         \App\Models\StaffMember::findOrFail($id)->update($data);
         return redirect()->route('admin.staff.index')->with('success', 'Staff member updated.');
