@@ -21,7 +21,26 @@ Route::post('/internal/permit-expiry-reminders/run', function (\Illuminate\Http\
     }
 
     try {
-        $exitCode = \Illuminate\Support\Facades\Artisan::call('permits:send-expiry-reminders');
+        $simulatedDate = trim((string) $request->input('date', ''));
+
+if ($simulatedDate !== '') {
+    try {
+        $parsedDate = \Illuminate\Support\Carbon::createFromFormat('!Y-m-d', $simulatedDate);
+
+        if (!$parsedDate || $parsedDate->format('Y-m-d') !== $simulatedDate) {
+            return response()->json(['error' => 'Invalid date. Use YYYY-MM-DD.'], 422);
+        }
+    } catch (\Throwable $e) {
+        return response()->json(['error' => 'Invalid date. Use YYYY-MM-DD.'], 422);
+    }
+}
+
+$arguments = $simulatedDate !== '' ? ['--date' => $simulatedDate] : [];
+
+$exitCode = \Illuminate\Support\Facades\Artisan::call(
+    'permits:send-expiry-reminders',
+    $arguments
+);
         $output = trim(\Illuminate\Support\Facades\Artisan::output());
 
         if ($exitCode !== 0) {
@@ -35,6 +54,7 @@ Route::post('/internal/permit-expiry-reminders/run', function (\Illuminate\Http\
 
         return response()->json([
             'status' => 'success',
+            'simulated_today' => $simulatedDate !== '' ? $simulatedDate : null,
             'output' => $output,
         ]);
     } catch (\Throwable $e) {
