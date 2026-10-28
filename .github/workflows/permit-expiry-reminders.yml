@@ -1,0 +1,30 @@
+name: Tourism Permit Expiry Reminders
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger protected Laravel reminder command
+        env:
+          PERMIT_REMINDER_SECRET: ${{ secrets.PERMIT_REMINDER_SECRET }}
+        run: |
+          if [ -z "$PERMIT_REMINDER_SECRET" ]; then
+            echo "Missing PERMIT_REMINDER_SECRET repository secret." >&2
+            exit 1
+          fi
+
+          curl --fail-with-body --silent --show-error \
+            --max-time 120 \
+            -X POST \
+            -H "Authorization: Bearer ${PERMIT_REMINDER_SECRET}" \
+            -H "Accept: application/json" \
+            "https://edo-odyssey-38m3.onrender.com/api/internal/permit-expiry-reminders/run"

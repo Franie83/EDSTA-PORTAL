@@ -10,3 +10,38 @@ Route::get('/hotels',      [ApiController::class, 'hotels']);
 Route::get('/events',      [ApiController::class, 'events']);
 Route::get('/search',      [ApiController::class, 'search']);
 Route::get('/stats',       [ApiController::class, 'stats']);
+
+// Protected trigger for GitHub Actions. Requires a Bearer secret.
+Route::post('/internal/permit-expiry-reminders/run', function (\Illuminate\Http\Request $request) {
+    $expected = (string) config('app.permit_reminder_secret');
+    $provided = (string) $request->bearerToken();
+
+    if ($expected === '' || $provided === '' || !hash_equals($expected, $provided)) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    try {
+        $exitCode = \Illuminate\Support\Facades\Artisan::call('permits:send-expiry-reminders');
+        $output = trim(\Illuminate\Support\Facades\Artisan::output());
+
+        if ($exitCode !== 0) {
+            \Illuminate\Support\Facades\Log::error('Permit reminder trigger failed.', [
+                'exit_code' => $exitCode,
+                'output' => $output,
+            ]);
+
+            return response()->json(['status' => 'failed'], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'output' => $output,
+        ]);
+    } catch (\Throwable $e) {
+        \Illuminate\Support\Facades\Log::error('Permit reminder trigger exception.', [
+            'exception' => get_class($e),
+        ]);
+
+        return response()->json(['status' => 'failed'], 500);
+    }
+})->middleware('throttle:5,1');
