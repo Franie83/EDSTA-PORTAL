@@ -85,7 +85,7 @@ class SendPermitExpiryReminders extends Command
                 'title' => $title,
                 'message' => $message,
                 'type' => 'permit_expiry',
-                'link' => route('dashboard.permits.index'),
+                'link' => route('dashboard.permits.show', ['id' => $permit->id]),
                 'is_read' => false,
             ]);
 

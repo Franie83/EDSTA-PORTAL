@@ -184,14 +184,17 @@
         </div>
         @if(isset($notifications) && $notifications->count() > 0)
           @forelse($notifications->take(6) as $n)
-          <div class="d-flex gap-2 mb-2 p-2 rounded {{ !$n->is_read ? 'bg-blue-100' : '' }}">
+          <a href="{{ $n->link ?: route('dashboard.index') }}"
+             class="d-flex gap-2 mb-2 p-2 rounded text-decoration-none text-reset {{ !$n->is_read ? 'bg-blue-100' : '' }}"
+             style="cursor:pointer"
+             aria-label="Open notification: {{ $n->title }}">
             <i class="bi bi-bell{{ !$n->is_read ? '-fill text-gold' : ' text-muted' }} flex-shrink-0 mt-1"></i>
             <div>
               <div class="small fw-semibold">{{ $n->title }}</div>
               <div class="text-muted" style="font-size:.75rem">{{ Str::limit($n->message, 80) }}</div>
               <div class="text-muted" style="font-size:.65rem">{{ $n->created_at?->format('d M Y H:i') }}</div>
             </div>
-          </div>
+          </a>
           @empty
           <p class="text-muted small mb-0">No notifications.</p>
           @endforelse

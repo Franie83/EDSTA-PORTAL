@@ -85,6 +85,6 @@ class PermitApplicationController extends Controller
     public function show(int $id)
     {
         $permit = TourismPermit::where('user_id', Auth::id())->findOrFail($id);
-        return view('admin.permits.show', compact('permit'));
+        return view('dashboard.permits.show', compact('permit'));
     }
 }
