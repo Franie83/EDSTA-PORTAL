@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $attraction->name . ' – Edo Tourism')
+@section('title', $attraction->name . ' - Edo Tourism')
 @section('content')
 <div class="page-hero">
   <div class="container">
@@ -47,10 +47,24 @@
         </div>
       @endif
 
-      @if($attraction->gallery)
+      @if(is_array($attraction->gallery) && count($attraction->gallery))
       <div class="row g-2 mb-4">
         @foreach(array_slice($attraction->gallery, 0, 4) as $img)
-        <div class="col-3"><img src="{{ \App\Helpers\Helpers::imageUrl($img) }}" class="w-100 rounded" style="height:100px;object-fit:cover" alt="Gallery"></div>
+          @php
+            $galleryPath = is_array($img)
+                ? ($img['image_path'] ?? $img['path'] ?? $img['url'] ?? '')
+                : (is_object($img)
+                    ? ($img->image_path ?? $img->path ?? $img->url ?? '')
+                    : $img);
+          @endphp
+          @if(is_string($galleryPath) && trim($galleryPath) !== '')
+            <div class="col-3">
+              <img src="{{ \App\Helpers\Helpers::imageUrl($galleryPath) }}"
+                   class="w-100 rounded"
+                   style="height:100px;object-fit:cover"
+                   alt="Gallery">
+            </div>
+          @endif
         @endforeach
       </div>
       @endif
@@ -111,7 +125,7 @@
             </div>
           </div>
           <input type="text" name="title" class="form-control mb-2 border-0" placeholder="Review title (optional)">
-          <textarea name="comment" class="form-control border-0 mb-2" rows="3" placeholder="Share your experience…"></textarea>
+          <textarea name="comment" class="form-control border-0 mb-2" rows="3" placeholder="Share your experience..."></textarea>
           <button class="btn btn-gold btn-sm">Submit Review +10 pts</button>
         </form>
         @endauth
