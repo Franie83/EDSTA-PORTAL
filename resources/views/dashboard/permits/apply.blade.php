@@ -76,8 +76,12 @@
         document.getElementById('businessType').value = type;
         document.getElementById('amountPaid').value = price;
         
-        document.getElementById('displayAmount').value = Number(price).toLocaleString();
-        document.getElementById('btnAmount').textContent = Number(price).toLocaleString();
+        const formattedPrice = Number(price).toLocaleString('en-NG', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    });
+    document.getElementById('displayAmount').value = '₦' + formattedPrice;
+        document.getElementById('btnAmount').textContent = formattedPrice;
     });
 </script>
 @endsection

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Favourite;
@@ -11,9 +12,9 @@ class RestaurantController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Restaurant::where('is_active', true);
+        $query = Restaurant::with('images')->where('is_active', true);
 
-        // 🔍 Search
+        // ðŸ” Search
         if ($s = $request->q) {
             $query->where(function ($q) use ($s) {
                 $q->where('name', 'like', "%{$s}%")
@@ -22,17 +23,17 @@ class RestaurantController extends Controller
             });
         }
 
-        // 🏙️ City filter
+        // ðŸ™ï¸ City filter
         if ($city = $request->city) {
             $query->where('city', 'like', "%{$city}%");
         }
 
-        // 🍽️ Cuisine filter (text input, not dropdown for flexibility)
+        // ðŸ½ï¸ Cuisine filter (text input, not dropdown for flexibility)
         if ($cuisine = $request->cuisine) {
             $query->where('cuisine_type', 'like', "%{$cuisine}%");
         }
 
-        // 💰 Price range (avg_price)
+        // ðŸ’° Price range (avg_price)
         if ($minPrice = $request->min_price) {
             $query->where('avg_price', '>=', $minPrice);
         }
@@ -40,7 +41,7 @@ class RestaurantController extends Controller
             $query->where('avg_price', '<=', $maxPrice);
         }
 
-        // ⭐ Rating filter (minimum average rating)
+        // â­ Rating filter (minimum average rating)
         if ($minRating = $request->min_rating) {
             $query->whereHas('reviews', function ($q) use ($minRating) {
                 $q->select('target_id')
@@ -51,7 +52,7 @@ class RestaurantController extends Controller
             });
         }
 
-        // 📊 Sorting
+        // ðŸ“Š Sorting
         if ($sort = $request->sort) {
             match($sort) {
                 'price_asc'  => $query->orderBy('avg_price'),
@@ -63,7 +64,7 @@ class RestaurantController extends Controller
             $query->orderByDesc('is_featured')->orderByDesc('created_at');
         }
 
-        // 🏙️ Get distinct cities for dropdown
+        // ðŸ™ï¸ Get distinct cities for dropdown
         $cities = Restaurant::where('is_active', true)
                             ->whereNotNull('city')
                             ->distinct()

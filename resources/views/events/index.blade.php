@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Events – Edo Tourism')
+@section('title', 'Events â€“ Edo Tourism')
 @section('content')
 <div class="page-hero">
   <div class="container">
@@ -10,7 +10,7 @@
 <div class="container py-4">
   <form class="filter-bar row g-2" method="GET">
     {{-- Search --}}
-    <div class="col-12 col-md-3"><input type="search" name="q" class="form-control" placeholder="Search events…" value="{{ request('q') }}"></div>
+    <div class="col-12 col-md-3"><input type="search" name="q" class="form-control" placeholder="Search eventsâ€¦" value="{{ request('q') }}"></div>
 
     {{-- Category --}}
     <div class="col-6 col-md-2">
@@ -43,9 +43,9 @@
     {{-- Rating --}}
     <div class="col-4 col-md-1">
       <select name="min_rating" class="form-select">
-        <option value="">⭐ Any</option>
+        <option value="">â­ Any</option>
         @for($i=1;$i<=5;$i++)
-        <option value="{{ $i }}" {{ request('min_rating')==$i?'selected':'' }}>{{ $i }}★</option>
+        <option value="{{ $i }}" {{ request('min_rating')==$i?'selected':'' }}>{{ $i }}â˜…</option>
         @endfor
       </select>
     </div>
@@ -64,8 +64,8 @@
         <option value="">Sort by</option>
         <option value="date_asc" {{ request('sort')=='date_asc'?'selected':'' }}>Date: Earliest</option>
         <option value="date_desc" {{ request('sort')=='date_desc'?'selected':'' }}>Date: Latest</option>
-        <option value="price_asc" {{ request('sort')=='price_asc'?'selected':'' }}>Price: Low–High</option>
-        <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: High–Low</option>
+        <option value="price_asc" {{ request('sort')=='price_asc'?'selected':'' }}>Price: Lowâ€“High</option>
+        <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: Highâ€“Low</option>
         <option value="rating" {{ request('sort')=='rating'?'selected':'' }}>Highest Rated</option>
       </select>
     </div>
@@ -79,14 +79,26 @@
     @forelse($events as $event)
     <div class="col-md-6 col-lg-4">
       <div class="event-card card">
-        <div class="card-img-wrap" style="height:200px"><img src="{{ \App\Helpers\Helpers::imageUrl($event->image_url) }}" alt="{{ $event->name }}" loading="lazy"><div class="card-category-badge">{{ $event->category ?? 'Event' }}</div><div class="card-price-badge">{{ $event->ticket_price == 0 ? 'Free' : '₦'.number_format($event->ticket_price) }}</div></div>
+        <div class="card-img-wrap" style="height:200px">@if ($event->images && $event->images->count() > 0)
+  <div id="eventCardGallery{{ $event->id }}" class="carousel slide card-gallery" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover">
+    <div class="carousel-inner">
+      @foreach ($event->images as $imageIndex => $galleryImage)
+        <div class="carousel-item {{ $imageIndex === 0 ? 'active' : '' }}">
+          <img src="{{ \App\Helpers\Helpers::imageUrl($galleryImage->image_path) }}" alt="{{ $event->name }}" loading="lazy">
+        </div>
+      @endforeach
+    </div>
+  </div>
+@else
+  <img src="{{ \App\Helpers\Helpers::imageUrl($event->image_url) }}" alt="{{ $event->name }}" loading="lazy">
+@endif<div class="card-category-badge">{{ $event->category ?? 'Event' }}</div><div class="card-price-badge">{{ $event->ticket_price == 0 ? 'Free' : '₦'.number_format($event->ticket_price) }}</div></div>
         <div class="card-body">
           <h5 class="card-title fw-bold text-blue" style="font-size:.9rem">{{ $event->name }}</h5>
           <div class="d-flex align-items-center gap-2 mb-1">
             <div class="star-rating small">@for($i=1;$i<=5;$i++)<i class="bi bi-star{{ $i<=$event->avg_rating?'-fill':'' }}"></i>@endfor</div>
             <small class="text-muted">({{ number_format($event->avg_rating, 1) }})</small>
           </div>
-          <p class="text-muted small mb-2"><i class="bi bi-calendar me-1"></i>{{ $event->start_date?->format('d M Y') ?? 'TBD' }} • <i class="bi bi-geo-alt ms-1 me-1"></i>{{ $event->location ?? 'TBD' }}</p>
+          <p class="text-muted small mb-2"><i class="bi bi-calendar me-1"></i>{{ $event->start_date?->format('d M Y') ?? 'TBD' }} â€¢ <i class="bi bi-geo-alt ms-1 me-1"></i>{{ $event->location ?? 'TBD' }}</p>
           <div class="d-flex gap-2 mb-2" data-countdown="{{ $event->start_date?->toIso8601String() }}">
             <div class="countdown-box text-center"><div class="countdown-num">--</div></div><div class="countdown-sep text-gold fw-bold">:</div><div class="countdown-box text-center"><div class="countdown-num">--</div></div><div class="countdown-sep text-gold fw-bold">:</div><div class="countdown-box text-center"><div class="countdown-num">--</div></div><div class="countdown-sep text-gold fw-bold">:</div><div class="countdown-box text-center"><div class="countdown-num">--</div></div>
           </div>

@@ -266,3 +266,27 @@ a:not(.btn):hover {
     color: #B22222;
 }
 /* End global theme override */
+
+/* EDO ODYSSEY HERO SLIDESHOW */
+.hero-section .hero-bg {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 1.2s ease-in-out, transform 6s ease-in-out;
+    will-change: opacity, transform;
+}
+.hero-section .hero-bg.hero-bg-fade {
+    opacity: 0;
+}
+.hero-section .hero-bg.hero-bg-zoom {
+    transform: scale(1.06);
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-section .hero-bg {
+        transition: none;
+        transform: none;
+    }
+}
+/* END EDO ODYSSEY HERO SLIDESHOW */

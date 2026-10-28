@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Restaurants – Edo Tourism')
+@section('title', 'Restaurants â€“ Edo Tourism')
 @section('content')
 <div class="page-hero">
   <div class="container">
@@ -10,7 +10,7 @@
 <div class="container py-4">
   <form class="filter-bar row g-2" method="GET">
     {{-- Search --}}
-    <div class="col-12 col-md-3"><input type="search" name="q" class="form-control" placeholder="Search restaurants…" value="{{ request('q') }}"></div>
+    <div class="col-12 col-md-3"><input type="search" name="q" class="form-control" placeholder="Search restaurantsâ€¦" value="{{ request('q') }}"></div>
 
     {{-- City --}}
     <div class="col-6 col-md-2">
@@ -38,9 +38,9 @@
     {{-- Rating --}}
     <div class="col-4 col-md-1">
       <select name="min_rating" class="form-select">
-        <option value="">⭐ Any</option>
+        <option value="">â­ Any</option>
         @for($i=1;$i<=5;$i++)
-        <option value="{{ $i }}" {{ request('min_rating')==$i?'selected':'' }}>{{ $i }}★</option>
+        <option value="{{ $i }}" {{ request('min_rating')==$i?'selected':'' }}>{{ $i }}â˜…</option>
         @endfor
       </select>
     </div>
@@ -49,8 +49,8 @@
     <div class="col-6 col-md-2">
       <select name="sort" class="form-select">
         <option value="">Sort by</option>
-        <option value="price_asc" {{ request('sort')=='price_asc'?'selected':'' }}>Price: Low–High</option>
-        <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: High–Low</option>
+        <option value="price_asc" {{ request('sort')=='price_asc'?'selected':'' }}>Price: Lowâ€“High</option>
+        <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: Highâ€“Low</option>
         <option value="rating" {{ request('sort')=='rating'?'selected':'' }}>Highest Rated</option>
       </select>
     </div>
@@ -64,7 +64,19 @@
     @forelse($restaurants as $restaurant)
     <div class="col-md-6 col-lg-4">
       <div class="card border-0 shadow-sm h-100" style="border-radius:var(--radius)">
-        <div class="card-img-wrap"><img src="{{ \App\Helpers\Helpers::imageUrl($restaurant->image_url) }}" alt="{{ $restaurant->name }}" loading="lazy"><div class="card-category-badge" style="background:var(--restaurant)">{{ $restaurant->cuisine_type ?? 'Cuisine' }}</div></div>
+        <div class="card-img-wrap">@if ($restaurant->images && $restaurant->images->count() > 0)
+  <div id="restaurantCardGallery{{ $restaurant->id }}" class="carousel slide card-gallery" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover">
+    <div class="carousel-inner">
+      @foreach ($restaurant->images as $imageIndex => $galleryImage)
+        <div class="carousel-item {{ $imageIndex === 0 ? 'active' : '' }}">
+          <img src="{{ \App\Helpers\Helpers::imageUrl($galleryImage->image_path) }}" alt="{{ $restaurant->name }}" loading="lazy">
+        </div>
+      @endforeach
+    </div>
+  </div>
+@else
+  <img src="{{ \App\Helpers\Helpers::imageUrl($restaurant->image_url) }}" alt="{{ $restaurant->name }}" loading="lazy">
+@endif<div class="card-category-badge" style="background:var(--restaurant)">{{ $restaurant->cuisine_type ?? 'Cuisine' }}</div></div>
         <div class="card-body">
           <h5 class="card-title fw-bold text-blue mb-1">{{ $restaurant->name }}</h5>
           <div class="d-flex align-items-center gap-2 mb-2"><div class="star-rating small">@for($i=1;$i<=5;$i++)<i class="bi bi-star{{ $i<=$restaurant->avg_rating?'-fill':'' }}"></i>@endfor</div><small class="text-muted">({{ number_format($restaurant->avg_rating, 1) }})</small></div>

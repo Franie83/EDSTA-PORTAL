@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Helpers\Helpers;
@@ -16,7 +17,7 @@ class AttractionController extends Controller
     // -------------------- FRONTEND --------------------
     public function index(Request $request)
     {
-        $query = Attraction::where('is_active', true)->with('category');
+        $query = Attraction::with('category', 'images')->where('is_active', true);
 
         // 🔍 Search
         if ($search = $request->q) {

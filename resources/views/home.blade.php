@@ -5,7 +5,23 @@
 <!-- ── HERO ─────────────────────────────────────────────────── -->
 <section class="hero-section">
   @php
-  $heroBg = asset('images/hero-background.jpg');
+    $heroSlideSettings = [
+        'hero_image'   => 'images/hero-background.jpg',
+        'hero_image_2' => 'images/ososo-hills.jpg',
+        'hero_image_3' => 'images/benin-palace.jpg',
+    ];
+
+    $heroSlides = [];
+
+    foreach ($heroSlideSettings as $settingKey => $fallbackImage) {
+        $configuredImage = trim((string) ($settings[$settingKey] ?? ''));
+
+        $heroSlides[] = $configuredImage !== ''
+            ? \App\Helpers\Helpers::imageUrl($configuredImage)
+            : asset($fallbackImage);
+    }
+
+    $heroBg = $heroSlides[0];
 @endphp
 <div class="hero-bg" style="background-image:url('{{ $heroBg }}')"></div>
   <div class="hero-overlay"></div>
@@ -336,4 +352,66 @@
     </div>
   </div>
 </section>
+
+<script>
+/* EDO_ODYSSEY_HERO_SLIDESHOW_SCRIPT */
+(function () {
+    'use strict';
+
+    var images = @json($heroSlides);
+
+    function startSlideshow() {
+        var hero = document.querySelector('.hero-section');
+        var bg = hero && hero.querySelector('.hero-bg');
+        if (!bg || !images.length) return;
+
+        var index = 0;
+        var reduced = window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        images.forEach(function (src) {
+            var preload = new Image();
+            preload.src = src;
+        });
+
+        bg.style.backgroundImage = 'url("' + images[0] + '")';
+        if (reduced || images.length < 2) return;
+
+        bg.classList.add('hero-bg-zoom');
+
+        window.setInterval(function () {
+            var next = (index + 1) % images.length;
+            var probe = new Image();
+
+            probe.onload = function () {
+                bg.classList.add('hero-bg-fade');
+
+                window.setTimeout(function () {
+                    bg.style.backgroundImage = 'url("' + images[next] + '")';
+                    bg.classList.remove('hero-bg-zoom');
+
+                    window.requestAnimationFrame(function () {
+                        bg.classList.remove('hero-bg-fade');
+                        bg.classList.add('hero-bg-zoom');
+                    });
+
+                    index = next;
+                }, 1200);
+            };
+
+            probe.onerror = function () {
+                console.warn('Could not load hero image:', images[next]);
+            };
+
+            probe.src = images[next];
+        }, 6000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startSlideshow);
+    } else {
+        startSlideshow();
+    }
+})();
+</script>
 @endsection

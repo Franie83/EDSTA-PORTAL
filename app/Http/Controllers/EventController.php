@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Event;
@@ -11,9 +12,9 @@ class EventController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Event::where('is_active', true);
+        $query = Event::with('images')->where('is_active', true);
 
-        // 🔍 Search
+        // ðŸ” Search
         if ($s = $request->q) {
             $query->where(function ($q) use ($s) {
                 $q->where('name', 'like', "%{$s}%")
@@ -23,17 +24,17 @@ class EventController extends Controller
             });
         }
 
-        // 🏷️ Category filter
+        // ðŸ·ï¸ Category filter
         if ($cat = $request->category) {
             $query->where('category', $cat);
         }
 
-        // 🏙️ City filter (location)
+        // ðŸ™ï¸ City filter (location)
         if ($city = $request->city) {
             $query->where('location', 'like', "%{$city}%");
         }
 
-        // 💰 Price range
+        // ðŸ’° Price range
         if ($minPrice = $request->min_price) {
             $query->where('ticket_price', '>=', $minPrice);
         }
@@ -41,7 +42,7 @@ class EventController extends Controller
             $query->where('ticket_price', '<=', $maxPrice);
         }
 
-        // ⭐ Rating filter (minimum average rating)
+        // â­ Rating filter (minimum average rating)
         if ($minRating = $request->min_rating) {
             $query->whereHas('reviews', function ($q) use ($minRating) {
                 $q->select('target_id')
@@ -52,12 +53,12 @@ class EventController extends Controller
             });
         }
 
-        // 📅 Upcoming filter
+        // ðŸ“… Upcoming filter
         if ($request->upcoming) {
             $query->where('start_date', '>', now());
         }
 
-        // 📊 Sorting
+        // ðŸ“Š Sorting
         if ($sort = $request->sort) {
             match($sort) {
                 'date_asc'   => $query->orderBy('start_date'),
@@ -71,13 +72,13 @@ class EventController extends Controller
             $query->orderBy('start_date');
         }
 
-        // 🏙️ Get distinct locations for dropdown
+        // ðŸ™ï¸ Get distinct locations for dropdown
         $cities = Event::where('is_active', true)
                        ->whereNotNull('location')
                        ->distinct()
                        ->pluck('location');
 
-        // 📌 Get distinct categories for dropdown
+        // ðŸ“Œ Get distinct categories for dropdown
         $categories = Event::where('is_active', true)
                            ->whereNotNull('category')
                            ->distinct()

@@ -197,8 +197,8 @@
 
   <!-- TOP BANNER -->
   <div class="top-banner py-1 d-none d-md-block" style="background: #5b0000; border-bottom: 1px solid rgba(255,255,255,0.05);">
-    <div class="container d-flex justify-content-between align-items-center">
-      <div class="d-flex gap-3 small text-white-50">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center column-gap-4 row-gap-1">
+      <div class="d-flex flex-wrap align-items-center column-gap-3 row-gap-1 small text-white-50">
         <span><i class="bi bi-telephone-fill me-1 text-gold"></i>{{ $settings['contact_phone'] ?? '+234 (0) 52 255 000' }}</span>
         <span><i class="bi bi-envelope-fill me-1 text-gold"></i>{{ $settings['contact_email'] ?? 'info@edsta.edo.gov.ng' }}</span>
       </div>

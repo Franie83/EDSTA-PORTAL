@@ -26,8 +26,8 @@ class MainController extends Controller
         }
 
         try {
-            $featured_attractions = Attraction::where('is_featured', true)
-                ->where('is_active', true)
+            $featured_attractions = Attraction::where('is_active', true)
+                ->orderByDesc('is_featured')
                 ->with('category')
                 ->limit(6)
                 ->get();
@@ -37,8 +37,8 @@ class MainController extends Controller
         }
 
         try {
-            $featured_guides = Guide::where('is_featured', true)
-                ->where('verification_status', 'Approved')
+            $featured_guides = Guide::where('verification_status', 'Approved')
+                ->orderByDesc('is_featured')
                 ->with('user')
                 ->limit(4)
                 ->get();

@@ -1,5 +1,5 @@
-﻿@extends('layouts.app')
-@section('title', 'Login â€“ Edo Tourism')
+@extends('layouts.app')
+@section('title', 'Login - Edo Tourism')
 @section('content')
 <div class="min-vh-100 d-flex align-items-center" style="background: linear-gradient(rgba(91,0,0,0.93), rgba(91,0,0,0.93)), url('{{ asset('images/hero-background.jpg') }}') center/cover no-repeat;">
   <div class="container py-5">
@@ -7,7 +7,7 @@
       <div class="col-md-5 col-lg-4">
         <div class="text-center mb-4">
           <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle shadow" style="width:100px; height:100px; background-color: #ffffff !important; overflow: hidden;">
-              <img src="{{ asset('images/site-logo.png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#loginLogoModal">
+              <img src="{{ (isset($settings['site_logo']) && $settings['site_logo']) ? \App\Helpers\Helpers::imageUrl($settings['site_logo']) : asset('images/site-logo.png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#loginLogoModal">
           </div>
           <h2 class="text-white fw-bold" style="font-family:'Playfair Display',serif">Welcome Back</h2>
           <p class="text-white-50 small">Sign in to your Edo Tourism account</p>
@@ -29,7 +29,7 @@
                 <label class="form-label fw-semibold small">Password</label>
                 <div class="input-group">
                   <span class="input-group-text bg-blue-100 border-0"><i class="bi bi-lock text-blue"></i></span>
-                  <input type="password" name="password" id="pwd" class="form-control border-0 bg-blue-100" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
+                  <input type="password" name="password" id="pwd" class="form-control border-0 bg-blue-100" placeholder="Enter your password" required>
                   <button class="btn bg-blue-100 border-0" type="button" onclick="togglePwd()"><i class="bi bi-eye" id="eyeIcon"></i></button>
                 </div>
               </div>
@@ -85,7 +85,7 @@ function togglePwd(){
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center p-4">
-        <img src="{{ asset('images/site-logo.png') }}" alt="Site Logo" class="img-fluid" style="max-height: 60vh; object-fit: contain;">
+        <img src="{{ (isset($settings['site_logo']) && $settings['site_logo']) ? \App\Helpers\Helpers::imageUrl($settings['site_logo']) : asset('images/site-logo.png') }}" alt="Site Logo" class="img-fluid" style="max-height: 60vh; object-fit: contain;">
       </div>
       <div class="modal-footer border-0 justify-content-center pb-4">
         <button type="button" class="btn btn-gold px-4" data-bs-dismiss="modal" style="border-radius: 20px;">Close</button>

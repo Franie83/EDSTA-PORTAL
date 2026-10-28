@@ -16,7 +16,7 @@
   <div class="row g-4">
     <div class="col-lg-8">
       @if($event->images && $event->images->count() > 0)
-      <div id="eventGallery" class="carousel slide mb-4" data-bs-ride="carousel">
+      <div id="eventGallery" class="carousel slide mb-4" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover">
         <div class="carousel-indicators">
           @foreach($event->images as $i => $img)
             <button type="button" data-bs-target="#eventGallery" data-bs-slide-to="{{ $i }}" class="{{ $i === 0 ? 'active' : '' }}"></button>

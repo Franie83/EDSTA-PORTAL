@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Attractions – Edo Tourism')
+@section('title', 'Attractions â€“ Edo Tourism')
 @section('content')
 <div class="page-hero">
   <div class="container">
@@ -11,7 +11,7 @@
 <div class="container py-4">
   <form class="filter-bar row g-2" method="GET">
     {{-- Search --}}
-    <div class="col-12 col-md-4 col-lg-3"><input type="search" name="q" class="form-control" placeholder="Search attractions…" value="{{ request('q') }}"></div>
+    <div class="col-12 col-md-4 col-lg-3"><input type="search" name="q" class="form-control" placeholder="Search attractionsâ€¦" value="{{ request('q') }}"></div>
 
     {{-- Category --}}
     <div class="col-6 col-md-2 col-lg-2">
@@ -44,9 +44,9 @@
     {{-- Rating --}}
     <div class="col-6 col-md-2 col-lg-1">
       <select name="min_rating" class="form-select">
-        <option value="">⭐ Any Rating</option>
+        <option value="">â­ Any Rating</option>
         @for($i=1;$i<=5;$i++)
-        <option value="{{ $i }}" {{ request('min_rating')==$i?'selected':'' }}>{{ $i }}★ &amp; up</option>
+        <option value="{{ $i }}" {{ request('min_rating')==$i?'selected':'' }}>{{ $i }}â˜… &amp; up</option>
         @endfor
       </select>
     </div>
@@ -57,8 +57,8 @@
         <option value="">Sort by</option>
         <option value="popular" {{ request('sort')=='popular'?'selected':'' }}>Most Popular</option>
         <option value="rating" {{ request('sort')=='rating'?'selected':'' }}>Highest Rated</option>
-        <option value="price_asc" {{ request('sort')=='price_asc'?'selected':'' }}>Price: Low–High</option>
-        <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: High–Low</option>
+        <option value="price_asc" {{ request('sort')=='price_asc'?'selected':'' }}>Price: Lowâ€“High</option>
+        <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: Highâ€“Low</option>
       </select>
     </div>
     <div class="col-12 col-md-12 col-lg-1">
@@ -71,7 +71,19 @@
     <div class="col-md-6 col-lg-4">
       <div class="attraction-card card">
         <div class="card-img-wrap">
-          <img src="{{ \App\Helpers\Helpers::imageUrl($attraction->image_url) }}" alt="{{ $attraction->name }}" loading="lazy">
+          @if ($attraction->images && $attraction->images->count() > 0)
+  <div id="attractionCardGallery{{ $attraction->id }}" class="carousel slide card-gallery" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover">
+    <div class="carousel-inner">
+      @foreach ($attraction->images as $imageIndex => $galleryImage)
+        <div class="carousel-item {{ $imageIndex === 0 ? 'active' : '' }}">
+          <img src="{{ \App\Helpers\Helpers::imageUrl($galleryImage->image_path) }}" alt="{{ $attraction->name }}" loading="lazy">
+        </div>
+      @endforeach
+    </div>
+  </div>
+@else
+  <img src="{{ \App\Helpers\Helpers::imageUrl($attraction->image_url) }}" alt="{{ $attraction->name }}" loading="lazy">
+@endif
           <div class="card-category-badge">{{ $attraction->category?->name ?? 'Attraction' }}</div>
           <div class="card-price-badge">{{ $attraction->ticket_price == 0 ? 'Free' : '₦'.number_format($attraction->ticket_price) }}</div>
         </div>

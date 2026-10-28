@@ -18,7 +18,7 @@
     <div class="col-lg-8">
       {{-- Primary / carousel image --}}
       @if($attraction->images && $attraction->images->count() > 0)
-        <div id="attractionGallery" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div id="attractionGallery" class="carousel slide mb-4" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover">
           <div class="carousel-indicators">
             @foreach($attraction->images as $i => $img)
               <button type="button" data-bs-target="#attractionGallery" data-bs-slide-to="{{ $i }}"

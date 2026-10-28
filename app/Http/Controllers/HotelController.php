@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Favourite;
@@ -11,9 +12,9 @@ class HotelController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Hotel::where('is_active', true);
+        $query = Hotel::with('images')->where('is_active', true);
 
-        // 🔍 Search
+        // ðŸ” Search
         if ($s = $request->q) {
             $query->where(function ($q) use ($s) {
                 $q->where('name', 'like', "%{$s}%")
@@ -22,17 +23,17 @@ class HotelController extends Controller
             });
         }
 
-        // 🏙️ City filter
+        // ðŸ™ï¸ City filter
         if ($city = $request->city) {
             $query->where('city', 'like', "%{$city}%");
         }
 
-        // ⭐ Stars filter
+        // â­ Stars filter
         if ($stars = $request->stars) {
             $query->where('stars', $stars);
         }
 
-        // 💰 Price range
+        // ðŸ’° Price range
         if ($minPrice = $request->min_price) {
             $query->where('price_per_night', '>=', $minPrice);
         }
@@ -40,7 +41,7 @@ class HotelController extends Controller
             $query->where('price_per_night', '<=', $maxPrice);
         }
 
-        // ⭐ Rating filter (minimum average rating)
+        // â­ Rating filter (minimum average rating)
         if ($minRating = $request->min_rating) {
             $query->whereHas('reviews', function ($q) use ($minRating) {
                 $q->select('target_id')
@@ -51,7 +52,7 @@ class HotelController extends Controller
             });
         }
 
-        // 📊 Sorting
+        // ðŸ“Š Sorting
         if ($sort = $request->sort) {
             match($sort) {
                 'price_asc'  => $query->orderBy('price_per_night'),
@@ -63,7 +64,7 @@ class HotelController extends Controller
             $query->orderByDesc('is_featured')->orderByDesc('created_at');
         }
 
-        // 🏙️ Get distinct cities for dropdown
+        // ðŸ™ï¸ Get distinct cities for dropdown
         $cities = Hotel::where('is_active', true)
                        ->whereNotNull('city')
                        ->distinct()

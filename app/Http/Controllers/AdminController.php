@@ -1238,6 +1238,9 @@ class AdminController extends Controller
             ['key' => 'meta_description', 'label' => 'Meta Description', 'type' => 'textarea', 'group' => 'general'],
             
             // HOMEPAGE
+            ['key' => 'hero_image', 'label' => 'Homepage Slideshow Image 1', 'type' => 'image', 'group' => 'homepage'],
+            ['key' => 'hero_image_2', 'label' => 'Homepage Slideshow Image 2', 'type' => 'image', 'group' => 'homepage'],
+            ['key' => 'hero_image_3', 'label' => 'Homepage Slideshow Image 3', 'type' => 'image', 'group' => 'homepage'],
             ['key' => 'hero_image', 'label' => 'Homepage Hero Image', 'type' => 'image', 'group' => 'homepage'],
             ['key' => 'hero_title', 'label' => 'Hero Title', 'type' => 'text', 'group' => 'homepage'],
             ['key' => 'hero_subtitle', 'label' => 'Hero Subtitle', 'type' => 'textarea', 'group' => 'homepage'],

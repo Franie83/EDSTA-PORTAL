@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 @section('title', 'Certificate')
 @section('page_title', 'Certificate Details')
 @section('content')
@@ -21,7 +21,7 @@
             <p class="text-muted">{{ $permit->address }}</p>
             
             <p class="mt-4">Has been officially registered and granted permission to operate as a <strong>{{ $permit->business_type }}</strong> in Edo State for the period:</p>
-            <p class="fw-bold fs-5">{{ $permit->issue_date->format('F d, Y') }} â€“ {{ $permit->expiry_date->format('F d, Y') }}</p>
+            <p class="fw-bold fs-5">{{ $permit->issue_date->format('F d, Y') }} – {{ $permit->expiry_date->format('F d, Y') }}</p>
             
             <p class="mt-3"><strong>Certificate No:</strong> {{ $permit->certificate_number }}</p>
             <p><strong>Status:</strong> 
@@ -56,7 +56,7 @@
         </div>
         <div class="col-4 text-center">
             <p class="small text-muted mb-0">Official Use Only</p>
-            <p class="small text-muted">Paid: â‚¦{{ number_format($permit->amount_paid) }}</p>
+            <p class="small text-muted">Paid: ₦{{ number_format($permit->amount_paid) }}</p>
         </div>
     </div>
 </div>

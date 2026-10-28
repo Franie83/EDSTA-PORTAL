@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Hotels – Edo Tourism')
+@section('title', 'Hotels â€“ Edo Tourism')
 @section('content')
 <div class="page-hero">
   <div class="container">
@@ -10,7 +10,7 @@
 <div class="container py-4">
   <form class="filter-bar row g-2" method="GET">
     {{-- Search --}}
-    <div class="col-12 col-md-3"><input type="search" name="q" class="form-control" placeholder="Search hotels…" value="{{ request('q') }}"></div>
+    <div class="col-12 col-md-3"><input type="search" name="q" class="form-control" placeholder="Search hotelsâ€¦" value="{{ request('q') }}"></div>
 
     {{-- City --}}
     <div class="col-6 col-md-2">
@@ -27,7 +27,7 @@
       <select name="stars" class="form-select">
         <option value="">Stars</option>
         @for($s=5;$s>=1;$s--)
-        <option value="{{ $s }}" {{ request('stars')==$s?'selected':'' }}>{{ $s }}★</option>
+        <option value="{{ $s }}" {{ request('stars')==$s?'selected':'' }}>{{ $s }}â˜…</option>
         @endfor
       </select>
     </div>
@@ -43,9 +43,9 @@
     {{-- Rating --}}
     <div class="col-4 col-md-1">
       <select name="min_rating" class="form-select">
-        <option value="">⭐ Any</option>
+        <option value="">â­ Any</option>
         @for($i=1;$i<=5;$i++)
-        <option value="{{ $i }}" {{ request('min_rating')==$i?'selected':'' }}>{{ $i }}★</option>
+        <option value="{{ $i }}" {{ request('min_rating')==$i?'selected':'' }}>{{ $i }}â˜…</option>
         @endfor
       </select>
     </div>
@@ -54,8 +54,8 @@
     <div class="col-6 col-md-2">
       <select name="sort" class="form-select">
         <option value="">Sort by</option>
-        <option value="price_asc" {{ request('sort')=='price_asc'?'selected':'' }}>Price: Low–High</option>
-        <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: High–Low</option>
+        <option value="price_asc" {{ request('sort')=='price_asc'?'selected':'' }}>Price: Lowâ€“High</option>
+        <option value="price_desc" {{ request('sort')=='price_desc'?'selected':'' }}>Price: Highâ€“Low</option>
         <option value="rating" {{ request('sort')=='rating'?'selected':'' }}>Highest Rated</option>
       </select>
     </div>
@@ -69,7 +69,19 @@
     @forelse($hotels as $hotel)
     <div class="col-md-6 col-lg-4">
       <div class="hotel-card card">
-        <div class="card-img-wrap"><img src="{{ \App\Helpers\Helpers::imageUrl($hotel->image_url) }}" alt="{{ $hotel->name }}" loading="lazy"><div class="card-price-badge">₦{{ number_format($hotel->price_per_night) }}/night</div></div>
+        <div class="card-img-wrap">@if ($hotel->images && $hotel->images->count() > 0)
+  <div id="hotelCardGallery{{ $hotel->id }}" class="carousel slide card-gallery" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover">
+    <div class="carousel-inner">
+      @foreach ($hotel->images as $imageIndex => $galleryImage)
+        <div class="carousel-item {{ $imageIndex === 0 ? 'active' : '' }}">
+          <img src="{{ \App\Helpers\Helpers::imageUrl($galleryImage->image_path) }}" alt="{{ $hotel->name }}" loading="lazy">
+        </div>
+      @endforeach
+    </div>
+  </div>
+@else
+  <img src="{{ \App\Helpers\Helpers::imageUrl($hotel->image_url) }}" alt="{{ $hotel->name }}" loading="lazy">
+@endif<div class="card-price-badge">₦{{ number_format($hotel->price_per_night) }}/night</div></div>
         <div class="card-body">
           <h5 class="card-title fw-bold text-blue mb-1">{{ $hotel->name }}</h5>
           <div class="text-gold mb-1">@for($i=0;$i<($hotel->stars-3);$i++)<i class="bi bi-star-fill" style="font-size:.75rem"></i>@endfor</div>

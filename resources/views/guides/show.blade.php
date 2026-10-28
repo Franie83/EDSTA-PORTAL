@@ -18,7 +18,7 @@
         <div class="guide-avatar-placeholder flex-shrink-0"><i class="bi bi-person-fill"></i></div>
         @endif
         @if($guide->images && $guide->images->count() > 0)
-        <div id="guidePortfolio" class="carousel slide mt-4 mb-3" data-bs-ride="carousel">
+        <div id="guidePortfolio" class="carousel slide mt-4 mb-3" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover">
           <div class="carousel-indicators">
             @foreach($guide->images as $i => $img)
               <button type="button" data-bs-target="#guidePortfolio" data-bs-slide-to="{{ $i }}" class="{{ $i === 0 ? 'active' : '' }}"></button>
