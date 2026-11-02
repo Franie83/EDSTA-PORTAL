@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -59,6 +59,11 @@
     <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.user*') ? 'active' : '' }}"><i class="bi bi-people"></i> Users</a>
     <a href="{{ route('admin.bookings') }}" class="nav-link {{ request()->routeIs('admin.booking*') ? 'active' : '' }}"><i class="bi bi-calendar-check"></i> Bookings</a>
     <a href="{{ route('admin.reviews') }}" class="nav-link {{ request()->routeIs('admin.review*') ? 'active' : '' }}"><i class="bi bi-star"></i> Reviews</a>
+    @php($newContactMessages = \App\Models\ContactMessage::where('status', 'new')->count())
+    <a href="{{ route('admin.contact-messages.index') }}" class="nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}">
+      <i class="bi bi-envelope"></i> Contact Messages
+      @if($newContactMessages > 0)<span class="badge bg-danger ms-1">{{ $newContactMessages }}</span>@endif
+    </a>
 
     <div class="nav-section mt-2">Intelligence</div>
     <a href="{{ route('admin.analytics') }}" class="nav-link {{ request()->routeIs('admin.analytics*') ? 'active' : '' }}"><i class="bi bi-bar-chart-line"></i> Analytics</a>

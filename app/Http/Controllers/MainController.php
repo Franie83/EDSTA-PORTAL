@@ -132,16 +132,71 @@ class MainController extends Controller
     {
         return view('main.contact');
     }
-
     public function contactSubmit(Request $request)
     {
-        $request->validate([
-            'name'    => 'required|string|max:120',
-            'email'   => 'required|email',
+        $validated = $request->validate([
+            'name' => 'required|string|max:120',
+            'email' => 'required|email|max:254',
             'subject' => 'required|string|max:200',
-            'message' => 'required|string',
+            'message' => 'required|string|max:10000',
+            'website' => 'nullable|max:0',
         ]);
-        return back()->with('success', 'Thank you! Your message has been received and will be reviewed shortly.');
+
+        $contactMessage = \App\Models\ContactMessage::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'subject' => $validated['subject'],
+            'message' => $validated['message'],
+            'status' => 'new',
+            'email_status' => 'pending',
+        ]);
+
+        $recipient = trim((string) \App\Models\CmsSetting::get(
+            'contact_email',
+            'tourismagencyedo@gmail.com'
+        ));
+
+        if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+            $recipient = 'tourismagencyedo@gmail.com';
+        }
+
+        try {
+            \Illuminate\Support\Facades\Mail::raw(
+                "A new Contact Us enquiry has been received.\n\n"
+                . "Name: {$validated['name']}\n"
+                . "Email: {$validated['email']}\n"
+                . "Subject: {$validated['subject']}\n\n"
+                . "Message:\n{$validated['message']}",
+                function ($mail) use ($recipient, $validated) {
+                    $mail->to($recipient)
+                        ->replyTo($validated['email'], $validated['name'])
+                        ->subject('Edo Odyssey Contact Enquiry: ' . $validated['subject']);
+                }
+            );
+
+            $contactMessage->update([
+                'email_status' => 'sent',
+            ]);
+
+        } catch (\Throwable $exception) {
+
+            \Illuminate\Support\Facades\Log::error(
+                'Edo Odyssey contact email delivery failed.',
+                [
+                    'contact_message_id' => $contactMessage->id,
+                    'error' => $exception->getMessage(),
+                ]
+            );
+
+            $contactMessage->update([
+                'email_status' => 'failed',
+            ]);
+        }
+
+        return back()->with(
+            'success',
+            'Thank you! Your message has been received. Our team will review your enquiry shortly.'
+        );
     }
 
     public function faq()

@@ -5,8 +5,13 @@
     <div class="row g-5">
         <div class="col-lg-7">
             <h2 class="mb-4" style="font-family: 'Playfair Display', serif; color: var(--blue-900);">Send us a Message</h2>
-            <form action="#" method="POST" onsubmit="alert('Contact form is not wired up yet.'); return false;">
+            <form action="{{ route('main.contact_submit') }}" method="POST">
                 @csrf
+
+    <div style="position:absolute;left:-10000px;" aria-hidden="true">
+        <label for="website">Leave this field empty</label>
+        <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
+    </div>
                 <div class="row g-3">
                     <div class="col-md-6"><label class="form-label">Your Name *</label><input type="text" name="name" class="form-control" required></div>
                     <div class="col-md-6"><label class="form-label">Email *</label><input type="email" name="email" class="form-control" required></div>

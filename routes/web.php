@@ -34,7 +34,7 @@ Route::get('/',          [MainController::class, 'home'])->name('main.home');
 Route::get('/about',     [MainController::class, 'about'])->name('main.about');
 Route::get('/contact',   [MainController::class, 'contact'])->name('main.contact');
 Route::get('/culture', [\App\Http\Controllers\CultureController::class, 'index'])->name('main.culture');
-Route::post('/contact',  [MainController::class, 'contactSubmit'])->name('main.contact_submit');
+Route::post('/contact', [MainController::class, 'contactSubmit'])->middleware('throttle:5,1')->name('main.contact_submit');
 Route::get('/faq',       [MainController::class, 'faq'])->name('main.faq');
 Route::get('/privacy',   [MainController::class, 'privacy'])->name('main.privacy');
 Route::get('/terms',     [MainController::class, 'terms'])->name('main.terms');
@@ -354,3 +354,11 @@ Route::middleware('auth')->prefix('dashboard/permits')->name('dashboard.permits.
 // Public callback; the controller must verify payment directly with Paystack.
 Route::get('/dashboard/permits/payment/callback', [\App\Http\Controllers\PaystackPermitPaymentController::class, 'callback'])
     ->name('dashboard.permits.paystack.callback');
+
+// Admin Contact Messages Inbox
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/contact-messages', [\App\Http\Controllers\AdminContactMessageController::class, 'index'])->name('contact-messages.index');
+    Route::get('/contact-messages/{id}', [\App\Http\Controllers\AdminContactMessageController::class, 'show'])->whereNumber('id')->name('contact-messages.show');
+    Route::patch('/contact-messages/{id}/status', [\App\Http\Controllers\AdminContactMessageController::class, 'updateStatus'])->whereNumber('id')->name('contact-messages.status');
+    Route::delete('/contact-messages/{id}', [\App\Http\Controllers\AdminContactMessageController::class, 'destroy'])->whereNumber('id')->name('contact-messages.destroy');
+});
