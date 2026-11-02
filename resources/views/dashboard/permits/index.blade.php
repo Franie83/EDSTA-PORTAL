@@ -25,7 +25,15 @@
                     </div>
                     <p class="text-muted small mb-1">Cert #: <strong>{{ $permit->certificate_number }}</strong></p>
                     <p class="text-muted small mb-1">Expires: {{ $permit->expiry_date->format('M d, Y') }}</p>
-                    <a href="{{ route('dashboard.permits.show', $permit->id) }}" class="btn btn-outline-primary btn-sm mt-3 w-100">View / Print Certificate</a>
+                    <a href="{{ route('dashboard.permits.show', $permit->id) }}" class="btn btn-outline-primary btn-sm mt-3 w-100">View / Print Permit</a>
+                    @if($permit->isExpired())
+                    <form method="POST" action="{{ route('dashboard.permits.process') }}" class="mt-2">
+                        @csrf
+                        <input type="hidden" name="action" value="renew">
+                        <input type="hidden" name="permit_id" value="{{ $permit->id }}">
+                        <button type="submit" class="btn btn-gold w-100">Pay Renewal Fee & Renew Permit</button>
+                    </form>
+                    @endif
                 </div>
             </div>
         </div>

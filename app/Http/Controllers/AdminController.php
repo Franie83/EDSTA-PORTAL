@@ -1249,6 +1249,11 @@ class AdminController extends Controller
             ['key' => 'about_mission', 'label' => 'Our Mission', 'type' => 'textarea', 'group' => 'general'],
             ['key' => 'about_text', 'label' => 'Our Vision', 'type' => 'textarea', 'group' => 'general'],
 
+            // TOURISM PERMIT FEES
+            ['key' => 'permit_price_hotel', 'label' => 'Hotel Annual Permit Fee (â‚¦)', 'type' => 'number', 'group' => 'permits'],
+            ['key' => 'permit_price_restaurant', 'label' => 'Restaurant Annual Permit Fee (â‚¦)', 'type' => 'number', 'group' => 'permits'],
+            ['key' => 'permit_price_club', 'label' => 'Club/Lounge Annual Permit Fee (â‚¦)', 'type' => 'number', 'group' => 'permits'],
+            ['key' => 'permit_price_tour_operator', 'label' => 'Tour Operator Annual Permit Fee (â‚¦)', 'type' => 'number', 'group' => 'permits'],
             // SOCIAL
             ['key' => 'social_facebook',  'label' => 'Facebook URL',  'type' => 'text', 'group' => 'social'],
             ['key' => 'social_twitter',   'label' => 'Twitter / X URL', 'type' => 'text', 'group' => 'social'],
@@ -1263,13 +1268,44 @@ class AdminController extends Controller
             CmsSetting::firstOrCreate(['key' => $d['key']], $d + ['value' => '']);
         }
 
-        $cms_groups = CmsSetting::orderBy('id')->get()->groupBy('group')->toArray();
+        $cms_groups = CmsSetting::orderByRaw("
+            CASE key
+                WHEN 'permit_price_hotel' THEN 1
+                WHEN 'permit_price_restaurant' THEN 2
+                WHEN 'permit_price_club' THEN 3
+                WHEN 'permit_price_tour_operator' THEN 4
+                ELSE 5
+            END
+        ")->orderBy('id')->get()->groupBy('group')->toArray();
 
         return view('admin.cms', compact('cms_groups'));
     }
 
     public function cmsUpdate(Request $request)
     {
+        // Validate tourism permit fees before saving CMS settings.
+        $permitFeeKeys = [
+            'permit_price_hotel',
+            'permit_price_restaurant',
+            'permit_price_club',
+            'permit_price_tour_operator',
+        ];
+
+        $settings = $request->input('settings', []);
+
+        foreach ($permitFeeKeys as $feeKey) {
+            if (array_key_exists($feeKey, $settings)) {
+                $request->validate([
+                    "settings.{$feeKey}" => ['required', 'numeric', 'gt:0', 'max:1000000000'],
+                ], [
+                    "settings.{$feeKey}.required" => 'All permit fees must have a value.',
+                    "settings.{$feeKey}.numeric" => 'Permit fees must be valid numbers.',
+                    "settings.{$feeKey}.gt" => 'Permit fees must be greater than zero.',
+                    "settings.{$feeKey}.max" => 'The permit fee is above the permitted limit.',
+                ]);
+            }
+        }
+
         // Upload images first so a failed upload does not replace existing image settings.
         $uploadedImages = [];
 
@@ -1681,3 +1717,4 @@ class AdminController extends Controller
         return back()->with('success', 'Gallery image deleted.');
     }
 }
+

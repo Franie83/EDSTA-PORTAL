@@ -342,10 +342,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/permits/{id}', [\App\Http\Controllers\PermitController::class, 'destroy'])->name('permits.destroy');
     Route::post('/permits/{id}/expire', [\App\Http\Controllers\PermitController::class, 'expire'])->name('permits.expire');
 });
-    // Business Owner Permit Routes
-    Route::prefix('dashboard/permits')->name('dashboard.permits.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\PermitApplicationController::class, 'index'])->name('index');
-        Route::get('/apply', [\App\Http\Controllers\PermitApplicationController::class, 'create'])->name('create');
-        Route::post('/pay', [\App\Http\Controllers\PermitApplicationController::class, 'processPayment'])->name('process');
-        Route::get('/{id}', [\App\Http\Controllers\PermitApplicationController::class, 'show'])->name('show');
-    });
+// Business Owner Permit Routes
+// Require login for permit pages and payment initialization.
+Route::middleware('auth')->prefix('dashboard/permits')->name('dashboard.permits.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\PermitApplicationController::class, 'index'])->name('index');
+    Route::get('/apply', [\App\Http\Controllers\PermitApplicationController::class, 'create'])->name('create');
+    Route::post('/pay', [\App\Http\Controllers\PaystackPermitPaymentController::class, 'initialize'])->name('process');
+    Route::get('/{id}', [\App\Http\Controllers\PermitApplicationController::class, 'show'])->name('show');
+});
+
+// Public callback; the controller must verify payment directly with Paystack.
+Route::get('/dashboard/permits/payment/callback', [\App\Http\Controllers\PaystackPermitPaymentController::class, 'callback'])
+    ->name('dashboard.permits.paystack.callback');

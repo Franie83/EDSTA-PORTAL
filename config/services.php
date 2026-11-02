@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
 
@@ -40,5 +40,11 @@ return [
         'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
         'api_key' => env('CLOUDINARY_API_KEY'),
         'api_secret' => env('CLOUDINARY_API_SECRET'),
+    ],
+    'paystack' => [
+        'secret_key' => env('PAYSTACK_SECRET_KEY'),
+        'public_key' => env('PAYSTACK_PUBLIC_KEY'),
+        'payment_url' => env('PAYSTACK_PAYMENT_URL', 'https://api.paystack.co'),
+        'ca_bundle' => env('PAYSTACK_CA_BUNDLE', true),
     ],
 ];
