@@ -1249,7 +1249,10 @@ class AdminController extends Controller
             ['key' => 'about_mission', 'label' => 'Our Mission', 'type' => 'textarea', 'group' => 'general'],
             ['key' => 'about_text', 'label' => 'Our Vision', 'type' => 'textarea', 'group' => 'general'],
 
-            // TOURISM PERMIT FEES
+            // TOURISM PERMIT CERTIFICATE
+            ['key' => 'permit_agency_stamp', 'label' => 'Tourism Agency Official Stamp', 'type' => 'image', 'group' => 'permits'],
+            ['key' => 'permit_dg_signature', 'label' => 'Director General Signature', 'type' => 'image', 'group' => 'permits'],
+// TOURISM PERMIT FEES
             ['key' => 'permit_price_hotel', 'label' => 'Hotel Annual Permit Fee (â‚¦)', 'type' => 'number', 'group' => 'permits'],
             ['key' => 'permit_price_restaurant', 'label' => 'Restaurant Annual Permit Fee (â‚¦)', 'type' => 'number', 'group' => 'permits'],
             ['key' => 'permit_price_club', 'label' => 'Club/Lounge Annual Permit Fee (â‚¦)', 'type' => 'number', 'group' => 'permits'],
