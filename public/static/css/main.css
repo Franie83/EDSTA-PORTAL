@@ -290,3 +290,9 @@ a:not(.btn):hover {
     }
 }
 /* END EDO ODYSSEY HERO SLIDESHOW */
+/* Keep the admin sidebar consistently Edo red on all devices */
+.admin-sidebar,
+.admin-sidebar.show {
+    background: #5B0000 !important;
+    background-color: #5B0000 !important;
+}
